@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.gym.utils.ResultUtils;
 import com.gym.utils.ResultVo;
 import com.gym.web.sys_user.entity.PageParm;
-import com.gym.web.sys_user.entity.SelectType;
 import com.gym.web.sys_user.entity.SysUser;
 import com.gym.web.sys_user.service.SysUserService;
 import com.gym.web.sys_user_role.entity.SysUserRole;
@@ -15,14 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
-/**
- * @Author yangbohan
- * @Date 2024/3/27 17:41
- */
 @RestController
 @RequestMapping("/api/user")
 public class SysUserController {
@@ -30,68 +23,82 @@ public class SysUserController {
     private SysUserService sysUserService;
     @Autowired
     private SysUserRoleService sysUserRoleService;
-    // 添加
-    @PostMapping
-    public ResultVo add(@RequestBody SysUser sysUser) {
-        sysUser.setCreateTime(new Date());
-        if (StringUtils.isNotEmpty(sysUser.getPassword())){
-            sysUser.setPassword(DigestUtils.md5DigestAsHex(sysUser.getPassword().getBytes()));
-        }
-        // 设置是否是管理员
-        sysUser.setIsAdmin("0");
-        // 判断用户是否存在
-        QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
-        queryWrapper.lambda().eq(SysUser::getUsername,sysUser.getUsername());
-        SysUser one = sysUserService.getOne(queryWrapper);
-        if (one != null){
-            return ResultUtils.error("该账户已被注册");
-        }
-        // 保存
-        sysUserService.addUser(sysUser);
-        return ResultUtils.success("添加成功");
 
-    }
-    // 编辑
-    @PutMapping
-    public ResultVo edit(@RequestBody SysUser sysUser) {
-        sysUser.setCreateTime(new Date());
-        if (StringUtils.isNotEmpty(sysUser.getPassword())){
+    //新增员工
+    @PostMapping
+    public ResultVo addUser(@RequestBody SysUser sysUser) {
+        //判断用户名是否存在
+        QueryWrapper<SysUser> query = new QueryWrapper<>();
+        query.lambda().eq(SysUser::getUsername, sysUser.getUsername());
+        SysUser one = sysUserService.getOne(query);
+        if (one != null) {
+            return ResultUtils.error("账户已经被占用");
+        }
+        //密码加密
+        if (StringUtils.isNotEmpty(sysUser.getPassword())) {
             sysUser.setPassword(DigestUtils.md5DigestAsHex(sysUser.getPassword().getBytes()));
         }
-        // 判断用户是否存在
-        QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
-        queryWrapper.lambda().eq(SysUser::getUsername,sysUser.getUsername());
-        SysUser one = sysUserService.getOne(queryWrapper);
-        if (one != null&& sysUser.getUserId().equals(one.getUserId())){
-            return ResultUtils.error("该账户已被注册");
+        sysUser.setIsAdmin("0");
+        sysUser.setCreateTime(new Date());
+        //存入数据库
+        boolean save = sysUserService.save(sysUser);
+        if (save) {
+            return ResultUtils.success("新增用户成功!");
         }
-        // 更新
-        sysUserService.updateById(sysUser);
-        return ResultUtils.success("更新成功");
+        return ResultUtils.error("新增用户失败!");
     }
-    // 删除
+
+    //编辑员工
+    @PutMapping
+    public ResultVo editUser(@RequestBody SysUser sysUser) {
+        //判断用户名是否存在
+        QueryWrapper<SysUser> query = new QueryWrapper<>();
+        query.lambda().eq(SysUser::getUsername, sysUser.getUsername());
+        SysUser one = sysUserService.getOne(query);
+        if (one != null && !one.getUserId().equals(sysUser.getUserId())) {
+            return ResultUtils.error("账户已经被占用");
+        }
+        //密码加密
+        if (StringUtils.isNotEmpty(sysUser.getPassword())) {
+            sysUser.setPassword(DigestUtils.md5DigestAsHex(sysUser.getPassword().getBytes()));
+        }
+        sysUser.setUpdateTime(new Date());
+        //存入数据库
+        boolean save = sysUserService.updateById(sysUser);
+        if (save) {
+            return ResultUtils.success("编辑用户成功!");
+        }
+        return ResultUtils.error("编辑用户失败!");
+    }
+
+    //删除用户
     @DeleteMapping("/{userId}")
-    public ResultVo delete(@PathVariable("userId") Long userId) {
-        sysUserService.deleteUser(userId);
-        return ResultUtils.success("删除成功");
+    public ResultVo deleteUser(@PathVariable("userId") Long userId) {
+        boolean remove = sysUserService.removeById(userId);
+        if (remove) {
+            return ResultUtils.success("删除用户成功!");
+        }
+        return ResultUtils.error("删除用户失败!");
     }
-    // 查询列表
+
+    //用户列表
     @GetMapping("/list")
     public ResultVo getList(PageParm parm) {
         IPage<SysUser> list = sysUserService.getList(parm);
-        if(list.getRecords().size()>0){
-            list.getRecords().forEach(item->{
+        if (list.getRecords().size() > 0) {
+            list.getRecords().forEach(item -> {
                 item.setPassword("");
             });
         }
-        return ResultUtils.success("查询成功",list);
+        return ResultUtils.success("查询成功", list);
     }
-    /*// 根据用户id查询角色id
+
+    // 根据用户id查询角色id
     @GetMapping("/role")
     public ResultVo getRole(Long userId) {
         QueryWrapper<SysUserRole> queryWrapper = new QueryWrapper<>();
-        queryWrapper.lambda().eq(SysUserRole::getUserId,userId);
+        queryWrapper.lambda().eq(SysUserRole::getUserId, userId);
         SysUserRole one = sysUserRoleService.getOne(queryWrapper);
-        return ResultUtils.success("查询成功",one);
-    }*/
+        return ResultUtils.success("查询成功", one);
+    }
 }

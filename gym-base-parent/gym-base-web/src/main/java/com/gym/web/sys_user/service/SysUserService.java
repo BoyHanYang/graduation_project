@@ -14,7 +14,7 @@ public interface SysUserService extends IService<SysUser> {
     // 新增
     void addUser(SysUser sysUser);
     // 删除
-    void deleteUser(long userId);
+    void deleteUser(Integer userId);
     // 修改
     void editUser(SysUser sysUser);
     // 列表

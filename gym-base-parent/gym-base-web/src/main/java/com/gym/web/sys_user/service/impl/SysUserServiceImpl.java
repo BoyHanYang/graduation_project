@@ -46,7 +46,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser>
 
     @Override
     @Transactional
-    public void deleteUser(long userId) {
+    public void deleteUser(Integer userId) {
         int i = this.baseMapper.deleteById(userId);
         if (i > 0) {
             // 删除用户的角色
