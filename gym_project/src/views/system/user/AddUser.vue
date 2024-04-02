@@ -90,7 +90,7 @@
               <el-input v-model="addModel.username"></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="12" :offset="0">
+          <el-col v-if="addModel.type == '0'" :span="12" :offset="0">
             <el-form-item prop="password" label="密码">
               <el-input v-model="addModel.password"></el-input>
             </el-form-item>
@@ -105,25 +105,42 @@
 import { AddUserModel } from "@/api/user/UserModel";
 import SysDialog from "@/components/SysDialog.vue";
 import useDialog from "@/hooks/useDialog";
-import { reactive, ref } from "vue";
+import { nextTick, reactive, ref } from "vue";
 import useSelectRole from "@/composables/user/useSelectRole";
 import { ElMessage, FormInstance } from "element-plus";
-import { addApi } from "@/api/user/index";
+import { addApi, editApi } from "@/api/user/index";
+import { EditType, Title } from "@/type/BaseEnum";
+import useInstance from "@/hooks/useInstance";
+const { global } = useInstance();
 //表单ref属性
 const addFormRef = ref<FormInstance>();
 //角色
-const { roleData, listRole } = useSelectRole();
+const { roleData, listRole, roleId, getRole } = useSelectRole();
 //弹框属性
 const { dialog, onClose, onConfirm, onShow } = useDialog();
 //显示弹框
-const show = () => {
+const show = async (type: string, row?: AddUserModel) => {
+  roleId.value = "";
+  addModel.roleId = "";
   dialog.height = 270;
+  addModel.type = type;
   //获取角色数据
-  listRole();
-  dialog.title = "新增";
+  await listRole();
+  await getRole(row!?.userId);
+  type == EditType.ADD
+      ? dialog.title = Title.ADD
+      : dialog.title = Title.EDIT;
+  if (type == EditType.EDIT) {
+    //回显数据
+    nextTick(() => {
+      global.$objCoppy(row, addModel);
+      addModel.roleId = roleId.value;
+    });
+  }
+
   onShow();
   //清空数据
-  addFormRef.value?.resetFields()
+  addFormRef.value?.resetFields();
 };
 //暴露出去给父组件调用
 defineExpose({
@@ -211,16 +228,21 @@ const rules = reactive({
   ],
 });
 //注册事件
-const emits = defineEmits(['refresh'])
+const emits = defineEmits(["refresh"]);
 //表单提交
 const commit = () => {
-  addFormRef.value?.validate(async(valid) => {
+  addFormRef.value?.validate(async (valid) => {
     if (valid) {
-      let res = await addApi(addModel)
-      if(res && res.code == 200){
-        ElMessage.success(res.msg)
+      let res = null;
+      if (addModel.type == EditType.ADD) {
+        res = await addApi(addModel);
+      } else {
+        res = await editApi(addModel);
+      }
+      if (res && res.code == 200) {
+        ElMessage.success(res.msg);
         //刷新表格
-        emits('refresh')
+        emits("refresh");
         onClose();
       }
     }

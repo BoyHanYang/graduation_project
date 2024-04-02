@@ -43,8 +43,8 @@
       </el-table-column>
       <el-table-column  label="操作" align="center" width="220">
         <template #default="scope">
-          <el-button type="primary" :icon="Edit" size="default" @click="editBtn">编辑</el-button>
-          <el-button type="danger" :icon="Delete" size="default" @click="deleteBtn">删除</el-button>
+          <el-button type="primary" :icon="Edit" size="default" @click="editBtn(scope.row)">编辑</el-button>
+          <el-button type="danger" :icon="Delete" size="default" @click="deleteBtn(scope.row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -72,7 +72,7 @@ import useUser from "@/composables/user/useUser";
 //表格
 const { listParm, getList,searchBtn,resetBtn,tableList,sizeChange,currentChange,tableHeight,refresh } = useTable();
 //新增、编辑
-const { addBtn, editBtn, deleteBtn,addRef } = useUser();
+const { addBtn, editBtn, deleteBtn,addRef } = useUser(getList);
 </script>
 
 <style scoped></style>
