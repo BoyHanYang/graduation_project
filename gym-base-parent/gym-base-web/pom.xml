@@ -19,8 +19,8 @@
 <!--    </properties>-->
     <dependencies>
         <dependency>
-            <groupId>com.itmk</groupId>
-            <artifactId>itmk-base-common</artifactId>
+            <groupId>com.gym</groupId>
+            <artifactId>gym-base-common</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
         <!--web启动器,对springmvc,serlvet等支持-->

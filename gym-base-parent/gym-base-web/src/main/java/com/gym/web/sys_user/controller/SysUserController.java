@@ -2,17 +2,22 @@ package com.gym.web.sys_user.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.gym.utils.ResultUtils;
+import com.gym.utils.ResultVo;
 import com.gym.web.sys_user.entity.PageParm;
+import com.gym.web.sys_user.entity.SelectType;
 import com.gym.web.sys_user.entity.SysUser;
 import com.gym.web.sys_user.service.SysUserService;
-import com.itmk.utils.ResultUtils;
-import com.itmk.utils.ResultVo;
+import com.gym.web.sys_user_role.entity.SysUserRole;
+import com.gym.web.sys_user_role.service.SysUserRoleService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @Author yangbohan
@@ -23,6 +28,8 @@ import java.util.Date;
 public class SysUserController {
     @Autowired
     private SysUserService sysUserService;
+    @Autowired
+    private SysUserRoleService sysUserRoleService;
     // 添加
     @PostMapping
     public ResultVo add(@RequestBody SysUser sysUser) {
@@ -69,9 +76,22 @@ public class SysUserController {
         return ResultUtils.success("删除成功");
     }
     // 查询列表
-    @GetMapping
+    @GetMapping("/list")
     public ResultVo getList(PageParm parm) {
         IPage<SysUser> list = sysUserService.getList(parm);
+        if(list.getRecords().size()>0){
+            list.getRecords().forEach(item->{
+                item.setPassword("");
+            });
+        }
         return ResultUtils.success("查询成功",list);
     }
+    /*// 根据用户id查询角色id
+    @GetMapping("/role")
+    public ResultVo getRole(Long userId) {
+        QueryWrapper<SysUserRole> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(SysUserRole::getUserId,userId);
+        SysUserRole one = sysUserRoleService.getOne(queryWrapper);
+        return ResultUtils.success("查询成功",one);
+    }*/
 }
