@@ -3,7 +3,7 @@ import {reactive} from 'vue'
 export default function useDialog(){
     //定义弹框属性
     const dialog = reactive<DialogModel>({
-        title: '',
+        title: '标题',
         visible: false,
         width: 630,
         height: 250
