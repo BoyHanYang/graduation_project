@@ -40,7 +40,7 @@ public class SysMenuController {
         return ResultUtils.error("编辑失败");
     }
     // 删除
-    @PostMapping("/{menuId}")
+    @DeleteMapping("/{menuId}")
     public ResultVo delete(@PathVariable("menuId") long menuId){
         if (sysMenuService.removeById(menuId)){
             return ResultUtils.success("删除成功");
