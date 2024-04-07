@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gym.web.member.mapper.MemberMapper">
+
+    <resultMap id="BaseResultMap" type="com.gym.web.member.entity.Member">
+            <id property="memberId" column="member_id" jdbcType="INTEGER"/>
+            <result property="name" column="name" jdbcType="VARCHAR"/>
+            <result property="sex" column="sex" jdbcType="VARCHAR"/>
+            <result property="phone" column="phone" jdbcType="VARCHAR"/>
+            <result property="age" column="age" jdbcType="INTEGER"/>
+            <result property="birthday" column="birthday" jdbcType="VARCHAR"/>
+            <result property="height" column="height" jdbcType="INTEGER"/>
+            <result property="weight" column="weight" jdbcType="INTEGER"/>
+            <result property="waist" column="waist" jdbcType="INTEGER"/>
+            <result property="joinTime" column="join_time" jdbcType="VARCHAR"/>
+            <result property="endTime" column="end_time" jdbcType="VARCHAR"/>
+            <result property="username" column="username" jdbcType="VARCHAR"/>
+            <result property="password" column="password" jdbcType="VARCHAR"/>
+            <result property="status" column="status" jdbcType="VARCHAR"/>
+            <result property="money" column="money" jdbcType="DECIMAL"/>
+            <result property="cardType" column="card_type" jdbcType="VARCHAR"/>
+            <result property="cardDay" column="card_day" jdbcType="INTEGER"/>
+            <result property="price" column="price" jdbcType="DECIMAL"/>
+            <result property="isAccountNonExpired" column="is_account_non_expired" jdbcType="TINYINT"/>
+            <result property="isAccountNonLocked" column="is_account_non_locked" jdbcType="TINYINT"/>
+            <result property="isCredentialsNonExpired" column="is_credentials_non_expired" jdbcType="TINYINT"/>
+            <result property="isEnabled" column="is_enabled" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        member_id,name,sex,
+        phone,age,birthday,
+        height,weight,waist,
+        join_time,end_time,username,
+        password,status,money,
+        card_type,card_day,price,
+        is_account_non_expired,is_account_non_locked,is_credentials_non_expired,
+        is_enabled
+    </sql>
+</mapper>
