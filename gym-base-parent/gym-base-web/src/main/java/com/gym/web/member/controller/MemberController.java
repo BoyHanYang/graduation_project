@@ -9,45 +9,52 @@ import com.gym.utils.ResultVo;
 import com.gym.web.member.entity.Member;
 import com.gym.web.member.entity.PageParm;
 import com.gym.web.member.service.MemberService;
+import com.gym.web.member_role.entity.MemberRole;
+import com.gym.web.member_role.service.MemberRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-/**
- * @Author yangbohan
- * @Date 2024/4/7 20:01
- */
 
 @RestController
 @RequestMapping("/api/member")
 public class MemberController {
     @Autowired
     private MemberService memberService;
+    @Autowired
+    private MemberRoleService memberRoleService;
 
     //新增
     @PostMapping
     public ResultVo add(@RequestBody Member member){
-        if(memberService.save(member)){
-            return ResultUtils.success("新增成功!");
+        //判断卡号是否重复
+        QueryWrapper<Member> query = new QueryWrapper<>();
+        query.lambda().eq(Member::getUsername,member.getUsername());
+        Member one = memberService.getOne(query);
+        if(one != null){
+            return ResultUtils.error("会员卡号被占用!");
         }
-        return ResultUtils.error("新增失败!");
+        memberService.addMember(member);
+        return ResultUtils.success("新增成功!");
     }
 
     //编辑
     @PutMapping
     public ResultVo edit(@RequestBody Member member){
-        if(memberService.updateById(member)){
-            return ResultUtils.success("编辑成功!");
+        //判断卡号是否重复
+        QueryWrapper<Member> query = new QueryWrapper<>();
+        query.lambda().eq(Member::getUsername,member.getUsername());
+        Member one = memberService.getOne(query);
+        if(one != null && !one.getMemberId().equals(member.getMemberId())){
+            return ResultUtils.error("会员卡号被占用!");
         }
-        return ResultUtils.error("编辑失败!");
+        memberService.editMember(member);
+        return ResultUtils.success("编辑成功!");
     }
 
     //删除
     @DeleteMapping("/{memberId}")
     public ResultVo delete(@PathVariable("memberId") Long memberId){
-        if(memberService.removeById(memberId)){
-            return ResultUtils.success("删除成功!");
-        }
-        return ResultUtils.error("删除失败!");
+        memberService.deleteMember(memberId);
+        return ResultUtils.success("删除成功!");
     }
 
     //查询
@@ -66,7 +73,16 @@ public class MemberController {
         if(StringUtils.isNotEmpty(pageParm.getUsername())){
             query.lambda().like(Member::getUsername,pageParm.getUsername());
         }
+        query.lambda().orderByDesc(Member::getJoinTime);
         IPage<Member> list = memberService.page(page, query);
         return ResultUtils.success("查询成功",list);
+    }
+    //根据会员id查询角色id
+    @GetMapping("/getRoleByMemberId")
+    public ResultVo getRoleByMemberId(Long memberId){
+        QueryWrapper<MemberRole> query = new QueryWrapper<>();
+        query.lambda().eq(MemberRole::getMemberId,memberId);
+        MemberRole one = memberRoleService.getOne(query);
+        return ResultUtils.success("查询成功",one);
     }
 }

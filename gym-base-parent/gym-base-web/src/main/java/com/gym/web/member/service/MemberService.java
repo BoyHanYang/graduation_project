@@ -9,5 +9,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 * @createDate 2024-04-07 19:58:32
 */
 public interface MemberService extends IService<Member> {
-
+    void addMember(Member member);
+    void editMember(Member member);
+    void deleteMember(Long memberId);
 }

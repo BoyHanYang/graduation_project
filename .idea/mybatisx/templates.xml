@@ -6,7 +6,7 @@
         <option name="generateConfig">
           <GenerateConfig>
             <option name="annotationType" value="MYBATIS_PLUS3" />
-            <option name="basePackage" value="com.gym.web.member" />
+            <option name="basePackage" value="com.gym.web.member_role" />
             <option name="basePath" value="src/main/java" />
             <option name="classNameStrategy" value="camel" />
             <option name="encoding" value="UTF-8" />
@@ -68,8 +68,8 @@
             <option name="tableUIInfoList">
               <list>
                 <TableUIInfo>
-                  <option name="className" value="Member" />
-                  <option name="tableName" value="member" />
+                  <option name="className" value="MemberRole" />
+                  <option name="tableName" value="member_role" />
                 </TableUIInfo>
               </list>
             </option>

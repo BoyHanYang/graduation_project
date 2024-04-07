@@ -20,7 +20,8 @@ public class Member implements Serializable {
      */
     @TableId(type = IdType.AUTO)
     private Integer memberId;
-
+@TableField(exist = false)
+private Integer roleId;
     /**
      * 姓名
      */
