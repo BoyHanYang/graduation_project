@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gym.web.member_role.mapper.MemberRoleMapper">
+
+    <resultMap id="BaseResultMap" type="com.gym.web.member_role.entity.MemberRole">
+            <id property="memberRoleId" column="member_role_id" jdbcType="INTEGER"/>
+            <result property="memberId" column="member_id" jdbcType="INTEGER"/>
+            <result property="roleId" column="role_id" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        member_role_id,member_id,role_id
+    </sql>
+</mapper>
