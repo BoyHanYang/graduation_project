@@ -42,8 +42,8 @@
       </el-table-column>
       <el-table-column  label="操作" align="center" width="220">
         <template #default="scope">
-          <el-button type="primary" :icon="Edit" size="default" @click="editBtn">编辑</el-button>
-          <el-button type="danger" :icon="Delete" size="default" @click="deleteBtn">删除</el-button>
+          <el-button type="primary" :icon="Edit" size="default" @click="editBtn(scope.row)">编辑</el-button>
+          <el-button type="danger" :icon="Delete" size="default" @click="deleteBtn(scope.row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -66,12 +66,12 @@
 <script setup lang="ts">
 import AddCard from "./AddCard.vue";
 import { Plus, Edit, Delete, Search, Close } from "@element-plus/icons-vue";
-import useMemberTable from "@/composables/member_card/useMemberTable";
-import useMember from "@/composables/member_card/useMember";
+import useMemberTable from "@/composables/member_card/useMemberTable.ts";
+import useMember from "@/composables/member_card/useMember.ts";
 //表格操作
 const { listParm, getList, resetBtn, searchBtn,tableList,sizeChange,currentChange,tableHeight,refresh } = useMemberTable();
 //新增、编辑
-const { addBtn, editBtn, deleteBtn,addRef } = useMember();
+const { addBtn, editBtn, deleteBtn,addRef } = useMember(getList);
 </script>
 
 <style scoped></style>

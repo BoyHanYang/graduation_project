@@ -1,24 +1,38 @@
-import {ref} from "vue";
-
-export default function useMember() {
-    // 弹窗ref属性
-    const addRef = ref<{show:()=>void}>()
-    // 新增
-    const addBtn = () => {
-        addRef.value?.show()
+import { CardType } from "@/api/member_card/MemberModel"
+import { EditType } from "@/type/BaseEnum"
+import { ref } from "vue"
+import useInstance from "@/hooks/useInstance";
+import { deleteApi } from "@/api/member_card/index.ts";
+import { ElMessage } from "element-plus";
+import { FuncList } from "@/type/BaseType.ts";
+export default function useMember(getList:FuncList){
+    const { global } = useInstance();
+    //弹框ref属性
+    const addRef = ref<{show:(type:string,row?:CardType)=>void}>()
+    //新增
+    const addBtn = ()=>{
+        addRef.value?.show(EditType.ADD)
     }
-    // 编辑
-    const editBtn = () => {
-        console.log("编辑")
+    //编辑
+    const editBtn = (row:CardType)=>{
+        addRef.value?.show(EditType.EDIT,row)
     }
-    // 删除
-    const deleteBtn = () => {
-        console.log("删除")
+    //删除
+    const deleteBtn = async(row:CardType)=>{
+        let confirm = await global.$myconfirm('确定删除该数据吗?')
+        if(confirm){
+            let res = await deleteApi(row.cardId)
+            if(res && res.code == 200){
+                ElMessage.success(res.msg)
+                //刷新表格
+                getList()
+            }
+        }
     }
-    return {
-        addRef,
+    return{
         addBtn,
         editBtn,
-        deleteBtn
+        deleteBtn,
+        addRef
     }
 }

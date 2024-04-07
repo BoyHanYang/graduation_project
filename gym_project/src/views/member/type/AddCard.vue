@@ -63,16 +63,29 @@
 import SysDialog from "@/components/SysDialog.vue";
 import useDialog from "@/hooks/useDialog";
 import { CardType } from "@/api/member_card/MemberModel";
-import { reactive, ref } from "vue";
-import { addApi } from "@/api/member_card/index";
+import { nextTick, reactive, ref } from "vue";
+import { addApi,editApi } from "@/api/member_card/index.ts";
 import { ElMessage, FormInstance } from "element-plus";
+import { EditType, Title } from "@/type/BaseEnum";
+import useInstance from "@/hooks/useInstance";
+const { global } = useInstance();
 //表单ref属性
 const addFormRef = ref<FormInstance>();
 //弹框属性
 const { dialog, onClose, onConfirm, onShow } = useDialog();
 //显示弹框
-const show = () => {
+const show = (type: string, row?: CardType) => {
   dialog.height = 200;
+  type == EditType.ADD
+      ? (dialog.title = Title.ADD)
+      : (dialog.title = Title.EDIT);
+  if (type == EditType.EDIT) {
+    //把要编辑的数据复制到表单对象
+    nextTick(() => {
+      global.$objCoppy(row, addModel);
+    });
+  }
+  addModel.type = type;
   onShow();
 };
 //暴露出去，给父组件调用
@@ -128,15 +141,20 @@ const rules = reactive({
   ],
 });
 //注册事件
-const emits = defineEmits(['refresh'])
+const emits = defineEmits(["refresh"]);
 //表单提交
 const commit = () => {
   addFormRef.value?.validate(async (valid) => {
     if (valid) {
-      let res = await addApi(addModel);
+      let res = null;
+      if(addModel.type == EditType.ADD){
+        res = await addApi(addModel);
+      }else{
+        res = await editApi(addModel)
+      }
       if (res && res.code == 200) {
         ElMessage.success(res.msg);
-        emits('refresh')
+        emits("refresh");
         onClose();
       }
     }
