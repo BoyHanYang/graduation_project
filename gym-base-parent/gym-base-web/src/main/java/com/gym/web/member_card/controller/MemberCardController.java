@@ -39,7 +39,7 @@ public class MemberCardController {
         return ResultUtils.error("编辑失败");
     }
     // 删除
-    @DeleteMapping
+    @DeleteMapping("/{cardId}")
     public ResultVo delete(@PathVariable("cardId") Integer cardId){
         if (memberCardService.removeById(cardId)){
             return ResultUtils.success("删除成功");
