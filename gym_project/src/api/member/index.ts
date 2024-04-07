@@ -16,3 +16,7 @@ export const editApi = (parm:MemberType)=>{
 export const deleteApi = (memberId:string)=>{
     return http.delete(`/api/member/${memberId}`)
 }
+//根据会员id查询角色id
+export const getRoleByMemberIdApi = (memberId:string)=>{
+    return http.get("/api/member/getRoleByMemberId",{memberId:memberId})
+}

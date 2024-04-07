@@ -87,8 +87,35 @@
             </el-form-item>
           </el-col>
           <el-col :span="12" :offset="0">
+            <el-form-item prop="roleId" label="角色">
+              <el-select
+                  v-model="addModel.roleId"
+                  class="m-2"
+                  placeholder="请选择角色"
+                  size="default"
+              >
+                <el-option
+                    v-for="item in roleData.list"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                />
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12" :offset="0">
+            <el-form-item prop="status" label="状态">
+              <el-radio-group v-model="addModel.status">
+                <el-radio :label="'0'">停用</el-radio>
+                <el-radio :label="'1'">启用</el-radio>
+              </el-radio-group>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12" :offset="0">
             <el-form-item prop="username" label="会员卡号">
-              <el-input v-model="addModel.username"></el-input>
+              <el-input type="number" v-model="addModel.username"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -96,14 +123,6 @@
           <el-col :span="12" :offset="0">
             <el-form-item prop="password" label="密码">
               <el-input v-model="addModel.password"></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12" :offset="0">
-            <el-form-item prop="status" label="状态">
-              <el-radio-group v-model="addModel.status">
-                <el-radio :label="'0'">停用</el-radio>
-                <el-radio :label="'1'">启用</el-radio>
-              </el-radio-group>
             </el-form-item>
           </el-col>
         </el-row>
@@ -121,20 +140,26 @@ import { ElMessage, FormInstance } from "element-plus";
 import { addApi,editApi } from "@/api/member/index";
 import { EditType, Title } from "@/type/BaseEnum";
 import useInstance from "@/hooks/useInstance";
+import useSelectRole from "@/composables/user/useSelectRole";
 const { global } = useInstance();
 const addRormRef = ref<FormInstance>();
+//角色
+const { roleData, listRole, roleMemberId, getMemberRole } = useSelectRole();
 //弹框属性
 const { dialog, onClose, onConfirm, onShow } = useDialog();
 //弹框显示
-const show = (type: string, row?: MemberType) => {
+const show = async(type: string, row?: MemberType) => {
+  await listRole()
+  await getMemberRole(row!?.memberId)
   dialog.width = 680;
-  dialog.height = 300;
+  dialog.height = 350;
   type == EditType.ADD
       ? (dialog.title = Title.ADD)
       : (dialog.title = Title.EDIT);
   if (EditType.EDIT == type) {
     nextTick(() => {
       global.$objCoppy(row, addModel);
+      addModel.roleId = roleMemberId.value
     });
   }
   addModel.type = type;
@@ -162,6 +187,7 @@ const addModel = reactive<MemberType>({
   username: "",
   password: "",
   status: "",
+  roleId:''
 });
 //表单验证规则
 const rules = reactive({
