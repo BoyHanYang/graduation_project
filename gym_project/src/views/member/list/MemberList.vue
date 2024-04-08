@@ -18,14 +18,23 @@
         <el-button :icon="Search" @click="searchBtn">搜索</el-button>
         <el-button type="danger" plain :icon="Close" @click="resetBtn">重置</el-button>
         <el-button :icon="Plus" type="primary" @click="addBtn"
-        >新增</el-button
+        >新增
+        </el-button
         >
       </el-form-item>
     </el-form>
     <!-- 表格 -->
     <el-table :height="tableHeight" :data="tableList.list" border stripe>
-      <el-table-column prop="username" label="会员卡号"></el-table-column>
+      <el-table-column prop="username" width="150" label="会员卡号"></el-table-column>
       <el-table-column prop="name" label="姓名"></el-table-column>
+      <el-table-column prop="cardType" label="会员类型"></el-table-column>
+      <el-table-column prop="price" label="会员价格"></el-table-column>
+      <el-table-column prop="money" label="充值金额"></el-table-column>
+      <el-table-column
+          prop="endTime"
+          width="150"
+          label="到期时间"
+      ></el-table-column>
       <el-table-column prop="sex" label="性别">
         <template #default="scope">
           <el-tag v-if="scope.row.sex == '0'" type="success" size="default">男</el-tag>
@@ -44,10 +53,27 @@
           <el-tag v-if="scope.row.status == '0'" type="danger" size="default">停用</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="220" align="center">
+      <el-table-column label="操作" width="220" fixed="right" align="center">
         <template #default="scope">
-          <el-button type="primary" :icon="Edit" size="default" @click="editBtn(scope.row)">编辑</el-button>
-          <el-button type="danger" :icon="Delete" size="default" @click="deleteBtn(scope.row)">删除</el-button>
+          <el-button type="success"  size="default" :icon="Edit"  @click="joinBtn(scope.row)">办卡</el-button>
+          <el-button type="primary">
+            <el-dropdown>
+              <span class="el-dropdown-link" style="color:#FFF">
+                更多
+                <el-icon class="el-icon--right">
+                  <arrow-down />
+                </el-icon>
+              </span>
+              <template #dropdown>
+                <el-dropdown-menu>
+                  <el-dropdown-item :icon="ChatLineSquare" @click="rechargeBtn(scope.row)">充值</el-dropdown-item>
+                  <el-dropdown-item :icon="Edit" @click="editBtn(scope.row)">编辑</el-dropdown-item>
+                  <el-dropdown-item type="danger" :icon="Delete" @click="deleteBtn(scope.row)">删除</el-dropdown-item>
+                </el-dropdown-menu>
+              </template>
+            </el-dropdown>
+          </el-button>
+
         </template>
       </el-table-column>
     </el-table>
@@ -64,18 +90,30 @@
 
     <!-- 新增、编辑 -->
     <AddMember ref="addRef" @refresh="refresh"></AddMember>
+    <!-- 办卡弹框 -->
+    <JoinApply ref="joinRef" @refresh="refresh"></JoinApply>
+    <!-- 充值弹框 -->
+    <Recharge ref="rechargeRef" @refresh="refresh"></Recharge>
   </el-main>
 </template>
 
 <script setup lang="ts">
+import JoinApply from "./JoinApply.vue";
 import AddMember from "./AddMember.vue";
-import { Plus, Edit, Delete, Search, Close } from "@element-plus/icons-vue";
+import Recharge from "./Recharge.vue";
+import {Plus, Edit, Delete, Search, Close ,ChatLineSquare} from "@element-plus/icons-vue";
 import useTable from "@/composables/member/useTable";
 import useMember from "@/composables/member/useMember";
+import useJoin from "@/composables/member/useJoin";
+import useRecharge from "@/composables/member/useRecharge";
 //表格相关
-const { listParm, getList, resetBtn, searchBtn,tableList,sizeChange ,currentChange,tableHeight,refresh} = useTable();
+const {listParm, getList, resetBtn, searchBtn, tableList, sizeChange, currentChange, tableHeight, refresh} = useTable();
 //新增、编辑操作
-const { addBtn, editBtn, deleteBtn,addRef } = useMember(getList);
+const {addBtn, editBtn, deleteBtn, addRef} = useMember(getList);
+//办卡
+const { joinRef, joinBtn } = useJoin();
+//充值
+const { rechargeRef, rechargeBtn } = useRecharge();
 </script>
 
 <style scoped></style>
