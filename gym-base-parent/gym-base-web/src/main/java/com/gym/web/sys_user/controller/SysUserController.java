@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.gym.utils.ResultUtils;
 import com.gym.utils.ResultVo;
 import com.gym.web.sys_user.entity.PageParm;
+import com.gym.web.sys_user.entity.SelectType;
 import com.gym.web.sys_user.entity.SysUser;
 import com.gym.web.sys_user.service.SysUserService;
 import com.gym.web.sys_user_role.entity.SysUserRole;
@@ -14,7 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/user")
@@ -100,5 +103,23 @@ public class SysUserController {
         queryWrapper.lambda().eq(SysUserRole::getUserId, userId);
         SysUserRole one = sysUserRoleService.getOne(queryWrapper);
         return ResultUtils.success("查询成功", one);
+    }
+    //查询课程教练
+    @GetMapping("/getTeacher")
+    public ResultVo getTeacher(){
+        QueryWrapper<SysUser> query = new QueryWrapper<>();
+        query.lambda().eq(SysUser::getUserType,"2");
+        List<SysUser> list = sysUserService.list(query);
+        //组装后的select数据
+        List<SelectType> selectTypeList = new ArrayList<>();
+        if(list.size() >0){
+            list.stream().forEach(item ->{
+                SelectType selectType = new SelectType();
+                selectType.setLabel(item.getNickName());
+                selectType.setValue(item.getRoleId());
+                selectTypeList.add(selectType);
+            });
+        }
+        return ResultUtils.success("查询成功",selectTypeList);
     }
 }

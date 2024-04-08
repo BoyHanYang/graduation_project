@@ -18,6 +18,10 @@ mybatis-plus:
     db-config:
       update-strategy: not_empty
 
+web:
+  uploadpath: F:/img/  #图片上传的路径
+  load-path: file:F://img/ #图片访问、加载的路径
+
 logging:
   pattern:
     console: '%d{yyyy-MM-dd} [%thread] %-5level %logger- %msg%n'

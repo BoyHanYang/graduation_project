@@ -24,7 +24,7 @@ public class SysUser implements Serializable {
     private Integer userId;
     // 表明roleId字段不属于sys_user表，需要排除
     @TableField(exist = false)
-    private long roleId;
+    private Integer roleId;
     /**
      * 账户(员工编号)
      */
