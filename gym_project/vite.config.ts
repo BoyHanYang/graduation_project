@@ -18,5 +18,10 @@ export default defineConfig({
         replacement:resolve(__dirname,'src')
       }
     ]
+  },
+  define:{
+    'process.env': {
+      'BASE_API':"http://localhost:8089"
+    }
   }
 })

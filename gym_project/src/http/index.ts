@@ -3,7 +3,7 @@ import {ElMessage} from 'element-plus';
 
 // axios配置
 const config = {
-    baseURL: 'http://localhost:8089',
+    baseURL: process.env.BASE_API,
     timeout: 10000
 }
 
@@ -126,6 +126,14 @@ class Http {
     // delete请求
     delete<T=Result>(url:string):Promise<T>{
         return this.instance.delete(url)
+    }
+    //图片上传
+    upload<T = Result>(url: string, params?: object): Promise<T> {
+        return this.instance.post(url, params, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        })
     }
 }
 // 导出工具类

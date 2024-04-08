@@ -125,6 +125,38 @@ let menuList = reactive([
       },
     ],
   },
+  {
+    path: "/courseRoot",
+    component: "Layout",
+    name: "courseRoot",
+    meta: {
+      title: "课程管理",
+      icon: "Setting",
+      roles: ["sys:courseRoot"],
+    },
+    children: [
+      {
+        path: "/courseList",
+        component: "/course/CourseList",
+        name: "courseList",
+        meta: {
+          title: "课程列表",
+          icon: "UserFilled",
+          roles: ["sys:courseList"],
+        },
+      },
+      {
+        path: "/myCourse",
+        component: "/course/myCourse",
+        name: "myCourse",
+        meta: {
+          title: "我的课程",
+          icon: "Wallet",
+          roles: ["sys:myCourse"],
+        },
+      },
+    ],
+  },
 ]);
 </script>
 
