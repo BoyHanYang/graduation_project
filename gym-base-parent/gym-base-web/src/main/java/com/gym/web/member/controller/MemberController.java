@@ -6,13 +6,20 @@ import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.gym.utils.ResultUtils;
 import com.gym.utils.ResultVo;
+import com.gym.web.member.entity.JoinParm;
 import com.gym.web.member.entity.Member;
 import com.gym.web.member.entity.PageParm;
+import com.gym.web.member.entity.RechargeParm;
 import com.gym.web.member.service.MemberService;
+import com.gym.web.member_card.entity.MemberCard;
+import com.gym.web.member_card.service.MemberCardService;
 import com.gym.web.member_role.entity.MemberRole;
 import com.gym.web.member_role.service.MemberRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.text.ParseException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/member")
@@ -21,7 +28,8 @@ public class MemberController {
     private MemberService memberService;
     @Autowired
     private MemberRoleService memberRoleService;
-
+@Autowired
+private MemberCardService memberCardService;
     //新增
     @PostMapping
     public ResultVo add(@RequestBody Member member){
@@ -84,5 +92,22 @@ public class MemberController {
         query.lambda().eq(MemberRole::getMemberId,memberId);
         MemberRole one = memberRoleService.getOne(query);
         return ResultUtils.success("查询成功",one);
+    }
+    @GetMapping("/getCardList")
+    public ResultVo getCardList(){
+        List<MemberCard> list = memberCardService.list();
+        return ResultUtils.success("查询成功",list);
+    }
+    //办卡提交
+    @PostMapping("/joinApply")
+    public ResultVo joinApply(@RequestBody JoinParm joinParm) throws ParseException {
+        memberService.joinApply(joinParm);
+        return  ResultUtils.success("办卡成功!");
+    }
+    //充值
+    @PostMapping("/recharge")
+    public ResultVo recharge(@RequestBody RechargeParm parm){
+        memberService.recharge(parm);
+        return ResultUtils.success("充值成功!");
     }
 }

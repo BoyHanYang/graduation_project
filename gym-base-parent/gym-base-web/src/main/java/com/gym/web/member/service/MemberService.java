@@ -1,7 +1,11 @@
 package com.gym.web.member.service;
 
+import com.gym.web.member.entity.JoinParm;
 import com.gym.web.member.entity.Member;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.gym.web.member.entity.RechargeParm;
+
+import java.text.ParseException;
 
 /**
 * @author AdminHan
@@ -12,4 +16,8 @@ public interface MemberService extends IService<Member> {
     void addMember(Member member);
     void editMember(Member member);
     void deleteMember(Long memberId);
+    // 办卡
+    void joinApply(JoinParm joinParm) throws ParseException;
+    // 充值
+    void recharge(RechargeParm parm);
 }

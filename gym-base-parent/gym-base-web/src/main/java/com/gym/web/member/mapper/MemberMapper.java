@@ -2,6 +2,8 @@ package com.gym.web.member.mapper;
 
 import com.gym.web.member.entity.Member;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.gym.web.member.entity.RechargeParm;
+import org.apache.ibatis.annotations.Param;
 
 /**
 * @author AdminHan
@@ -10,7 +12,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 * @Entity com.gym.web.member.entity.Member
 */
 public interface MemberMapper extends BaseMapper<Member> {
-
+    int addMoney(@Param("parm") RechargeParm parm);
 }
 
 

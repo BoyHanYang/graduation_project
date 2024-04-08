@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gym.web.member_apply.mapper.MemberApplyMapper">
+
+    <resultMap id="BaseResultMap" type="com.gym.web.member_apply.entity.MemberApply">
+            <id property="applyId" column="apply_id" jdbcType="INTEGER"/>
+            <result property="memberId" column="member_id" jdbcType="INTEGER"/>
+            <result property="cardType" column="card_type" jdbcType="VARCHAR"/>
+            <result property="cardDay" column="card_day" jdbcType="INTEGER"/>
+            <result property="price" column="price" jdbcType="DECIMAL"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="createUser" column="create_user" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        apply_id,member_id,card_type,
+        card_day,price,create_time,
+        create_user
+    </sql>
+</mapper>
