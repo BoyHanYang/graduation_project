@@ -78,47 +78,31 @@
       </el-form>
     </template>
   </SysDialog>
-  <!-- 上级菜单 -->
+<!--  上级菜单-->
   <ParentMenu ref="parentRef" @selectParent="selectParent"></ParentMenu>
 </template>
 
 <script setup lang="ts">
-import ParentMenu from "./ParentMenu.vue";
+import ParentMenu from "@/views/system/menu/ParentMenu.vue";
 import SysDialog from "@/components/SysDialog.vue";
-import useDialog from "@/hooks/useDialog";
-import { MenuType, SelectNode } from "@/api/menu/MenuModel";
-import { nextTick, reactive, ref } from "vue";
-import { ElMessage, FormInstance } from "element-plus";
-import { addApi,editApi } from "@/api/menu";
-import { EditType, Title } from "@/type/BaseEnum";
-import useInstance from "@/hooks/useInstance";
-const { global } = useInstance();
+import useDialog from "@/hooks/useDialog.ts";
+import {MenuType, SelectNode} from "@/api/menu/MenuModel.ts";
+import {reactive, ref} from "vue";
+import { FormInstance} from "element-plus";
 const parentRef = ref<{ showParent: () => void }>();
-const addFormRef = ref<FormInstance>();
-//弹框属性
-const { dialog, onClose, onConfirm, onShow } = useDialog();
-//弹框显示
-const show = (type: string, row?: MenuType) => {
-  dialog.width = 680;
-  type == EditType.ADD
-      ? (dialog.title = Title.ADD)
-      : (dialog.title = Title.EDIT);
-  if (type == EditType.EDIT) {
-    //把要编辑的数据设置到表单绑定的对象里面
-    nextTick(() => {
-      global.$objCoppy(row, addModel);
-    });
-  }
-  onShow();
-  //清空表单
-  addFormRef.value?.resetFields();
-  addModel.editType = type;
-};
-//暴露出去，给父组件调用
+const addFormRef = ref<FormInstance>()
+// 弹框属性
+const {dialog, onClose, onConfirm, onShow} = useDialog();
+// 显示
+const show = () => {
+  dialog.width = "680"
+  onShow()
+  addFormRef.value?.resetFields()
+}
 defineExpose({
-  show,
-});
-//表单绑定的数据
+  show
+})
+// 表单绑定的数据类型
 const addModel = reactive<MenuType>({
   editType: "",
   menuId: "",
@@ -134,9 +118,8 @@ const addModel = reactive<MenuType>({
   orderNum: "",
   open: true,
 });
-//表单验证规则
 const rules = reactive({
-  parentName: [
+  parentId: [
     {
       required: true,
       trigger: "change",
@@ -185,25 +168,12 @@ const rules = reactive({
       message: "请选择菜单类型",
     },
   ],
-});
-//注册事件
-const emits = defineEmits(["refresh"]);
+})
 //表单提交
 const commit = () => {
-  addFormRef.value?.validate(async (valid) => {
+  addFormRef.value?.validate((valid) => {
     if (valid) {
-      let res = null;
-      if (addModel.editType == EditType.ADD) {
-        res = await addApi(addModel);
-      }else{
-        res = await editApi(addModel)
-      }
-      if (res && res.code == 200) {
-        ElMessage.success(res.msg);
-        //刷新表格
-        emits("refresh");
-        onClose();
-      }
+      onClose()
     }
   });
 };
@@ -211,11 +181,13 @@ const commit = () => {
 const selectOpen = () => {
   parentRef.value?.showParent();
 };
-//选择回调
+// 选择回调
 const selectParent = (node: SelectNode) => {
-  addModel.parentId = node.parentId;
-  addModel.parentName = node.parentName;
-};
+  addModel.parentId = node.parentId
+  addModel.parentName = node.parentName
+}
 </script>
 
-<style scoped></style>
+<style scoped>
+
+</style>

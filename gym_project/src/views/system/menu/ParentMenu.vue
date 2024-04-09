@@ -12,10 +12,12 @@
           ref="parentTree"
           :data="treeData.list"
           node-key="menuId"
-          default-expand-all
           :props="defaultProps"
-          :highlight-current="true"
+          empty-text="暂无数据"
+          default-expand-all
+          :show-checkbox="false"
           :expand-on-click-node="false"
+          :highlight-current="true"
           @node-click="handleNodeClick"
       >
         <template #default="{ node, data }">
@@ -54,60 +56,63 @@
 <script setup lang="ts">
 import {DocumentRemove,Plus,Minus} from '@element-plus/icons-vue'
 import SysDialog from "@/components/SysDialog.vue";
-import useDialog from "@/hooks/useDialog";
-import { getParentApi } from "@/api/menu";
-import { reactive,ref } from "vue";
-import { MenuType, SelectNode } from "@/api/menu/MenuModel";
-import { ElMessage,ElTree } from "element-plus";
+import useDialog from "@/hooks/useDialog.ts";
+import {getParentApi} from "@/api/menu";
+import {ref,reactive} from "vue";
+import {MenuType} from "@/api/menu/MenuModel.ts";
+import {SelectNode} from "@/api/menu/MenuModel.ts";
+import {ElTree} from "element-plus";
 //树的ref属性
 const parentTree = ref<InstanceType<typeof ElTree>>();
+// 弹框属性
+const {dialog,onShow,onClose,onConfirm} = useDialog();
+//显示弹框
+const showParent = async () => {
+  //查询数据
+  await getParent();
+  dialog.height = 450;
+  dialog.width = 300;
+  dialog.title = "选择上级菜单";
+  onShow();
+};
 //树属性配置
 const defaultProps = {
-  children: "children",
-  label: "title",
-};
-//上级树数据
+  children: 'children',
+  label: 'title',
+}
+//树的数据
 const treeData = reactive({
   list: [],
 });
-//选中数据
-const selectNode = reactive<SelectNode>({
-  parentId: "",
-  parentName: "",
-});
-//弹框属性
-const { dialog, onClose, onShow } = useDialog();
-//显示弹框
-const showParent = async () => {
-  //查询树数据
-  await getParent();
-  dialog.width = 300;
-  dialog.height = 450;
-  onShow();
-};
+//暴露出去，给父组件调用
 defineExpose({
   showParent,
 });
-//查询上级菜单数据
+//树选择的数据
+const selectNode = reactive<SelectNode>({
+  parentId:'',
+  parentName:''
+})
+//获取树数据
 const getParent = async () => {
   let res = await getParentApi();
   if (res && res.code == 200) {
     treeData.list = res.data;
   }
 };
-//树点击事件
-const handleNodeClick = (node: MenuType) => {
-  console.log(node);
+//树节点点击事件
+const handleNodeClick = (node:MenuType)=>{
+  console.log(node)
   selectNode.parentId = node.menuId;
-  selectNode.parentName = node.title;
-};
+  selectNode.parentName = node.title
+}
 //注册事件
-const emits = defineEmits(["selectParent"]);
-//弹框确定
-const confirm = () => {
-  emits("selectParent", selectNode);
+const emits = defineEmits(['selectParent'])
+//选择树提交
+const confirm = ()=>{
+  emits('selectParent',selectNode)
   onClose()
-};
+}
 //加号和减号的点击事件
 const openBtn = (data: MenuType) => {
   console.log(data);
