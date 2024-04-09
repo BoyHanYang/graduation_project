@@ -1,4 +1,4 @@
-package com.gym.web.sys_menu;
+package com.gym.web.sys_menu.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.gym.utils.ResultUtils;
