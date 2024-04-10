@@ -84,6 +84,8 @@ public class SysMenu implements Serializable {
      */
     private Date updateTime;
     @TableField(exist = false)
+    private Boolean open;
+    @TableField(exist = false)
     private List<SysMenu> children = new ArrayList<>();
 
     @TableField(exist = false)
