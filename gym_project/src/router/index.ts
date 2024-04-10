@@ -155,7 +155,39 @@ const routes: Array<RouteRecordRaw> = [
                 },
             }
         ],
-    }
+    },
+    {
+        path: "/goodsRoot",
+        component: Layout,
+        name: "goodsRoot",
+        meta: {
+            title: "商品管理",
+            icon: "Setting",
+            roles: ["sys:goodsRoot"],
+        },
+        children: [
+            {
+                path: "/goodsList",
+                component: () => import('@/views/goods/GoodsList.vue'),
+                name: "goodsList",
+                meta: {
+                    title: "商品列表",
+                    icon: "UserFilled",
+                    roles: ["sys:goodsList"],
+                },
+            },
+            {
+                path: "/orderList",
+                component: () => import('@/views/order/orderList.vue'),
+                name: "orderList",
+                meta: {
+                    title: "订单管理",
+                    icon: "Wallet",
+                    roles: ["sys:orderList"],
+                },
+            }
+        ],
+    },
 ]
 
 const router = createRouter({

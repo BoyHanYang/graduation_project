@@ -179,6 +179,38 @@ let menuList = reactive([
       }
     ],
   },
+  {
+    path: "/goodsRoot",
+    component: "Layout",
+    name: "goodsRoot",
+    meta: {
+      title: "商品管理",
+      icon: "Setting",
+      roles: ["sys:goodsRoot"],
+    },
+    children: [
+      {
+        path: "/goodsList",
+        component: "/goods/GoodsList",
+        name: "goodsList",
+        meta: {
+          title: "商品列表",
+          icon: "UserFilled",
+          roles: ["sys:GoodsList"],
+        },
+      },
+      {
+        path: "/orderList",
+        component: "/order/orderList",
+        name: "orderList",
+        meta: {
+          title: "订单管理",
+          icon: "Wallet",
+          roles: ["sys:orderList"],
+        },
+      },
+    ],
+  },
 ]);
 </script>
 
