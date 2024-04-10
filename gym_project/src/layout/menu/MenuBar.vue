@@ -211,6 +211,28 @@ let menuList = reactive([
       },
     ],
   },
+  {
+    path: "/lostRoot",
+    component: "Layout",
+    name: "lostRoot",
+    meta: {
+      title: "失物招领",
+      icon: "Setting",
+      roles: ["sys:lostRoot"],
+    },
+    children: [
+      {
+        path: "/lostList",
+        component: "/lost/LostList",
+        name: "lostList",
+        meta: {
+          title: "失物列表",
+          icon: "UserFilled",
+          roles: ["sys:lostList"],
+        },
+      },
+    ],
+  },
 ]);
 </script>
 
