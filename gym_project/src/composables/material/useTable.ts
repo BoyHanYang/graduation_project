@@ -62,6 +62,8 @@ export default function useTable() {
         sizeChange,
         currentChange,
         tableHeight,
+        reFresh,
+        getList,
         reFresh
     }
 }

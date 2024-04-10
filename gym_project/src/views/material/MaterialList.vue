@@ -58,9 +58,9 @@ import { Plus, Edit, Delete, Search, Close } from "@element-plus/icons-vue";
 import useTable from "@/composables/material/useTable";
 import useMaterial from "@/composables/material/useMaterial";
 //表格
-const { listParm ,searchBtn,resetBtn,tableData,sizeChange,currentChange,tableHeight,reFresh} = useTable();
+const { listParm ,searchBtn,getList, resetBtn,tableData,sizeChange,currentChange,tableHeight,reFresh} = useTable();
 //新增、编辑
-const {addBtn,editBtn,deleteBtn,addRef} = useMaterial()
+const {addBtn,editBtn,deleteBtn,addRef} = useMaterial(getList)
 </script>
 
 <style scoped></style>
