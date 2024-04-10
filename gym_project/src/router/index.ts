@@ -210,6 +210,28 @@ const routes: Array<RouteRecordRaw> = [
             },
         ],
     },
+    {
+        path: "/suggestRoot",
+        component: Layout,
+        name: "suggestRoot",
+        meta: {
+            title: "反馈管理",
+            icon: "Setting",
+            roles: ["sys:suggestRoot"],
+        },
+        children: [
+            {
+                path: "/suggestList",
+                component: () => import('@/views/suggest/SuggestList.vue'),
+                name: "suggestList",
+                meta: {
+                    title: "反馈列表",
+                    icon: "UserFilled",
+                    roles: ["sys:suggestList"],
+                },
+            },
+        ],
+    }
 ]
 
 const router = createRouter({
