@@ -89,7 +89,7 @@ let menuList = reactive([
     name: "memberRoot",
     meta: {
       title: "会员管理",
-      icon: "Setting",
+      icon: "User",
       roles: ["sys:memberRoot"],
     },
     children: [
@@ -131,7 +131,7 @@ let menuList = reactive([
     name: "courseRoot",
     meta: {
       title: "课程管理",
-      icon: "Setting",
+      icon: "EditPen",
       roles: ["sys:courseRoot"],
     },
     children: [
@@ -141,7 +141,7 @@ let menuList = reactive([
         name: "courseList",
         meta: {
           title: "课程列表",
-          icon: "UserFilled",
+          icon: "DocumentChecked",
           roles: ["sys:courseList"],
         },
       },
@@ -163,7 +163,7 @@ let menuList = reactive([
     name: "materialRoot",
     meta: {
       title: "器材管理",
-      icon: "Setting",
+      icon: "Soccer",
       roles: ["sys:materialRoot"],
     },
     children: [
@@ -173,7 +173,7 @@ let menuList = reactive([
         name: "courseList",
         meta: {
           title: "器材列表",
-          icon: "UserFilled",
+          icon: "DocumentChecked",
           roles: ["sys:materialList"],
         },
       }
@@ -185,7 +185,7 @@ let menuList = reactive([
     name: "goodsRoot",
     meta: {
       title: "商品管理",
-      icon: "Setting",
+      icon: "Present",
       roles: ["sys:goodsRoot"],
     },
     children: [
@@ -195,7 +195,7 @@ let menuList = reactive([
         name: "goodsList",
         meta: {
           title: "商品列表",
-          icon: "UserFilled",
+          icon: "Wallet",
           roles: ["sys:GoodsList"],
         },
       },
@@ -205,7 +205,7 @@ let menuList = reactive([
         name: "orderList",
         meta: {
           title: "订单管理",
-          icon: "Wallet",
+          icon: "DocumentChecked",
           roles: ["sys:orderList"],
         },
       },
@@ -217,7 +217,7 @@ let menuList = reactive([
     name: "lostRoot",
     meta: {
       title: "失物招领",
-      icon: "Setting",
+      icon: "Box",
       roles: ["sys:lostRoot"],
     },
     children: [
@@ -227,7 +227,7 @@ let menuList = reactive([
         name: "lostList",
         meta: {
           title: "失物列表",
-          icon: "UserFilled",
+          icon: "Files",
           roles: ["sys:lostList"],
         },
       },
@@ -239,7 +239,7 @@ let menuList = reactive([
     name: "suggestRoot",
     meta: {
       title: "反馈管理",
-      icon: "Setting",
+      icon: "Bell",
       roles: ["sys:suggestRoot"],
     },
     children: [
@@ -249,7 +249,7 @@ let menuList = reactive([
         name: "suggestList",
         meta: {
           title: "反馈列表",
-          icon: "UserFilled",
+          icon: "Comment",
           roles: ["sys:suggestList"],
         },
       },
