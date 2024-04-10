@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gym.web.lost.mapper.LostMapper">
+
+    <resultMap id="BaseResultMap" type="com.gym.web.lost.entity.Lost">
+            <id property="lostId" column="lost_id" jdbcType="INTEGER"/>
+            <result property="lostName" column="lost_name" jdbcType="VARCHAR"/>
+            <result property="foundTime" column="found_time" jdbcType="VARCHAR"/>
+            <result property="foundAddres" column="found_addres" jdbcType="VARCHAR"/>
+            <result property="foundPerson" column="found_person" jdbcType="VARCHAR"/>
+            <result property="foundPhone" column="found_phone" jdbcType="VARCHAR"/>
+            <result property="status" column="status" jdbcType="VARCHAR"/>
+            <result property="lostPerson" column="lost_person" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        lost_id,lost_name,found_time,
+        found_addres,found_person,found_phone,
+        status,lost_person
+    </sql>
+</mapper>
