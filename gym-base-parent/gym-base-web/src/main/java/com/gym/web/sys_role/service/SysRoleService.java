@@ -2,7 +2,9 @@ package com.gym.web.sys_role.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.gym.web.sys_role.entity.RoleAssignParm;
 import com.gym.web.sys_role.entity.RoleParm;
+import com.gym.web.sys_role.entity.RolePermissionVo;
 import com.gym.web.sys_role.entity.SysRole;
 
 /**
@@ -12,4 +14,6 @@ import com.gym.web.sys_role.entity.SysRole;
 
 public interface SysRoleService extends IService<SysRole> {
     IPage<SysRole> getList(RoleParm parm);
+    // 查询权限树回显
+    RolePermissionVo getMenuTree(RoleAssignParm parm);
 }

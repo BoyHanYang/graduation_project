@@ -3,9 +3,7 @@ package com.gym.web.sys_role.controller;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.gym.utils.ResultUtils;
 import com.gym.utils.ResultVo;
-import com.gym.web.sys_role.entity.RoleParm;
-import com.gym.web.sys_role.entity.SelectType;
-import com.gym.web.sys_role.entity.SysRole;
+import com.gym.web.sys_role.entity.*;
 import com.gym.web.sys_role.service.SysRoleService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,5 +85,11 @@ public class SysRoleController {
             });
         }
         return ResultUtils.success("查询成功",selectTypeList);
+    }
+    //分配权限树数据回显查询
+    @GetMapping("/getMenuTree")
+    public ResultVo getMenuTree(RoleAssignParm parm){
+        RolePermissionVo tree = sysRoleService.getMenuTree(parm);
+        return ResultUtils.success("查询成功",tree);
     }
 }
