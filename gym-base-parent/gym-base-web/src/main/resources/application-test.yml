@@ -22,6 +22,15 @@ web:
   uploadpath: F:/img/  #图片上传的路径
   load-path: file:F://img/ #图片访问、加载的路径
 
+#jwt配置
+jwt:
+  #颁发者
+  issuer: gym
+  #秘钥
+  secret: com.gym
+  #30分钟过期
+  expiration: 30
+
 logging:
   pattern:
     console: '%d{yyyy-MM-dd} [%thread] %-5level %logger- %msg%n'
