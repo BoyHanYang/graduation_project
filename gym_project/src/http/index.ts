@@ -3,8 +3,10 @@ import {ElMessage} from 'element-plus';
 
 // axios配置
 const config = {
+    //接口请求的地址，上线时修改为域名
     baseURL: process.env.BASE_API,
-    timeout: 10000
+    timeout: 10000,
+    withCredentials: true //解决sesson不一致的问题
 }
 
 // 定义返回值类型

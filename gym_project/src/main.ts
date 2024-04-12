@@ -5,6 +5,7 @@ import App from './App.vue'
 import router from './router/index'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
+import piniaPersist from 'pinia-plugin-persist'
 // 信息确认框
 import myconfirm from "@/utils/myconfirm.ts";
 import objCoppy from "@/utils/objCoppy.ts";
@@ -12,6 +13,7 @@ import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 const app = createApp(App);
 const pinia = createPinia()
+pinia.use(piniaPersist)
 app.use(router).use(ElementPlus, {
     locale: zhCn,
 }).use(pinia)

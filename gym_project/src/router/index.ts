@@ -3,6 +3,11 @@ import Layout from '@/layout/Index.vue'
 
 const routes: Array<RouteRecordRaw> = [
     {
+        path: "/login",
+        component: () => import('@/views/login/login.vue'),
+        name: "login",
+    },
+    {
         path: '/',
         component: Layout,
         redirect: '/dashboard',

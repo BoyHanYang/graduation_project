@@ -95,6 +95,7 @@ const clickBtn = (tab: any) => {
   console.log(props);
   router.push({path: props.name});
 };
+/*
 // 解决数据刷新丢失的问题
 const beforeRefresh = () => {
   window.addEventListener("beforeunload", () => {
@@ -108,8 +109,10 @@ const beforeRefresh = () => {
     }
   }
 };
+*/
+
 onMounted(() => {
-  beforeRefresh()
+  // beforeRefresh()
   setActiveTab()
   addTab();
 })

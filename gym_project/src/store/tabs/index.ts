@@ -23,5 +23,11 @@ export const tabStore = defineStore('tabStore', {
             if (this.tabList.some(item =>item.path === tab.path))return;
             this.tabList.push(tab)
         }
+    },
+    persist: {
+        enabled: true,
+        strategies: [
+            { storage: localStorage, paths: ['tabList'] },
+        ],
     }
 })
