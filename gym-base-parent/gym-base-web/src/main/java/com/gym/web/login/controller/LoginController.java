@@ -1,14 +1,20 @@
 package com.gym.web.login.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.google.code.kaptcha.impl.DefaultKaptcha;
 import com.gym.jwt.JwtUtils;
 import com.gym.utils.ResultUtils;
 import com.gym.utils.ResultVo;
+import com.gym.web.login.entity.InfoParm;
 import com.gym.web.login.entity.LoginParm;
 import com.gym.web.login.entity.LoginResult;
+import com.gym.web.login.entity.UserInfo;
 import com.gym.web.member.entity.Member;
 import com.gym.web.member.service.MemberService;
+import com.gym.web.sys_menu.entity.SysMenu;
+import com.gym.web.sys_menu.service.SysMenuService;
+import com.gym.web.sys_menu.service.impl.SysMenuServiceImpl;
 import com.gym.web.sys_user.entity.SysUser;
 import com.gym.web.sys_user.service.SysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,9 +27,8 @@ import javax.servlet.http.HttpSession;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.Base64;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @Author yangbohan
@@ -41,6 +46,8 @@ public class LoginController {
     private MemberService memberService;
     @Autowired
     private SysUserService sysUserService;
+    @Autowired
+    private SysMenuService sysMenuService;
 
     @PostMapping("/image")
     public ResultVo imageCode(HttpServletRequest request) throws IOException {
@@ -93,12 +100,12 @@ public class LoginController {
             queryWrapper.lambda().eq(Member::getUsername, loginParm.getUsername())
                     .eq(Member::getPassword, password);
             Member one = memberService.getOne(queryWrapper);
-            if (one==null){
+            if (one == null) {
                 return ResultUtils.error("用户名或密码错误");
             }
             // 生成token
-            Map<String , String> map = new HashMap<>();
-            map.put("userId",Long.toString(one.getMemberId()));
+            Map<String, String> map = new HashMap<>();
+            map.put("userId", Long.toString(one.getMemberId()));
             map.put("username", one.getUsername());
             String token = jwtUtils.generateToken(map);
             LoginResult loginResult = new LoginResult();
@@ -112,12 +119,12 @@ public class LoginController {
             queryWrapper.lambda().eq(SysUser::getUsername, loginParm.getUsername())
                     .eq(SysUser::getPassword, password);
             SysUser one = sysUserService.getOne(queryWrapper);
-            if (one==null){
+            if (one == null) {
                 return ResultUtils.error("用户名或密码错误");
             }
             // 生成token
-            Map<String , String> map = new HashMap<>();
-            map.put("userId",Long.toString(one.getUserId()));
+            Map<String, String> map = new HashMap<>();
+            map.put("userId", Long.toString(one.getUserId()));
             map.put("username", one.getUsername());
             String token = jwtUtils.generateToken(map);
             LoginResult loginResult = new LoginResult();
@@ -130,4 +137,52 @@ public class LoginController {
             return ResultUtils.error("用户类型错误");
         }
     }
+
+    // 查询用户信息
+    @GetMapping("/getInfo")
+    public ResultVo getInfo(InfoParm parm) {
+        UserInfo userInfo = new UserInfo();
+        if (parm.getUserType().equals("1")) {// 会员
+            List<SysMenu> menuList = sysMenuService.getMenuByMemberId(parm.getUserId());
+            List<String> collect = Optional.ofNullable(menuList).orElse(new ArrayList<>())
+                    .stream()
+                    .map(item -> item.getCode()).filter(item -> item != null)
+                    .collect(Collectors.toList());
+            //转为数组
+            String[] strings = collect.toArray(new String[collect.size()]);
+            //查询用户信息
+            Member member = memberService.getById(parm.getUserId());
+            //设置返回信息
+            userInfo.setName(member.getName());
+            userInfo.setUserId(member.getMemberId());
+            userInfo.setPermissions(strings);
+            return ResultUtils.success("查询成功",userInfo);
+        }else if(parm.getUserType().equals("2")){ //员工
+            //查询用户信息
+            SysUser user = sysUserService.getById(parm.getUserId());
+            List<SysMenu> menuList = null;
+            if(StringUtils.isNotEmpty(user.getIsAdmin()) && user.getIsAdmin().equals("1")){ //超级管理员
+                menuList = sysMenuService.list();
+            }else{
+                menuList = sysMenuService.getMenuByUserId(user.getUserId());
+            }
+            //获取全部的code字段
+            List<String> collect = Optional.ofNullable(menuList).orElse(new ArrayList<>())
+                    .stream()
+                    .map(item -> item.getCode())
+                    .filter(item -> item != null)
+                    .collect(Collectors.toList());
+            //转为数组
+            String[] strings = collect.toArray(new String[collect.size()]);
+
+            //设置返回信息
+            userInfo.setName(user.getNickName());
+            userInfo.setUserId(user.getUserId());
+            userInfo.setPermissions(strings);
+            return ResultUtils.success("查询成功",userInfo);
+        } else {
+            return ResultUtils.error("用户类型错误");
+        }
+    }
 }
+
