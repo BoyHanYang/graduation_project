@@ -50,18 +50,18 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
 
     @Override
     public RolePermissionVo getMenuTree(RoleAssignParm parm) {
-        // 查询用户信息
+        //查询用户信息
         SysUser user = sysUserService.getById(parm.getUserId());
         List<SysMenu> list = null;
-        // 如果是超管，则查询所有菜单
-        if (StringUtils.isNotEmpty(user.getIsAdmin())&&user.getIsAdmin().equals("1")){
+        //如果是超级管理员，直接查询所有的菜单
+        if(StringUtils.isNotEmpty(user.getIsAdmin()) && user.getIsAdmin().equals("1")){
             list = sysMenuService.list();
-        } else {
+        }else{
             list = sysMenuService.getMenuByUserId(user.getUserId());
         }
-        // 组装树形数据
+        //组装树形数据
         List<SysMenu> menuList = MakeMenuTree.makeTree(list, 0);
-        // 查询角色原来的数据
+        //查询角色原来的数据
         List<SysMenu> roleList = sysMenuService.getMenuByRoleId(parm.getRoleId());
         List<Integer> ids = new ArrayList<>();
         Optional.ofNullable(roleList).orElse(new ArrayList<>())

@@ -6,6 +6,7 @@ import com.gym.utils.ResultVo;
 import com.gym.web.sys_role.entity.*;
 import com.gym.web.sys_role.service.SysRoleService;
 
+import com.gym.web.sys_role_menu.service.SysRoleMenuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +23,8 @@ import java.util.List;
 public class SysRoleController {
     @Autowired
     private SysRoleService sysRoleService;
+    @Autowired
+    private SysRoleMenuService sysRoleMenuService;
     // 新增
     @PostMapping
     public ResultVo add(@RequestBody SysRole sysRole){
@@ -91,5 +94,11 @@ public class SysRoleController {
     public ResultVo getMenuTree(RoleAssignParm parm){
         RolePermissionVo tree = sysRoleService.getMenuTree(parm);
         return ResultUtils.success("查询成功",tree);
+    }
+    //分配权限保存
+    @PostMapping("/saveRoleMenu")
+    public ResultVo saveRoleMenu(@RequestBody SaveMenuParm parm){
+        sysRoleMenuService.saveMenu(parm);
+        return ResultUtils.success("分配成功");
     }
 }
