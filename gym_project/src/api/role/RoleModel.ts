@@ -12,3 +12,11 @@ export type ListParm = {
     pageSize:number,
     total:number
 }
+export type AssignParm = {
+    roleId:string,
+    userId:string
+}
+export type SaveAssignParm = {
+    roleId:string,
+    list:Array<string>
+}

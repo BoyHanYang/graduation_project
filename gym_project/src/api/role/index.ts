@@ -1,5 +1,5 @@
 import http from "@/http";
-import { AddRoleModel, ListParm } from "./RoleModel";
+import { AddRoleModel, ListParm ,AssignParm,SaveAssignParm} from "./RoleModel";
 //新增
 export const addApi = (parm: AddRoleModel) => {
     return http.post("/api/role", parm)
@@ -15,4 +15,12 @@ export const deleteApi = (roleId:string)=>{
 //查询列表
 export const getListApi = (parm: ListParm) => {
     return http.get("/api/role/list", parm)
+}
+//查询权限树数据
+export const getMenuTreeApi =(parm:AssignParm)=>{
+    return http.get('/api/role/getMenuTree',parm)
+}
+//保存权限
+export const saveRoleMenuApi =(parm:SaveAssignParm)=>{
+    return http.post('/api/role/saveRoleMenu',parm)
 }

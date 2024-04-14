@@ -1,11 +1,10 @@
-import {ref} from "vue";
-import {AddRoleModel} from "@/api/role/RoleModel.ts";
-import {EditType} from "@/type/BaseEnum.ts";
-import {deleteApi} from "@/api/role";
-import {FuncList} from "@/type/BaseType.ts";
-import useInstance from "@/hooks/useInstance.ts";
-import { ElMessage } from 'element-plus'
-
+import { AddRoleModel } from "@/api/role/RoleModel"
+import { EditType } from "@/type/BaseEnum"
+import { ref } from "vue"
+import { deleteApi } from "@/api/role"
+import { ElMessage } from "element-plus"
+import { FuncList } from "@/type/BaseType"
+import useInstance from "@/hooks/useInstance"
 export default function useRole(getList: FuncList) {
     const { global } = useInstance()
     //分配权限ref属性
@@ -22,14 +21,14 @@ export default function useRole(getList: FuncList) {
     }
     //删除
     const deleteBtn = async (row: AddRoleModel) => {
-        let cofirm = await global.$myconfirm('确定删除该数据吗?')
+        const cofirm = await global.$myconfirm('确定删除该数据吗?')
         if (cofirm) {
             let res = await deleteApi(row.roleId)
             if (res && res.code == 200) {
                 //信息提示
-                ElMessage.success(res.msg);
+                ElMessage.success(res.msg)
                 //刷新列表
-                getList();
+                getList()
             }
         }
     }
