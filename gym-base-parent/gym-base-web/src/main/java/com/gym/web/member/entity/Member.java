@@ -4,15 +4,16 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
+
 import lombok.Data;
 
 /**
- * 
  * @TableName member
  */
-@TableName(value ="member")
+@TableName(value = "member")
 @Data
 public class Member implements Serializable {
     /**
@@ -20,8 +21,8 @@ public class Member implements Serializable {
      */
     @TableId(type = IdType.AUTO)
     private Integer memberId;
-@TableField(exist = false)
-private Integer roleId;
+    @TableField(exist = false)
+    private Integer roleId;
     /**
      * 姓名
      */
