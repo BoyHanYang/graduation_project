@@ -5,3 +5,7 @@ export type LoginParm = {
     code:string
     userType:string
 }
+export type InfoParm = {
+    userId:string,
+    userType:string
+}

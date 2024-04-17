@@ -1,21 +1,19 @@
-import { getMenuTreeApi } from "@/api/role"
-import { AssignParm } from "@/api/role/RoleModel"
-import { reactive } from "vue"
+import { getMenuTreeApi } from "@/api/role";
+import { AssignParm } from "@/api/role/RoleModel";
+import { reactive } from "vue";
 export default function useAssign() {
-    //定义树的属性
-    const defaultProps = {
+    //树的属性配置
+    const defaultProps = reactive({
         children: 'children',
         label: 'title',
-    }
+    })
     //权限树数据
     const assignTreeData = reactive({
         list: [],
         assignTreeChecked: [] //原来分配的权限id的集合
     })
-    //获取树的数据
+    //获取权限树数据
     const getMenuTree = async (parm: AssignParm) => {
-        assignTreeData.list = [];
-        assignTreeData.assignTreeChecked = []
         let res = await getMenuTreeApi(parm)
         if (res && res.code == 200) {
             //设置权限树数据
@@ -46,9 +44,9 @@ export default function useAssign() {
             }
         })
     }
-    return {
+    return{
         defaultProps,
-        getMenuTree,
-        assignTreeData
+        assignTreeData,
+        getMenuTree
     }
 }
