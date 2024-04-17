@@ -1,6 +1,29 @@
 import {createRouter, createWebHistory, RouteRecordRaw} from 'vue-router'
 import Layout from '@/layout/Index.vue'
-
+// 路由默认的数据
+export const constantRoutes: Array<RouteRecordRaw> = [
+    {
+        path: "/login",
+        component: () => import('@/views/login/login.vue'),
+        name: "login"
+    },
+    {
+        path: '/',
+        component: Layout,
+        redirect: '/dashboard',
+        children: [
+            {
+                path: '/dashboard',
+                component: () => import('@/layout/dashboard/Index.vue'),
+                name: 'dashboard',
+                meta: {
+                    title: '首页',
+                    icon: '#icondashboard'
+                }
+            }
+        ]
+    }
+]
 const routes: Array<RouteRecordRaw> = [
     {
         path: "/login",
@@ -238,10 +261,9 @@ const routes: Array<RouteRecordRaw> = [
         ],
     }
 ]
-
 const router = createRouter({
     history: createWebHistory(),
-    routes
+    routes:constantRoutes
 })
 
 export default router

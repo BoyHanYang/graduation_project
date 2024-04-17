@@ -8,3 +8,7 @@ export const getImageApi = ()=>{
 export const loginApi = (parm:LoginParm)=>{
     return http.post("/api/login/login",parm)
 }
+// 获取菜单数据
+export const getMenuListApi =()=>{
+    return http.get("/api/menu/getMenuList")
+}

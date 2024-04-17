@@ -2,14 +2,27 @@ import { defineStore } from "pinia";
 import { getMenuListApi } from '@/api/login/index.ts'
 import { RouteRecordRaw } from "vue-router";
 import Layout from '@/layout/Index.vue'
-import Center from '@/layout/center/center.vue'
 import {InfoParm} from "@/api/login/LoginModel.ts";
+import Center from "@/layout/center/center.vue";
+// 获取vies的所有页面
 const modules = import.meta.glob('../../views/**/*.vue')
 // 定义store
 export const menuStore = defineStore('menuStore',{
     state:()=>{
         return {
-            menuList: []
+            menuList: [
+                {
+                    path: "/dashboard",
+                    component: "Layout",
+                    name: "dashboard",
+                    meta: {
+                        title: "首页",
+                        icon: "HomeFilled",
+                        roles: ["sys:dashboard"],
+                    },
+                    children: []
+                } as any
+            ]
         }
     },
     getters:{
@@ -38,6 +51,7 @@ export const menuStore = defineStore('menuStore',{
                                 children: []
                             }
                         ] as any
+                        accessRoute = generateRoutes(res.data, router)
                         this.menuList = this.menuList.concat(accessRoute)
                     }
                     resolve(this.menuList)
@@ -54,6 +68,7 @@ export const menuStore = defineStore('menuStore',{
         ],
     }*/
 })
+// 动态生成路由
 export function generateRoutes(routes: RouteRecordRaw[], router: any) {
     //定义接收生成的菜单
     const res: Array<RouteRecordRaw> = [];
@@ -71,7 +86,7 @@ export function generateRoutes(routes: RouteRecordRaw[], router: any) {
         //如果存在下级
         if (tmp.children && tmp.children.length > 0) {
             if (route.component != 'Layout') {
-                tmp.component = center;
+                tmp.component = Center;
             }
             //递归调用
             tmp.children = generateRoutes(tmp.children, router)
