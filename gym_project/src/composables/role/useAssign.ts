@@ -14,6 +14,8 @@ export default function useAssign() {
     })
     //获取权限树数据
     const getMenuTree = async (parm: AssignParm) => {
+        assignTreeData.list = []
+        assignTreeData.assignTreeChecked = []
         let res = await getMenuTreeApi(parm)
         if (res && res.code == 200) {
             //设置权限树数据

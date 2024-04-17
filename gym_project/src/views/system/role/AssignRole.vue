@@ -5,7 +5,7 @@
       :height="dialog.height"
       :visible="dialog.visible"
       @onClose="onClose"
-      @onConfirm="onConfirm"
+      @onConfirm="commit"
   >
     <template v-slot:content>
       <el-tree
@@ -28,13 +28,25 @@ import SysDialog from "@/components/SysDialog.vue";
 import useDialog from "@/hooks/useDialog";
 import useAssign from "@/composables/role/useAssign";
 import { userStore } from "@/store/user";
+import {reactive, ref} from "vue";
+import {ElMessage, ElTree} from "element-plus";
+import {saveRoleMenuApi} from "@/api/role";
+import {SaveAssignParm} from "@/api/role/RoleModel.ts";
+// 树的ref属性
+const assignTree = ref<InstanceType<typeof ElTree>>();
 const store = userStore();
 //获取权限树
 const { defaultProps, assignTreeData, getMenuTree } = useAssign();
 //弹框属性
 const { dialog, onClose, onConfirm, onShow } = useDialog();
+// 提交参数
+const saveParm = reactive<SaveAssignParm>({
+  roleId: "",
+  list:[],
+})
 //显示弹框
 const show = (roleId: string, name: string) => {
+  saveParm.roleId = roleId;
   let parm = {
     roleId: roleId,
     userId: store.getUserId,
@@ -49,6 +61,25 @@ const show = (roleId: string, name: string) => {
 defineExpose({
   show,
 });
+// 提交保存
+const commit = async() => {
+  // 获取选中的权限
+  console.log(assignTree.value)
+  let checkIds = assignTree.value?.getCheckedKeys() as string[];
+  let hlfIds = assignTree.value?.getHalfCheckedKeys() as string[];
+  let list = checkIds?.concat(hlfIds)
+  if (list.length ==0){
+    ElMessage.warning("请选择权限");
+    return;
+  }
+  saveParm.list = list;
+  // 提交保存
+  let res = await saveRoleMenuApi(saveParm);
+  if (res.code == 200) {
+    ElMessage.success(res.msg);
+    onClose();
+  }
+};
 </script>
 
 <style scoped></style>
