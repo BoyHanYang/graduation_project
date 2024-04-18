@@ -33,6 +33,7 @@ import Tabs from "@/layout/tabs/Tabs.vue";
   .header {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     background-color: #009688;
   }
 
