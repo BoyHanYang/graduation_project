@@ -90,6 +90,10 @@ public class LoginController {
         HttpSession session = request.getSession();
         // 获取session中的验证码
         String code = (String) session.getAttribute("code");
+        // 判断验证码是否过期
+        if (StringUtils.isEmpty(loginParm.getCode()) && StringUtils.isEmpty(code)) {
+            return ResultUtils.error("验证码过期");
+        }
         if (!code.equals(loginParm.getCode())) {
             return ResultUtils.error("验证码错误！");
         }
@@ -161,14 +165,14 @@ public class LoginController {
             userInfo.setName(member.getName());
             userInfo.setUserId(member.getMemberId());
             userInfo.setPermissions(strings);
-            return ResultUtils.success("查询成功",userInfo);
-        }else if(parm.getUserType().equals("2")){ //员工
+            return ResultUtils.success("查询成功", userInfo);
+        } else if (parm.getUserType().equals("2")) { //员工
             //查询用户信息
             SysUser user = sysUserService.getById(parm.getUserId());
             List<SysMenu> menuList = null;
-            if(StringUtils.isNotEmpty(user.getIsAdmin()) && user.getIsAdmin().equals("1")){ //超级管理员
+            if (StringUtils.isNotEmpty(user.getIsAdmin()) && user.getIsAdmin().equals("1")) { //超级管理员
                 menuList = sysMenuService.list();
-            }else{
+            } else {
                 menuList = sysMenuService.getMenuByUserId(user.getUserId());
             }
             //获取全部的code字段
@@ -184,17 +188,18 @@ public class LoginController {
             userInfo.setName(user.getNickName());
             userInfo.setUserId(user.getUserId());
             userInfo.setPermissions(strings);
-            return ResultUtils.success("查询成功",userInfo);
+            return ResultUtils.success("查询成功", userInfo);
         } else {
             return ResultUtils.error("用户类型错误");
         }
     }
+
     /**
      * 获取菜单数据
      */
     @GetMapping("/getMenuList")
     public ResultVo getMenuList(InfoParm parm) {
-        if (parm.getUserType().equals("1")){
+        if (parm.getUserType().equals("1")) {
             List<SysMenu> menus = sysMenuService.getMenuByMemberId(parm.getUserId());
             //获取菜单和目录
             List<SysMenu> collect = Optional.ofNullable(menus).orElse(new ArrayList<>())
