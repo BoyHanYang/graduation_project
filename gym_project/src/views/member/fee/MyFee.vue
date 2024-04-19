@@ -48,7 +48,7 @@ const getList = async () => {
   let res = await getMyRechargeApi(listParm);
   if (res && res.code == 200) {
     console.log(res);
-    tableData.list = res.data.record;
+    tableData.list = res.data.records;
     listParm.total = res.data.total;
   }
 };
