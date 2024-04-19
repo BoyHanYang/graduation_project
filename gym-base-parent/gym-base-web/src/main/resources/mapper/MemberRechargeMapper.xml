@@ -16,4 +16,13 @@
         recharge_id,member_id,money,
         create_time,create_user
     </sql>
+    <select id="getRechargeList" resultType="com.gym.web.member_recharge.entity.MemberRecharge">
+        SELECT mr.*,m.`name`,m.username FROM member_recharge as mr
+                                                 left join member as m  on m.member_id = mr.member_id
+    </select>
+    <select id="getRechargeByMember" parameterType="long" resultType="com.gym.web.member_recharge.entity.MemberRecharge">
+        SELECT mr.*,m.`name`,m.username FROM member_recharge as mr
+                                                 left join member as m  on m.member_id = mr.member_id
+        where m.member_id =#{memberId}
+    </select>
 </mapper>

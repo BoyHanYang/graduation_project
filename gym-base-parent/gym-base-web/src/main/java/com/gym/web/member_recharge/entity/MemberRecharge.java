@@ -7,6 +7,8 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 /**
@@ -35,12 +37,17 @@ public class MemberRecharge implements Serializable {
     /**
      * 创建时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
     private Date createTime;
 
     /**
      * 创建人
      */
     private String createUser;
+    @TableField(exist = false)
+    private String name;
+    @TableField(exist = false)
+    private String username;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
