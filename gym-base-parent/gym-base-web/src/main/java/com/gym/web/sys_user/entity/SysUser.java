@@ -7,16 +7,19 @@ import com.baomidou.mybatisplus.annotation.TableName;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.Date;
 
 import lombok.Data;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 /**
  * @TableName sys_user
  */
 @TableName(value = "sys_user")
 @Data
-public class SysUser implements Serializable {
+public class SysUser implements UserDetails {
     /**
      * 员工id
      */
@@ -107,4 +110,28 @@ public class SysUser implements Serializable {
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
+    //用户权限字段的集合
+    //表明authorities字段不属于sys_user表，需要排除
+    @TableField(exist = false)
+    Collection<? extends GrantedAuthority> authorities;
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return false;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return false;
+    }
 }

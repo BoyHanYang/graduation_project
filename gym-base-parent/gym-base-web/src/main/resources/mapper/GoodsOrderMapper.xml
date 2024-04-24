@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gym.web.goods_order.mapper.GoodsOrderMapper">
+
+    <resultMap id="BaseResultMap" type="com.gym.web.goods_order.entity.GoodsOrder">
+            <id property="orderId" column="order_id" jdbcType="INTEGER"/>
+            <result property="goodsId" column="goods_id" jdbcType="INTEGER"/>
+            <result property="name" column="name" jdbcType="VARCHAR"/>
+            <result property="price" column="price" jdbcType="DECIMAL"/>
+            <result property="image" column="image" jdbcType="VARCHAR"/>
+            <result property="details" column="details" jdbcType="VARCHAR"/>
+            <result property="unit" column="unit" jdbcType="VARCHAR"/>
+            <result property="specs" column="specs" jdbcType="VARCHAR"/>
+            <result property="num" column="num" jdbcType="INTEGER"/>
+            <result property="totalPrice" column="total_price" jdbcType="DECIMAL"/>
+            <result property="controlUser" column="control_user" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        order_id,goods_id,name,
+        price,image,details,
+        unit,specs,num,
+        total_price,control_user,create_time
+    </sql>
+    <select id="hotGoods" resultType="com.gym.web.home.entity.EchartsItem">
+        select g.`name` ,sum(gd.num) as value from goods as g
+            inner join goods_order as gd  on gd.goods_id = g.goods_id
+        GROUP BY g.goods_id
+        order by value desc
+            limit 7
+    </select>
+    <select id="hotCards" resultType="com.gym.web.home.entity.EchartsItem">
+        select ma.card_type as name,count(ma.apply_id) as value from member_apply as ma
+        GROUP BY ma.card_type,ma.card_day
+        order by value desc
+            limit 7
+    </select>
+    <select id="hotCourse" resultType="com.gym.web.home.entity.EchartsItem">
+        select c.course_name as name,count(mc.member_course_id) as value from course as c
+            left join member_course as mc  on c.course_id = mc.course_id
+        GROUP BY c.course_id
+    </select>
+</mapper>

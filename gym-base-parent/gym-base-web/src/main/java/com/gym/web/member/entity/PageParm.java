@@ -13,4 +13,6 @@ public class PageParm {
     private String name;
     private String phone;
     private String username;
+    private String userType;
+    private String memberId;
 }

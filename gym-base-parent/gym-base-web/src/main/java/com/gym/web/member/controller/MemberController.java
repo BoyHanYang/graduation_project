@@ -17,6 +17,8 @@ import com.gym.web.member_role.service.MemberRoleService;
 import com.gym.web.sys_user.entity.SysUser;
 import com.gym.web.sys_user.service.SysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
@@ -33,8 +35,11 @@ public class MemberController {
     private MemberCardService memberCardService;
     @Autowired
     private MemberRechargeService memberRechargeService;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     //新增
     @PostMapping
+    @PreAuthorize("hasAuthority('sys:memberList:add')")
     public ResultVo add(@RequestBody Member member) {
         //判断卡号是否重复
         QueryWrapper<Member> query = new QueryWrapper<>();
@@ -43,12 +48,14 @@ public class MemberController {
         if (one != null) {
             return ResultUtils.error("会员卡号被占用!");
         }
+        member.setPassword(passwordEncoder.encode(member.getPassword()));
         memberService.addMember(member);
         return ResultUtils.success("新增成功!");
     }
 
     //编辑
     @PutMapping
+    @PreAuthorize("hasAuthority('sys:memberList:edit')")
     public ResultVo edit(@RequestBody Member member) {
         //判断卡号是否重复
         QueryWrapper<Member> query = new QueryWrapper<>();
@@ -63,6 +70,7 @@ public class MemberController {
 
     //删除
     @DeleteMapping("/{memberId}")
+    @PreAuthorize("hasAuthority('sys:memberList:delete')")
     public ResultVo delete(@PathVariable("memberId") Long memberId) {
         memberService.deleteMember(memberId);
         return ResultUtils.success("删除成功!");
@@ -71,22 +79,42 @@ public class MemberController {
     //查询
     @GetMapping("/list")
     public ResultVo list(PageParm pageParm) {
-        //构造分页对象
-        IPage<Member> page = new Page<>(pageParm.getCurrentPage(), pageParm.getPageSize());
-        //构造查询条件
-        QueryWrapper<Member> query = new QueryWrapper<>();
-        if (StringUtils.isNotEmpty(pageParm.getName())) {
-            query.lambda().like(Member::getName, pageParm.getName());
+        if (pageParm.getUserType().equals("1")) {
+            //构造分页对象
+            IPage<Member> page = new Page<>(pageParm.getCurrentPage(), pageParm.getPageSize());
+            //构造查询条件
+            QueryWrapper<Member> query = new QueryWrapper<>();
+            if (StringUtils.isNotEmpty(pageParm.getName())) {
+                query.lambda().like(Member::getName, pageParm.getName());
+            }
+            if (StringUtils.isNotEmpty(pageParm.getPhone())) {
+                query.lambda().like(Member::getPhone, pageParm.getPhone());
+            }
+            if (StringUtils.isNotEmpty(pageParm.getUsername())) {
+                query.lambda().like(Member::getUsername, pageParm.getUsername());
+            }
+            query.lambda().eq(Member::getMemberId,pageParm.getMemberId());
+            query.lambda().orderByDesc(Member::getJoinTime);
+            IPage<Member> list = memberService.page(page, query);
+            return ResultUtils.success("查询成功", list);
+        } else {
+            //构造分页对象
+            IPage<Member> page = new Page<>(pageParm.getCurrentPage(), pageParm.getPageSize());
+            //构造查询条件
+            QueryWrapper<Member> query = new QueryWrapper<>();
+            if (StringUtils.isNotEmpty(pageParm.getName())) {
+                query.lambda().like(Member::getName, pageParm.getName());
+            }
+            if (StringUtils.isNotEmpty(pageParm.getPhone())) {
+                query.lambda().like(Member::getPhone, pageParm.getPhone());
+            }
+            if (StringUtils.isNotEmpty(pageParm.getUsername())) {
+                query.lambda().like(Member::getUsername, pageParm.getUsername());
+            }
+            query.lambda().orderByDesc(Member::getJoinTime);
+            IPage<Member> list = memberService.page(page, query);
+            return ResultUtils.success("查询成功", list);
         }
-        if (StringUtils.isNotEmpty(pageParm.getPhone())) {
-            query.lambda().like(Member::getPhone, pageParm.getPhone());
-        }
-        if (StringUtils.isNotEmpty(pageParm.getUsername())) {
-            query.lambda().like(Member::getUsername, pageParm.getUsername());
-        }
-        query.lambda().orderByDesc(Member::getJoinTime);
-        IPage<Member> list = memberService.page(page, query);
-        return ResultUtils.success("查询成功", list);
     }
 
     //根据会员id查询角色id
@@ -106,6 +134,7 @@ public class MemberController {
 
     //办卡提交
     @PostMapping("/joinApply")
+    @PreAuthorize("hasAuthority('sys:memberList:setCard')")
     public ResultVo joinApply(@RequestBody JoinParm joinParm) throws ParseException {
         memberService.joinApply(joinParm);
         return ResultUtils.success("办卡成功!");
@@ -113,6 +142,7 @@ public class MemberController {
 
     //充值
     @PostMapping("/recharge")
+    @PreAuthorize("hasAuthority('sys:memberList:rechart')")
     public ResultVo recharge(@RequestBody RechargeParm parm) throws ParseException {
         memberService.recharge(parm);
         return ResultUtils.success("充值成功!");

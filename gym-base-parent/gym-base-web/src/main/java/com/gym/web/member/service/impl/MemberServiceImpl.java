@@ -147,6 +147,13 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member>
             this.baseMapper.addMoney(parm);
         }
     }
+
+    @Override
+    public Member loadUser(String username) {
+        QueryWrapper<Member> query = new QueryWrapper<>();
+        query.lambda().eq(Member::getUsername,username);
+        return this.baseMapper.selectOne(query);
+    }
 }
 
 

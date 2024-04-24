@@ -8,6 +8,7 @@ import com.gym.web.sys_role.service.SysRoleService;
 
 import com.gym.web.sys_role_menu.service.SysRoleMenuService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -27,6 +28,7 @@ public class SysRoleController {
     private SysRoleMenuService sysRoleMenuService;
     // 新增
     @PostMapping
+    @PreAuthorize("hasAuthority('sys:role:add')")
     public ResultVo add(@RequestBody SysRole sysRole){
         sysRole.setCreateTime(new Date());
         boolean save = sysRoleService.save(sysRole);
@@ -37,6 +39,7 @@ public class SysRoleController {
     }
     // 编辑
     @PutMapping("")
+    @PreAuthorize("hasAuthority('sys:role:edit')")
     public ResultVo edit(@RequestBody SysRole sysRole){
         sysRole.setUpdateTime(new Date());
         boolean updateById = sysRoleService.updateById(sysRole);
@@ -47,6 +50,7 @@ public class SysRoleController {
     }
     // 删除
     @DeleteMapping("/{roleId}")
+    @PreAuthorize("hasAuthority('sys:role:delete')")
     public ResultVo delete(@PathVariable("roleId") long roleId){
         boolean deleteById = sysRoleService.removeById(roleId);
         if (deleteById){
@@ -97,6 +101,7 @@ public class SysRoleController {
     }
     //分配权限保存
     @PostMapping("/saveRoleMenu")
+    @PreAuthorize("hasAuthority('sys:role:assign')")
     public ResultVo saveRoleMenu(@RequestBody SaveMenuParm parm){
         sysRoleMenuService.saveMenu(parm);
         return ResultUtils.success("分配成功");

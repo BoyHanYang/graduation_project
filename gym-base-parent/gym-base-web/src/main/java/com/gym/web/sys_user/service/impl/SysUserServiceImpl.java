@@ -85,6 +85,13 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser>
         }
         return this.baseMapper.selectPage(page,queryWrapper);
     }
+
+    @Override
+    public SysUser loadUser(String username) {
+        QueryWrapper<SysUser> query = new QueryWrapper<>();
+        query.lambda().eq(SysUser::getUsername,username);
+        return this.baseMapper.selectOne(query);
+    }
 }
 
 

@@ -20,6 +20,11 @@ import com.gym.web.sys_menu.service.impl.SysMenuServiceImpl;
 import com.gym.web.sys_user.entity.SysUser;
 import com.gym.web.sys_user.service.SysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -50,6 +55,10 @@ public class LoginController {
     private SysUserService sysUserService;
     @Autowired
     private SysMenuService sysMenuService;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
     @PostMapping("/image")
     public ResultVo imageCode(HttpServletRequest request) throws IOException {
@@ -84,66 +93,117 @@ public class LoginController {
         return null;
     }
 
+    /*    @PostMapping("/login")
+        public ResultVo login(HttpServletRequest request, @RequestBody LoginParm parm) {
+            if(StringUtils.isEmpty(parm.getUsername()) || StringUtils.isEmpty(parm.getPassword()) || StringUtils.isEmpty(parm.getUserType()) || StringUtils.isEmpty(parm.getCode())){
+                return ResultUtils.error("用户名、密码、验证码或用户类型不能为空!");
+            }
+            //获取sessoin
+            HttpSession session = request.getSession();
+            //获取验证码
+            String code = (String) session.getAttribute("code");
+            if(StringUtils.isEmpty(code)){
+                return ResultUtils.error("验证码过期!");
+            }
+            //验证验证码
+            if (!code.equals(parm.getCode())) {
+                return ResultUtils.error("验证码错误!");
+            }
+            //String password = DigestUtils.md5DigestAsHex(parm.getPassword().getBytes());
+            String password = passwordEncoder.encode(parm.getPassword());
+            //构造spring security需要的token
+            UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(parm.getUsername()+":"+parm.getUserType(),parm.getPassword());
+            Authentication authenticate = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
+            SecurityContextHolder.getContext().setAuthentication(authenticate);
+            //用户类型判断
+            if (parm.getUserType().equals("1")) { //会员
+                Member user = (Member)authenticate.getPrincipal();
+                //生成token
+                Map<String, String> map = new HashMap<>();
+                map.put("userId", Long.toString(user.getMemberId()));
+                map.put("username", user.getUsername());
+                String token = jwtUtils.generateToken(map);
+                //返回登录成功信息
+                LoginResult result = new LoginResult();
+                result.setToken(token);
+                result.setUserId(user.getMemberId());
+                result.setUsername(user.getName());
+                result.setUserType(parm.getUserType());
+                return ResultUtils.success("登录成功", result);
+            } else if (parm.getUserType().equals("2")) { //员工
+                SysUser user = (SysUser)authenticate.getPrincipal();
+                //生成token
+                Map<String, String> map = new HashMap<>();
+                map.put("userId", Long.toString(user.getUserId()));
+                map.put("username", user.getUsername());
+                String token = jwtUtils.generateToken(map);
+                //返回登录成功信息
+                LoginResult result = new LoginResult();
+                result.setToken(token);
+                result.setUserId(user.getUserId());
+                result.setUsername(user.getNickName());
+                result.setUserType(parm.getUserType());
+                return ResultUtils.success("登录成功", result);
+            } else {
+                return ResultUtils.error("用户类型错误!");
+            }
+        }*/
     @PostMapping("/login")
-    public ResultVo login(HttpServletRequest request, @RequestBody LoginParm loginParm) {
-        // 获取session
+    public ResultVo login(HttpServletRequest request, @RequestBody LoginParm parm) {
+        if (org.apache.commons.lang.StringUtils.isEmpty(parm.getUsername()) || org.apache.commons.lang.StringUtils.isEmpty(parm.getPassword())
+                || org.apache.commons.lang.StringUtils.isEmpty(parm.getUserType()) || org.apache.commons.lang.StringUtils.isEmpty(parm.getCode())) {
+            return ResultUtils.error("用户名、密码、验证码或用户类型不能为空!");
+        }
+        //获取sessoin
         HttpSession session = request.getSession();
-        // 获取session中的验证码
+        //获取验证码
         String code = (String) session.getAttribute("code");
-        // 判断验证码是否过期
-        if (StringUtils.isEmpty(loginParm.getCode()) && StringUtils.isEmpty(code)) {
-            return ResultUtils.error("验证码过期");
+        if (org.apache.commons.lang.StringUtils.isEmpty(code)) {
+            return ResultUtils.error("验证码过期,请刷新验证码!");
         }
-        if (!code.equals(loginParm.getCode())) {
-            return ResultUtils.error("验证码错误！");
+        //验证验证码
+        if (!code.equals(parm.getCode())) {
+            return ResultUtils.error("验证码错误!");
         }
-        String password = DigestUtils.md5DigestAsHex(loginParm.getPassword().getBytes());
-        // 获取密码
-        if (loginParm.getUserType().equals("1")) {
-            // 会员
-            // 构造查询条件
-            QueryWrapper<Member> queryWrapper = new QueryWrapper<>();
-            queryWrapper.lambda().eq(Member::getUsername, loginParm.getUsername())
-                    .eq(Member::getPassword, password);
-            Member one = memberService.getOne(queryWrapper);
-            if (one == null) {
-                return ResultUtils.error("用户名或密码错误");
-            }
-            // 生成token
+//        String password = DigestUtils.md5DigestAsHex(parm.getPassword().getBytes());
+        String password = passwordEncoder.encode(parm.getPassword());
+        //构造spring security需要的token
+        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(parm.getUsername() + ":" + parm.getUserType(), parm.getPassword());
+        Authentication authenticate = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
+        SecurityContextHolder.getContext().setAuthentication(authenticate);
+        //用户类型判断
+        if (parm.getUserType().equals("1")) { //会员
+            Member user = (Member) authenticate.getPrincipal();
+            //生成token
             Map<String, String> map = new HashMap<>();
-            map.put("userId", Long.toString(one.getMemberId()));
-            map.put("username", one.getUsername());
+            map.put("userId", Long.toString(user.getMemberId()));
+            map.put("username", user.getUsername());
+            map.put("userType", parm.getUserType());
             String token = jwtUtils.generateToken(map);
-            LoginResult loginResult = new LoginResult();
-            loginResult.setToken(token);
-            loginResult.setUserId(one.getMemberId());
-            loginResult.setUsername(one.getName());
-            loginResult.setUserType(loginParm.getUserType());
-            return ResultUtils.success("登录成功", loginResult);
-        } else if (loginParm.getUserType().equals("2")) {
-            // 员工
-            QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
-            queryWrapper.lambda().eq(SysUser::getUsername, loginParm.getUsername())
-                    .eq(SysUser::getPassword, password);
-            SysUser one = sysUserService.getOne(queryWrapper);
-            if (one == null) {
-                return ResultUtils.error("用户名或密码错误");
-            }
-            // 生成token
+            //返回登录成功信息
+            LoginResult result = new LoginResult();
+            result.setToken(token);
+            result.setUserId(user.getMemberId());
+            result.setUsername(user.getName());
+            result.setUserType(parm.getUserType());
+            return ResultUtils.success("登录成功", result);
+        } else if (parm.getUserType().equals("2")) { //员工
+            SysUser user = (SysUser) authenticate.getPrincipal();
+            //生成token
             Map<String, String> map = new HashMap<>();
-            map.put("userId", Long.toString(one.getUserId()));
-            map.put("username", one.getUsername());
+            map.put("userId", Long.toString(user.getUserId()));
+            map.put("username", user.getUsername());
+            map.put("userType", parm.getUserType());
             String token = jwtUtils.generateToken(map);
-            LoginResult loginResult = new LoginResult();
-            loginResult.setToken(token);
-            loginResult.setUserId(one.getUserId());
-            loginResult.setUsername(one.getNickName());
-            loginResult.setUserType(loginParm.getUserType());
-//            System.out.println("登陆成功");
-            return ResultUtils.success("登录成功", loginResult);
-
+            //返回登录成功信息
+            LoginResult result = new LoginResult();
+            result.setToken(token);
+            result.setUserId(user.getUserId());
+            result.setUsername(user.getNickName());
+            result.setUserType(parm.getUserType());
+            return ResultUtils.success("登录成功", result);
         } else {
-            return ResultUtils.error("用户类型错误");
+            return ResultUtils.error("用户类型错误!");
         }
     }
 

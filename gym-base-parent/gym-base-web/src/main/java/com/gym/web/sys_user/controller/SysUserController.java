@@ -12,6 +12,8 @@ import com.gym.web.sys_user_role.entity.SysUserRole;
 import com.gym.web.sys_user_role.service.SysUserRoleService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,10 +28,14 @@ public class SysUserController {
     private SysUserService sysUserService;
     @Autowired
     private SysUserRoleService sysUserRoleService;
-
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     //新增员工
     @PostMapping
+    @PreAuthorize("hasAuthority('sys:user:add')")
     public ResultVo addUser(@RequestBody SysUser sysUser) {
+        sysUser.setCreateTime(new Date());
+        sysUser.setIsAdmin("0");
         //判断用户名是否存在
         QueryWrapper<SysUser> query = new QueryWrapper<>();
         query.lambda().eq(SysUser::getUsername, sysUser.getUsername());
@@ -38,30 +44,35 @@ public class SysUserController {
             return ResultUtils.error("账户已经被占用");
         }
         //密码加密
-        if (StringUtils.isNotEmpty(sysUser.getPassword())) {
+        /*if (StringUtils.isNotEmpty(sysUser.getPassword())) {
             sysUser.setPassword(DigestUtils.md5DigestAsHex(sysUser.getPassword().getBytes()));
         }
         sysUser.setIsAdmin("0");
-        sysUser.setCreateTime(new Date());
+        sysUser.setCreateTime(new Date());*/
+        sysUser.setPassword(passwordEncoder.encode(sysUser.getPassword()));
         //存入数据库
-        boolean save = sysUserService.save(sysUser);
-        if (save) {
+//        boolean save = sysUserService.save(sysUser);
+        sysUserService.addUser(sysUser);
+        /*if (save) {
             return ResultUtils.success("新增用户成功!");
         }
-        return ResultUtils.error("新增用户失败!");
+        return ResultUtils.error("新增用户失败!");*/
+        return ResultUtils.success("新增用户成功!");
     }
 
     //编辑员工
     @PutMapping
+    @PreAuthorize("hasAuthority('sys:user:edit')")
     public ResultVo editUser(@RequestBody SysUser sysUser) {
+        sysUser.setUpdateTime(new Date());
         //判断用户名是否存在
         QueryWrapper<SysUser> query = new QueryWrapper<>();
         query.lambda().eq(SysUser::getUsername, sysUser.getUsername());
         SysUser one = sysUserService.getOne(query);
         if (one != null && !one.getUserId().equals(sysUser.getUserId())) {
-            return ResultUtils.error("账户已经被占用");
+            return ResultUtils.error("账户已经被注册");
         }
-        //密码加密
+        /*//密码加密
         if (StringUtils.isNotEmpty(sysUser.getPassword())) {
             sysUser.setPassword(DigestUtils.md5DigestAsHex(sysUser.getPassword().getBytes()));
         }
@@ -71,17 +82,23 @@ public class SysUserController {
         if (save) {
             return ResultUtils.success("编辑用户成功!");
         }
-        return ResultUtils.error("编辑用户失败!");
+        return ResultUtils.error("编辑用户失败!");*/
+        // 更新
+        sysUserService.editUser(sysUser);
+        return ResultUtils.success("编辑用户成功!");
     }
 
     //删除用户
     @DeleteMapping("/{userId}")
-    public ResultVo deleteUser(@PathVariable("userId") Long userId) {
-        boolean remove = sysUserService.removeById(userId);
+    @PreAuthorize("hasAuthority('sys:user:delete')")
+    public ResultVo deleteUser(@PathVariable("userId") Integer userId) {
+        /*boolean remove = sysUserService.removeById(userId);
         if (remove) {
             return ResultUtils.success("删除用户成功!");
         }
-        return ResultUtils.error("删除用户失败!");
+        return ResultUtils.error("删除用户失败!");*/
+        sysUserService.deleteUser(userId);
+        return ResultUtils.success("删除用户成功!");
     }
 
     //用户列表
@@ -116,7 +133,7 @@ public class SysUserController {
             list.stream().forEach(item ->{
                 SelectType selectType = new SelectType();
                 selectType.setLabel(item.getNickName());
-                selectType.setValue(item.getRoleId());
+                selectType.setValue(item.getUserId());
                 selectTypeList.add(selectType);
             });
         }

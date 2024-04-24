@@ -10,6 +10,7 @@ import com.gym.web.goods.entity.Goods;
 import com.gym.web.goods.entity.GoodsParm;
 import com.gym.web.goods.service.GoodsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -24,6 +25,7 @@ public class GoodsController {
     private GoodsService goodsService;
 
     //新增
+    @PreAuthorize("hasAuthority('sys:goodsList:add')")
     @PostMapping
     public ResultVo add(@RequestBody Goods goods){
         if(goodsService.save(goods)){
@@ -33,6 +35,7 @@ public class GoodsController {
     }
 
     //编辑
+    @PreAuthorize("hasAuthority('sys:goodsList:edit')")
     @PutMapping
     public ResultVo edit(@RequestBody Goods goods){
         if(goodsService.updateById(goods)){
@@ -42,6 +45,7 @@ public class GoodsController {
     }
 
     //删除
+    @PreAuthorize("hasAuthority('sys:goodsList:delete')")
     @DeleteMapping("/{goodsId}")
     public ResultVo delete(@PathVariable("goodsId") Long goodsId){
         if(goodsService.removeById(goodsId)){

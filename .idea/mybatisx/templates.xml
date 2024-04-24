@@ -6,7 +6,7 @@
         <option name="generateConfig">
           <GenerateConfig>
             <option name="annotationType" value="MYBATIS_PLUS3" />
-            <option name="basePackage" value="com.gym.web.sys_role_menu" />
+            <option name="basePackage" value="com.gym.web.goods_order" />
             <option name="basePath" value="src/main/java" />
             <option name="classNameStrategy" value="camel" />
             <option name="encoding" value="UTF-8" />
@@ -68,8 +68,8 @@
             <option name="tableUIInfoList">
               <list>
                 <TableUIInfo>
-                  <option name="className" value="SysRoleMenu" />
-                  <option name="tableName" value="sys_role_menu" />
+                  <option name="className" value="GoodsOrder" />
+                  <option name="tableName" value="goods_order" />
                 </TableUIInfo>
               </list>
             </option>

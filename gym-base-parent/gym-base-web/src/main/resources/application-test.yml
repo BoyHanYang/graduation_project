@@ -31,6 +31,9 @@ jwt:
   #30分钟过期
   expiration: 30
 
+ignore:
+  url: /api/login/login,/api/login/image
+
 logging:
   pattern:
     console: '%d{yyyy-MM-dd} [%thread] %-5level %logger- %msg%n'

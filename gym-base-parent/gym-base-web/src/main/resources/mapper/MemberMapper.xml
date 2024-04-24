@@ -7,6 +7,10 @@
         update member set money = money  +  #{parm.money} where
             member_id =#{parm.memberId}
     </update>
+    <update id="subMoney">
+        update member set money = money  -  #{parm.money} where
+            member_id =#{parm.memberId}
+    </update>
     <resultMap id="BaseResultMap" type="com.gym.web.member.entity.Member">
             <id property="memberId" column="member_id" jdbcType="INTEGER"/>
             <result property="name" column="name" jdbcType="VARCHAR"/>
@@ -42,4 +46,5 @@
         is_account_non_expired,is_account_non_locked,is_credentials_non_expired,
         is_enabled
     </sql>
+
 </mapper>

@@ -7,15 +7,18 @@ import com.baomidou.mybatisplus.annotation.TableName;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Collection;
 
 import lombok.Data;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 /**
  * @TableName member
  */
 @TableName(value = "member")
 @Data
-public class Member implements Serializable {
+public class Member implements UserDetails {
     /**
      * 会员id
      */
@@ -130,4 +133,28 @@ public class Member implements Serializable {
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
+    //用户权限字段的集合
+    //表明authorities字段不属于sys_user表，需要排除
+    @TableField(exist = false)
+    Collection<? extends GrantedAuthority> authorities;
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return false;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return false;
+    }
 }

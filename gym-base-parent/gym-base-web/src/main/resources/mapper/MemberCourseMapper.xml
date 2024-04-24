@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gym.web.member_course.mapper.MemberCourseMapper">
+
+    <resultMap id="BaseResultMap" type="com.gym.web.member_course.entity.MemberCourse">
+            <id property="memberCourseId" column="member_course_id" jdbcType="INTEGER"/>
+            <result property="courseId" column="course_id" jdbcType="INTEGER"/>
+            <result property="courseName" column="course_name" jdbcType="VARCHAR"/>
+            <result property="image" column="image" jdbcType="VARCHAR"/>
+            <result property="teacherName" column="teacher_name" jdbcType="VARCHAR"/>
+            <result property="courseHour" column="course_hour" jdbcType="INTEGER"/>
+            <result property="courseDetails" column="course_details" jdbcType="VARCHAR"/>
+            <result property="coursePrice" column="course_price" jdbcType="DECIMAL"/>
+            <result property="teacherId" column="teacher_id" jdbcType="INTEGER"/>
+            <result property="memberId" column="member_id" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        member_course_id,course_id,course_name,
+        image,teacher_name,course_hour,
+        course_details,course_price,teacher_id,
+        member_id
+    </sql>
+</mapper>

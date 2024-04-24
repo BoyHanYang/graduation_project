@@ -5,6 +5,7 @@ import com.gym.web.member.entity.Member;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.gym.web.member.entity.RechargeParm;
 
+import java.io.Serializable;
 import java.text.ParseException;
 
 /**
@@ -20,4 +21,6 @@ public interface MemberService extends IService<Member> {
     void joinApply(JoinParm joinParm) throws ParseException;
     // 充值
     void recharge(RechargeParm parm);
+    //根据用户名查用户
+    Member loadUser(String username);
 }

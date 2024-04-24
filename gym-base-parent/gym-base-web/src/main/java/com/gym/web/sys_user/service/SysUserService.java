@@ -19,4 +19,6 @@ public interface SysUserService extends IService<SysUser> {
     void editUser(SysUser sysUser);
     // 列表
     IPage<SysUser> getList(PageParm parm);
+    //根据用户名查用户
+    SysUser loadUser(String username);
 }

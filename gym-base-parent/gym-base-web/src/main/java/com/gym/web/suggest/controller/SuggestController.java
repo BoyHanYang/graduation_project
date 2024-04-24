@@ -10,6 +10,7 @@ import com.gym.web.suggest.entity.Suggest;
 import com.gym.web.suggest.entity.SuggestParm;
 import com.gym.web.suggest.service.SuggestService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -27,6 +28,7 @@ public class SuggestController {
 
     //新增
     @PostMapping
+    @PreAuthorize("hasAuthority('sys:suggestList:add')")
     public ResultVo add(@RequestBody Suggest suggest){
         suggest.setDateTime(new Date());
         if(suggestService.save(suggest)){
@@ -37,6 +39,7 @@ public class SuggestController {
 
     //编辑
     @PutMapping
+    @PreAuthorize("hasAuthority('sys:suggestList:edit')")
     public ResultVo edit(@RequestBody Suggest suggest){
         if(suggestService.updateById(suggest)){
             return ResultUtils.success("编辑成功!");
@@ -46,6 +49,7 @@ public class SuggestController {
 
     //删除
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('sys:suggestList:delete')")
     public ResultVo delete(@PathVariable("id") Long id){
         if(suggestService.removeById(id)){
             return ResultUtils.success("删除成功!");

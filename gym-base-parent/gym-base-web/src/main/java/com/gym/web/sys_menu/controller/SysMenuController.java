@@ -7,6 +7,7 @@ import com.gym.web.sys_menu.entity.MakeMenuTree;
 import com.gym.web.sys_menu.entity.SysMenu;
 import com.gym.web.sys_menu.service.SysMenuService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -23,6 +24,7 @@ public class SysMenuController {
     private SysMenuService sysMenuService;
     // 新增
     @PostMapping
+    @PreAuthorize("hasAuthority('sys:menu:add')")
     public ResultVo add(@RequestBody SysMenu sysMenu){
         sysMenu.setCreateTime(new Date());
         if (sysMenuService.save(sysMenu)){
@@ -32,6 +34,7 @@ public class SysMenuController {
     }
     // 编辑
     @PutMapping
+    @PreAuthorize("hasAuthority('sys:menu:edit')")
     public ResultVo edit(@RequestBody SysMenu sysMenu){
         sysMenu.setUpdateTime(new Date());
         if (sysMenuService.updateById(sysMenu)){
@@ -41,6 +44,7 @@ public class SysMenuController {
     }
     // 删除
     @DeleteMapping("/{menuId}")
+    @PreAuthorize("hasAuthority('sys:menu:delete')")
     public ResultVo delete(@PathVariable("menuId") long menuId){
         if (sysMenuService.removeById(menuId)){
             return ResultUtils.success("删除成功");
