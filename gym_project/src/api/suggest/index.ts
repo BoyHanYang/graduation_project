@@ -1,5 +1,5 @@
 import http from "@/http";
-import { SuggestType } from "./SuggestModel";
+import { SuggestType ,SuggestParm} from "./SuggestModel";
 //新增
 export const addApi = (parm:SuggestType)=>{
     return http.post("/api/suggest",parm)

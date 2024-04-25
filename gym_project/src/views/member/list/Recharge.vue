@@ -30,8 +30,23 @@ import useDialog from "@/hooks/useDialog";
 import { ElMessage, FormInstance } from "element-plus";
 import { reactive, ref } from "vue";
 import { rechargeApi } from "@/api/member/index";
+import {userStore} from "@/store/user";
+const store = userStore()
 const addFormRef = ref<FormInstance>();
-//表单绑定值
+//弹框属性
+const { dialog, onClose, onConfirm, onShow } = useDialog();
+//显示弹框
+const show = (row: MemberType) => {
+  dialog.title = "为【" + row.name + "】充值";
+  dialog.height = 150;
+  addModel.memberId = row.memberId;
+  onShow();
+  addFormRef.value?.resetFields()
+};
+defineExpose({
+  show,
+});
+//表单数据
 const addModel = reactive<Recharge>({
   userId: "",
   memberId: "",
@@ -54,29 +69,17 @@ const rules = reactive({
     },
   ],
 });
-//弹框属性
-const { dialog, onClose, onConfirm, onShow } = useDialog();
-//显示弹框
-const show = (row: MemberType) => {
-  dialog.title = "为【" + row.name + "】充值";
-  addModel.memberId = row.memberId
-  onShow();
-  addFormRef.value?.resetFields();
-};
-//暴露出去
-defineExpose({
-  show,
-});
 //注册事件
-const emits = defineEmits(['refresh'])
-//提交表单
+const emits = defineEmits(["refresh"]);
+//表单提交
 const commit = () => {
   addFormRef.value?.validate(async (valid) => {
     if (valid) {
+      addModel.userId = store.getUserId
       let res = await rechargeApi(addModel);
       if (res && res.code == 200) {
-        ElMessage.success(res.msg)
-        emits('refresh')
+        ElMessage.success(res.msg);
+        emits("refresh");
         onClose();
       }
     }

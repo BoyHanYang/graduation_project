@@ -13,11 +13,13 @@ export const tabStore = defineStore('tabStore', {
         return {
             tabList: []
         }
-    }, getters: {
+    },
+    getters: {
         getTabs(state) {
             return state.tabList;
         }
-    },actions:{
+    },
+    actions:{
         addTab(tab:Tab){
             // 判断是否已经添加数据
             if (this.tabList.some(item =>item.path === tab.path))return;

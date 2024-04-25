@@ -33,11 +33,11 @@
         <el-row>
           <el-col :span="12" :offset="0">
             <el-form-item prop="phone" label="电话">
-              <el-input v-model="addModel.phone"></el-input>
+              <el-input type="number" v-model="addModel.phone"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12" :offset="0">
-            <el-form-item prop="age" label="年龄">
+            <el-form-item type="number" prop="age" label="年龄">
               <el-input v-model="addModel.age"></el-input>
             </el-form-item>
           </el-col>
@@ -70,12 +70,12 @@
         </el-row>
         <el-row>
           <el-col :span="12" :offset="0">
-            <el-form-item prop="height" label="身高">
+            <el-form-item type="number" prop="height" label="身高">
               <el-input v-model="addModel.height"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12" :offset="0">
-            <el-form-item prop="weight" label="体重">
+            <el-form-item type="number" prop="weight" label="体重">
               <el-input v-model="addModel.weight"></el-input>
             </el-form-item>
           </el-col>
@@ -89,10 +89,11 @@
           <el-col :span="12" :offset="0">
             <el-form-item prop="roleId" label="角色">
               <el-select
-                  v-model="addModel.roleId"
-                  class="m-2"
-                  placeholder="请选择角色"
-                  size="default"
+                style="width:100%"
+                v-model="addModel.roleId"
+                class="m-2"
+                placeholder="请选择角色"
+                size="default"
               >
                 <el-option
                     v-for="item in roleData.list"
@@ -151,7 +152,7 @@ const { dialog, onClose, onConfirm, onShow } = useDialog();
 const show = async(type: string, row?: MemberType) => {
   await listRole()
   await getMemberRole(row!?.memberId)
-  dialog.width = 680;
+  dialog.width = 720;
   dialog.height = 350;
   type == EditType.ADD
       ? (dialog.title = Title.ADD)
@@ -191,6 +192,13 @@ const addModel = reactive<MemberType>({
 });
 //表单验证规则
 const rules = reactive({
+  roleId:[
+    {
+      required: true,
+      trigger: "change",
+      message: "请选择角色",
+    },
+  ],
   name: [
     {
       required: true,

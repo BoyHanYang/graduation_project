@@ -1,37 +1,25 @@
 import { defineStore } from "pinia";
-import { getMenuListApi } from '@/api/login/index.ts'
+import { getMenuListApi } from "@/api/login";
 import { RouteRecordRaw } from "vue-router";
 import Layout from '@/layout/Index.vue'
-import {InfoParm} from "@/api/login/LoginModel.ts";
-import Center from "@/layout/center/center.vue";
-// 获取vies的所有页面
+import center from '@/layout/center/center.vue'
+import { InfoParm } from "@/api/login/LoginModel";
+//获取views下面的所有页面
 const modules = import.meta.glob('../../views/**/*.vue')
-// 定义store
-export const menuStore = defineStore('menuStore',{
-    state:()=>{
+//定义store
+export const menuStore = defineStore('menuStore', {
+    state: () => {
         return {
-            menuList: [
-                {
-                    path: "/dashboard",
-                    component: "Layout",
-                    name: "dashboard",
-                    meta: {
-                        title: "首页",
-                        icon: "HomeFilled",
-                        roles: ["sys:dashboard"],
-                    },
-                    children: []
-                } as any
-            ]
+            menuList: []
         }
     },
-    getters:{
-        getMenuList: (state) => {
+    getters: {
+        getMenuList(state) {
             return state.menuList
         }
     },
     actions: {
-        getMenu(router: any,parm:InfoParm) {
+        getMenu(router: any, parm: InfoParm) {
             return new Promise((resolve, reject) => {
                 getMenuListApi(parm).then((res) => {
                     let accessRoute;
@@ -51,11 +39,10 @@ export const menuStore = defineStore('menuStore',{
                                 children: []
                             }
                         ] as any
-                        accessRoute = generateRoutes(res.data, router)
-                        this.menuList = this.menuList.concat(accessRoute)
+                        this.menuList = desk.concat(accessRoute)
                     }
                     resolve(this.menuList)
-                }).catch((error)=>{
+                }).catch((error) => {
                     reject(error)
                 })
             })
@@ -86,7 +73,7 @@ export function generateRoutes(routes: RouteRecordRaw[], router: any) {
         //如果存在下级
         if (tmp.children && tmp.children.length > 0) {
             if (route.component != 'Layout') {
-                tmp.component = Center;
+                tmp.component = center;
             }
             //递归调用
             tmp.children = generateRoutes(tmp.children, router)

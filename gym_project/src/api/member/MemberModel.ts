@@ -5,7 +5,9 @@ export type MemberParm = {
     username:string,
     currentPage:number,
     pageSize:number,
-    total:number
+    total:number,
+    userType:string,
+    memberId:string
 }
 //会员数据类型
 export type MemberType = {
@@ -23,7 +25,8 @@ export type MemberType = {
     endTime:string,
     username:string,
     password:string,
-    status:string
+    status:string,
+    roleId:string
 }
 //办卡数据类型
 export type ApplyCard = {

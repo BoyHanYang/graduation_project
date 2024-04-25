@@ -1,5 +1,5 @@
 import { MemberType } from "@/api/member/MemberModel.ts";
-import { onMounted, reactive, ref } from "vue";
+import { onMounted, ref } from "vue";
 import { getCardListApi } from "@/api/member";
 import {CardType} from '@/api/member_card/MemberModel.ts'
 export default function useJoin(){

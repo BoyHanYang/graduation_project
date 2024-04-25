@@ -5,6 +5,8 @@ import { deleteApi } from "@/api/user"
 import { ElMessage } from "element-plus"
 import { FuncList } from "@/type/BaseType"
 import useInstance from "@/hooks/useInstance"
+import { resetPasswordApi } from "@/api/home"
+
 export default function useUser(getList: FuncList) {
     const { global } = useInstance()
     //新增组件的ref属性
@@ -31,10 +33,27 @@ export default function useUser(getList: FuncList) {
             }
         }
     }
+    //重置密码
+    const resetPasBtn = async (row: AddUserModel) => {
+        const confirm = await global.$myconfirm('确定重置密码吗，重置后密码为【666666】?')
+        if (confirm) {
+            let parm = {
+                userId: row.userId,
+                userType: "2"
+
+            }
+            let res = await resetPasswordApi(parm)
+            if (res && res.code == 200) {
+                ElMessage.success(res.msg)
+            }
+        }
+
+    }
     return {
         addBtn,
         editBtn,
         deleteBtn,
-        addRef
+        addRef,
+        resetPasBtn
     }
 }

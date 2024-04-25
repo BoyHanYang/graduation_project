@@ -1,5 +1,5 @@
 import http from "@/http";
-import { MaterialType } from "./MaterialModel";
+import { MaterialType ,ListParm} from "./MaterialModel";
 //新增
 export const addApi = (parm:MaterialType)=>{
     return http.post('/api/material',parm)

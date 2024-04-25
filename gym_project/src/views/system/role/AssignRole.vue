@@ -35,16 +35,16 @@ import {SaveAssignParm} from "@/api/role/RoleModel.ts";
 // 树的ref属性
 const assignTree = ref<InstanceType<typeof ElTree>>();
 const store = userStore();
-//获取权限树
-const { defaultProps, assignTreeData, getMenuTree } = useAssign();
-//弹框属性
-const { dialog, onClose, onConfirm, onShow } = useDialog();
-// 提交参数
+//提交参数
 const saveParm = reactive<SaveAssignParm>({
   roleId: "",
-  list:[],
-})
-//显示弹框
+  list: [],
+});
+//权限树
+const { assignTreeData, getMenuTree, defaultProps } = useAssign();
+//弹框属性
+const { dialog, onClose, onConfirm, onShow } = useDialog();
+//弹框显示
 const show = (roleId: string, name: string) => {
   saveParm.roleId = roleId;
   let parm = {

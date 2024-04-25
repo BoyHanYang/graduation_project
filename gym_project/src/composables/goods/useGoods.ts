@@ -1,4 +1,4 @@
-import { GoodsType } from "@/api/goods/GoodsModel"
+import { GoodsType } from "@/api/goods/GoodsModels.ts"
 import { EditType } from "@/type/BaseEnum"
 import { ref } from "vue"
 import { deleteApi } from "@/api/goods"

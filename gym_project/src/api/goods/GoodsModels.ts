@@ -2,7 +2,8 @@
 export type GoodsParm = {
     currentPage:number,
     pageSize:number,
-    name:string
+    name:string,
+    total:number
 }
 //商品数据类型
 export type GoodsType = {
@@ -15,4 +16,14 @@ export type GoodsType = {
     specs:string,
     price:number,
     store:number,
+    num?:number
+}
+export type AddCar = {
+    list:GoodsType[]
+}
+export type GoodsOrderParm = {
+    currentPage:number,
+    pageSize:number,
+    name:string,
+    total:number
 }

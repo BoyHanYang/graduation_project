@@ -14,7 +14,7 @@
       <el-form-item>
         <el-button @click="searchBtn" :icon="Search">搜索</el-button>
         <el-button @click="resetBtn" type="danger" plain :icon="Close">重置</el-button>
-        <el-button type="primary" @click="addBtn" :icon="Plus">新增</el-button>
+        <el-button v-permission="['sys:user:add']" type="primary" @click="addBtn" :icon="Plus">新增</el-button>
       </el-form-item>
     </el-form>
     <!-- 表格 -->
@@ -43,8 +43,8 @@
       </el-table-column>
       <el-table-column  label="操作" align="center" width="220">
         <template #default="scope">
-          <el-button type="primary" :icon="Edit" size="default" @click="editBtn(scope.row)">编辑</el-button>
-          <el-button type="danger" :icon="Delete" size="default" @click="deleteBtn(scope.row)">删除</el-button>
+          el-button v-permission="['sys:user:edit']" type="primary" :icon="Edit" size="default" @click="editBtn(scope.row)">编辑</el-button>
+          <el-button v-permission="['sys:user:delete']" type="danger" :icon="Delete" size="default" @click="deleteBtn(scope.row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>

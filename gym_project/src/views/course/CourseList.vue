@@ -9,42 +9,74 @@
         ></el-input>
       </el-form-item>
       <el-form-item>
-        <el-input
-            v-model="listParm.teacherName"
-            placeholder="教练"
-        ></el-input>
+        <el-input v-model="listParm.teacherName" placeholder="教练"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button :icon="Search" @click="searchBtn">搜索</el-button>
         <el-button :icon="Close" @click="resetBtn">重置</el-button>
-        <el-button :icon="Plus" type="primary" @click="addBtn"
+        <el-button
+            :icon="Plus"
+            v-permission="['sys:courseList:add']"
+            type="primary"
+            @click="addBtn"
         >新增</el-button
         >
       </el-form-item>
     </el-form>
     <!-- 表格 -->
     <el-table :height="tableHeight" :data="tableDate.list" border stripe>
+      <el-table-column prop="image" width="90" label="课程封面" align="center">
+        <template #default="scope">
+          <el-image
+              style="width: 60px; height: 60px; border-radius: 50%"
+              :src="scope.row.image"
+          ></el-image>
+        </template>
+      </el-table-column>
       <el-table-column prop="courseName" label="课程名称"></el-table-column>
       <el-table-column prop="courseHour" label="课时"></el-table-column>
       <el-table-column prop="coursePrice" label="价格"></el-table-column>
       <el-table-column prop="teacherName" label="授课教师"></el-table-column>
-      <el-table-column  label="操作" align="center" width="220">
+      <el-table-column label="操作" align="center" width="290">
         <template #default="scope">
-          <el-button type="primary" :icon="Edit" size="default" @click="editBtn(scope.row)">编辑</el-button>
-          <el-button type="danger" :icon="Delete" size="default" @click="deleteBtn(scope.row)">删除</el-button>
+          <el-button
+              v-permission="['sys:courseList:edit']"
+              type="primary"
+              :icon="Edit"
+              size="default"
+              @click="editBtn(scope.row)"
+          >编辑</el-button
+          >
+          <el-button
+              @click="joinBtn(scope.row)"
+              v-permission="['sys:courseList:join']"
+              type="success"
+              :icon="Edit"
+              size="default"
+          >报名</el-button
+          >
+          <el-button
+              v-permission="['sys:courseList:delete']"
+              type="danger"
+              :icon="Delete"
+              size="default"
+              @click="deleteBtn(scope.row)"
+          >删除</el-button
+          >
         </template>
       </el-table-column>
-
     </el-table>
     <!-- 分页 -->
     <el-pagination
         @size-change="sizeChange"
         @current-change="currentChange"
         :current-page.sync="listParm.currentPage"
-        :page-sizes="[10,20, 40, 80, 100]"
+        :page-sizes="[10, 20, 40, 80, 100]"
         :page-size="listParm.pageSize"
         layout="total, sizes, prev, pager, next, jumper"
-        :total="listParm.total" background>
+        :total="listParm.total"
+        background
+    >
     </el-pagination>
 
     <!-- 新增、编辑 -->
@@ -58,9 +90,19 @@ import { Plus, Edit, Delete, Search, Close } from "@element-plus/icons-vue";
 import useTable from "../../composables/course/useTable";
 import useCourse from "../../composables/course/useCourse";
 //列表
-const { listParm,tableDate,getList,sizeChange,currentChange,tableHeight,searchBtn,resetBtn,reFresh } = useTable();
+const {
+  listParm,
+  tableDate,
+  getList,
+  sizeChange,
+  currentChange,
+  tableHeight,
+  searchBtn,
+  resetBtn,
+  reFresh,
+} = useTable();
 //新增、编辑
-const { addBtn, editBtn, deleteBtn,addRef } = useCourse();
+const { addBtn, editBtn, deleteBtn, addRef,joinBtn } = useCourse(getList);
 </script>
 
 <style scoped></style>

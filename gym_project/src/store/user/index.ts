@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-// import { getInfoApi } from "@/api/login";
+import { getInfoApi } from "@/api/login";
 //定义store
 export const userStore = defineStore('userStore', {
     state: () => {

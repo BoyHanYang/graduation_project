@@ -56,25 +56,18 @@
 <script setup lang="ts">
 import {DocumentRemove,Plus,Minus} from '@element-plus/icons-vue'
 import SysDialog from "@/components/SysDialog.vue";
-import useDialog from "@/hooks/useDialog.ts";
-import {getParentApi} from "@/api/menu";
-import {ref,reactive} from "vue";
-import {MenuType} from "@/api/menu/MenuModel.ts";
-import {SelectNode} from "@/api/menu/MenuModel.ts";
-import {ElTree} from "element-plus";
+import useDialog from "@/hooks/useDialog";
+import { getParentApi } from "@/api/menu";
+import { reactive ,ref} from "vue";
+import { MenuType,SelectNode } from "@/api/menu/MenuModel";
+import { ElTree } from 'element-plus';
 //树的ref属性
 const parentTree = ref<InstanceType<typeof ElTree>>();
-// 弹框属性
-const {dialog,onShow,onClose,onConfirm} = useDialog();
-//显示弹框
-const showParent = async () => {
-  //查询数据
-  await getParent();
-  dialog.height = 450;
-  dialog.width = 300;
-  dialog.title = "选择上级菜单";
-  onShow();
-};
+//树选择的数据
+const selectNode = reactive<SelectNode>({
+    parentId:'',
+    parentName:''
+})
 //树属性配置
 const defaultProps = {
   children: 'children',
@@ -84,15 +77,21 @@ const defaultProps = {
 const treeData = reactive({
   list: [],
 });
+//弹框属性
+const { dialog, onClose, onConfirm, onShow } = useDialog();
+//显示弹框
+const showParent = async () => {
+  //查询数据
+  await getParent();
+  dialog.height = 450;
+  dialog.width = 300;
+  dialog.title = "选择上级菜单";
+  onShow();
+};
 //暴露出去，给父组件调用
 defineExpose({
   showParent,
 });
-//树选择的数据
-const selectNode = reactive<SelectNode>({
-  parentId:'',
-  parentName:''
-})
 //获取树数据
 const getParent = async () => {
   let res = await getParentApi();
@@ -102,16 +101,16 @@ const getParent = async () => {
 };
 //树节点点击事件
 const handleNodeClick = (node:MenuType)=>{
-  console.log(node)
-  selectNode.parentId = node.menuId;
-  selectNode.parentName = node.title
+    console.log(node)
+    selectNode.parentId = node.menuId;
+    selectNode.parentName = node.title
 }
 //注册事件
 const emits = defineEmits(['selectParent'])
 //选择树提交
 const confirm = ()=>{
-  emits('selectParent',selectNode)
-  onClose()
+    emits('selectParent',selectNode)
+    onClose()
 }
 //加号和减号的点击事件
 const openBtn = (data: MenuType) => {

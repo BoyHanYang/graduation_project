@@ -80,15 +80,17 @@ defineExpose({
 
 // 表单验证规则
 const rules = reactive({
-  roleName:[{
-    required:true,
-    trigger:'change',
-    message:"请输入角色名称"
-  }],
-})
-// 注册事件
-const emit = defineEmits(['refresh'])
-// 表单提交
+  roleName: [
+    {
+      required: true,
+      trigger: "change",
+      message: "请填写角色名称",
+    },
+  ],
+});
+//注册事件
+const emit = defineEmits(["refresh"]);
+//表单提交
 const commit = () => {
   //表单验证规则 1；表单需要添加ref属性， 2 ： item上面需要添加prop属性  3：定义表单验证规则
   addFormRef.value?.validate(async (valid) => {

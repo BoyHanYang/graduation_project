@@ -19,81 +19,76 @@
 </template>
 
 <script setup lang="ts">
-import {computed, onMounted, ref, watch} from 'vue'
-import {useRoute, useRouter} from "vue-router";
-import {tabStore, Tab} from "@/store/tabs/index.ts";
-import {TabPaneName} from "element-plus";
+import { useRoute, useRouter } from "vue-router";
+import { TabPanelName, TabsPaneContext } from "element-plus";
+import { computed, onMounted, ref, watch } from "vue";
+import { tabStore, Tab } from "@/store/tabs/index";
+//获取router 和 当前路由
+const route = useRoute();
+const router = useRouter();
+//获取sore
+const store = tabStore();
 
-const route = useRoute()
-const router = useRouter()
-const store = tabStore()
-
-// 当前激活的选项卡:当前的路由
-const activeTab = ref('')
-const tabList = computed(() => {
+//当前激活的选项卡：当前路由
+const activeTab = ref("");
+//选项卡数据
+const tabsList = computed(() => {
   return store.getTabs;
-})
-const editableTabs = ref([
-  {
-    title: 'Tab 1',
-    name: '1',
-    content: 'Tab 1 content',
-  },
-  {
-    title: 'Tab 2',
-    name: '2',
-    content: 'Tab 2 content',
-  },
-])
+});
 
-const removeTab = (targetName: TabPaneName) => {
-  // 首页不能关闭
-  if (targetName === '/dashboard') return;
-  const tabs = tabList.value
-  let activeName = activeTab.value
+const removeTab = (targetName: TabPanelName) => {
+  //首页不能关闭
+  if (targetName === "/dashboard") return;
+  const tabs = tabsList.value;
+  let activeName = activeTab.value;
   if (activeName === targetName) {
-    tabs.forEach((tab: Tab, index: number) => {
+    tabs.forEach((tab, index) => {
       if (tab.path === targetName) {
-        const nextTab = tabs[index + 1] || tabs[index - 1]
+        const nextTab = tabs[index + 1] || tabs[index - 1];
         if (nextTab) {
-          activeName = nextTab.path
+          activeName = nextTab.path;
         }
       }
-    })
+    });
   }
-
-  activeTab.value = activeName
-  store.tabList = tabs.filter((tab: Tab) => tab.path !== targetName)
-  router.push({path: activeName});
-}
+  activeTab.value = activeName;
+  store.tabList = tabs.filter((tab) => tab.path !== targetName);
+  //跳转路由
+  router.push({ path: activeName });
+};
+//添加菜单到选项卡
 const addTab = () => {
-  // 获取选项卡数据：当前的路由
-  const {path, meta} = route;
-  // 设置选项卡数据
+  //获取选项卡数据：当前的路由
+  const { path, meta } = route;
+  //设置选项卡数据
   const tab: Tab = {
     path: path,
     title: meta.title as string,
   };
-  store.addTab(tab)
-  // 添加到选项卡数据
-}
+  //添加到选项卡数据
+  store.addTab(tab);
+};
+//当前激活的选项卡
 const setActiveTab = () => {
-  activeTab.value = route.path
-}
+  activeTab.value = route.path;
+};
+//监听路由,设置选项卡的数据
 watch(
-    () => route.path,
-    () => {
-      //设置激活的选项卡
-      setActiveTab();
-      //把当前路由添加到选项卡数据
-      addTab();
-    }
+  () => route.path,
+  () => {
+    //激活当前的选项卡
+    setActiveTab();
+    //把当前菜单设置到选项卡
+    addTab();
+  }
 );
-const clickBtn = (tab: any) => {
+//选项卡点击事件
+const clickBtn = (tab: TabsPaneContext) => {
   console.log(tab);
-  const {props} = tab;
-  console.log(props);
-  router.push({path: props.name});
+  //props : 当前点击的选项卡数据
+  const { props } = tab;
+  //路由跳转
+  router.push({ path: props.name as string });
 };
 /*
 // 解决数据刷新丢失的问题
@@ -112,10 +107,10 @@ const beforeRefresh = () => {
 */
 
 onMounted(() => {
-  // beforeRefresh()
-  setActiveTab()
+  // beforeRefresh();
+  setActiveTab();
   addTab();
-})
+});
 </script>
 
 <style scoped lang="scss">

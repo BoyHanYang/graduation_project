@@ -11,7 +11,7 @@
       <el-form-item>
         <el-button :icon="Search" @click="searchBtn">搜索</el-button>
         <el-button :icon="Close" type="danger" plain @click="resetBtn">重置</el-button>
-        <el-button :icon="Plus" type="primary" @click="addBtn">新增</el-button>
+        <el-button v-permission="['sys:materialList:add']" :icon="Plus" type="primary" @click="addBtn">新增</el-button>
       </el-form-item>
     </el-form>
     <!-- 表格 -->
@@ -21,6 +21,7 @@
       <el-table-column label="操作" align="center" width="220">
         <template #default="scope">
           <el-button
+              v-permission="['sys:materialList:edit']"
               type="primary"
               :icon="Edit"
               size="default"
@@ -28,6 +29,7 @@
           >编辑</el-button
           >
           <el-button
+              v-permission="['sys:materialList:delete']"
               type="danger"
               :icon="Delete"
               size="default"

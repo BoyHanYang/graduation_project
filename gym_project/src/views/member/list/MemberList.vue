@@ -16,10 +16,15 @@
       </el-form-item>
       <el-form-item>
         <el-button :icon="Search" @click="searchBtn">搜索</el-button>
-        <el-button type="danger" plain :icon="Close" @click="resetBtn">重置</el-button>
-        <el-button :icon="Plus" type="primary" @click="addBtn"
-        >新增
-        </el-button
+        <el-button type="danger" plain :icon="Close" @click="resetBtn"
+          >重置</el-button
+        >
+        <el-button
+          v-permission="['sys:memberList:add']"
+          :icon="Plus"
+          type="primary"
+          @click="addBtn"
+          >新增</el-button
         >
       </el-form-item>
     </el-form>
@@ -37,8 +42,12 @@
       ></el-table-column>
       <el-table-column prop="sex" label="性别">
         <template #default="scope">
-          <el-tag v-if="scope.row.sex == '0'" type="success" size="default">男</el-tag>
-          <el-tag v-if="scope.row.sex == '1'" type="danger" size="default">女</el-tag>
+          <el-tag v-if="scope.row.sex == '0'" type="success" size="default"
+            >男</el-tag
+          >
+          <el-tag v-if="scope.row.sex == '1'" type="danger" size="default"
+            >女</el-tag
+          >
         </template>
       </el-table-column>
       <el-table-column prop="age" label="年龄"></el-table-column>
@@ -49,16 +58,27 @@
       <el-table-column prop="waist" label="腰围"></el-table-column>
       <el-table-column prop="status" label="状态">
         <template #default="scope">
-          <el-tag v-if="scope.row.status == '1'" type="success" size="default">启用</el-tag>
-          <el-tag v-if="scope.row.status == '0'" type="danger" size="default">停用</el-tag>
+          <el-tag v-if="scope.row.status == '1'" type="success" size="default"
+            >启用</el-tag
+          >
+          <el-tag v-if="scope.row.status == '0'" type="danger" size="default"
+            >停用</el-tag
+          >
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="220" fixed="right" align="center">
+      <el-table-column v-if="global.$checkPermission(['sys:memberList:setCard','sys:memberList:edit','sys:memberList:delete','sys:memberList:rechart'])" label="操作" width="200" align="center">
         <template #default="scope">
-          <el-button type="success"  size="default" :icon="Edit"  @click="joinBtn(scope.row)">办卡</el-button>
-          <el-button type="primary">
-            <el-dropdown>
-              <span class="el-dropdown-link" style="color:#FFF">
+          <el-button
+            v-if="global.$checkPermission(['sys:memberList:setCard'])"
+            type="success"
+            :icon="Edit"
+            size="default"
+            @click="joinBtn(scope.row)"
+            >办卡</el-button
+          >
+          <el-button type="primary" size="default">
+            <el-dropdown placement="bottom-start" @visible-change="vChange" style="color: #fff">
+              <span class="el-dropdown-link">
                 更多
                 <el-icon class="el-icon--right">
                   <arrow-down />
@@ -66,9 +86,30 @@
               </span>
               <template #dropdown>
                 <el-dropdown-menu>
-                  <el-dropdown-item :icon="ChatLineSquare" @click="rechargeBtn(scope.row)">充值</el-dropdown-item>
-                  <el-dropdown-item :icon="Edit" @click="editBtn(scope.row)">编辑</el-dropdown-item>
-                  <el-dropdown-item type="danger" :icon="Delete" @click="deleteBtn(scope.row)">删除</el-dropdown-item>
+                  <el-dropdown-item
+                    v-if="rechartFlg"
+                    @click="rechargeBtn(scope.row)"
+                    :icon="ChatLineSquare"
+                    >充值</el-dropdown-item
+                  >
+                  <el-dropdown-item
+                    v-if="editFlg"
+                    :icon="Edit"
+                    @click="editBtn(scope.row)"
+                    >编辑</el-dropdown-item
+                  >
+                  <el-dropdown-item
+                    v-if="deleteFlg"
+                    :icon="Delete"
+                    @click="deleteBtn(scope.row)"
+                    >删除</el-dropdown-item
+                  >
+                  <el-dropdown-item
+                    v-if="resetFlg"
+                    :icon="Edit"
+                    @click="resetPasBtn(scope.row)"
+                    >重置密码</el-dropdown-item
+                  >
                 </el-dropdown-menu>
               </template>
             </el-dropdown>
@@ -79,13 +120,15 @@
     </el-table>
     <!-- 分页 -->
     <el-pagination
-        @size-change="sizeChange"
-        @current-change="currentChange"
-        :current-page.sync="listParm.currentPage"
-        :page-sizes="[10,20, 40, 80, 100]"
-        :page-size="listParm.pageSize"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="listParm.total" background>
+      @size-change="sizeChange"
+      @current-change="currentChange"
+      :current-page.sync="listParm.currentPage"
+      :page-sizes="[10, 20, 40, 80, 100]"
+      :page-size="listParm.pageSize"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="listParm.total"
+      background
+    >
     </el-pagination>
 
     <!-- 新增、编辑 -->
@@ -98,22 +141,54 @@
 </template>
 
 <script setup lang="ts">
-import JoinApply from "./JoinApply.vue";
 import AddMember from "./AddMember.vue";
+import JoinApply from "./JoinApply.vue";
 import Recharge from "./Recharge.vue";
-import {Plus, Edit, Delete, Search, Close ,ChatLineSquare} from "@element-plus/icons-vue";
+import {
+  Plus,
+  Edit,
+  Delete,
+  Search,
+  Close,
+  ChatLineSquare,
+} from "@element-plus/icons-vue";
 import useTable from "@/composables/member/useTable";
 import useMember from "@/composables/member/useMember";
 import useJoin from "@/composables/member/useJoin";
 import useRecharge from "@/composables/member/useRecharge";
+import useInstance from "@/hooks/useInstance";
+import { ref } from "vue";
+const { global } = useInstance();
 //表格相关
-const {listParm, getList, resetBtn, searchBtn, tableList, sizeChange, currentChange, tableHeight, refresh} = useTable();
+const {
+  listParm,
+  getList,
+  resetBtn,
+  searchBtn,
+  tableList,
+  sizeChange,
+  currentChange,
+  tableHeight,
+  refresh,
+  store
+} = useTable();
 //新增、编辑操作
-const {addBtn, editBtn, deleteBtn, addRef} = useMember(getList);
+const { addBtn, editBtn, deleteBtn, addRef,resetPasBtn } = useMember(getList);
 //办卡
 const { joinRef, joinBtn } = useJoin();
 //充值
 const { rechargeRef, rechargeBtn } = useRecharge();
+//按钮的初始值
+const rechartFlg = ref(false);
+const editFlg = ref(false);
+const deleteFlg = ref(false);
+const resetFlg = ref(false);
+const vChange = ()=>{
+  rechartFlg.value = global.$checkPermission(['sys:memberList:rechart'])
+  editFlg.value = global.$checkPermission(['sys:memberList:edit'])
+  deleteFlg.value = global.$checkPermission(['sys:memberList:delete'])
+  resetFlg.value = global.$checkPermission(['sys:member:resetPassword'])
+}
 </script>
 
 <style scoped></style>

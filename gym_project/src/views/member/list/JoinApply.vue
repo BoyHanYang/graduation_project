@@ -35,7 +35,8 @@ import useDialog from "@/hooks/useDialog";
 import useJoin from "@/composables/member/useJoin";
 import { reactive } from "vue";
 import { ElMessage } from "element-plus";
-import { applySaveApi } from "@/api/member/index";
+import { applySaveApi } from "@/api/member/index.ts";
+const { cardList, getCardList } = useJoin();
 //选择的卡类型
 const parm = reactive<ApplyCard>({
   cardId: "",
@@ -49,13 +50,15 @@ const { cardList } = useJoin();
 const show = (row: MemberType) => {
   parm.memberId = row.memberId;
   dialog.title = "为【" + row.name + "】办卡";
+  dialog.height = 180;
+  getCardList();
   onShow();
 };
 //暴露给父组件调用
 defineExpose({
   show,
 });
-const eimits = defineEmits(['refresh'])
+const emits = defineEmits(['refresh'])
 //提交办卡
 const commit = async () => {
   if (!parm.cardId) {
@@ -65,7 +68,7 @@ const commit = async () => {
   let res = await applySaveApi(parm);
   if (res && res.code == 200) {
     ElMessage.success(res.msg);
-    eimits('refresh')
+    emits('refresh')
     onClose()
   }
 };

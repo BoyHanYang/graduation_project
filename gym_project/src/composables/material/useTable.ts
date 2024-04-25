@@ -64,6 +64,5 @@ export default function useTable() {
         tableHeight,
         reFresh,
         getList,
-        reFresh
     }
 }

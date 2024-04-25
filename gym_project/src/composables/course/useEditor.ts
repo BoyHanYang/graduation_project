@@ -1,6 +1,9 @@
-import { onBeforeUnmount, ref, shallowRef, onMounted } from 'vue'
+import { onBeforeUnmount, ref, shallowRef } from 'vue'
 import { IEditorConfig } from '@wangeditor/editor'
+import {userStore} from "@/store/user";
+
 export default function useEditor() {
+    const ustore = userStore()
     type InsertFnType = (url: string, alt?: string, href?: string) => void
     // 编辑器实例，必须用 shallowRef
     const editorRef = shallowRef()
@@ -16,7 +19,7 @@ export default function useEditor() {
         // form-data fieldName ，默认值 'wangeditor-uploaded-image'
         fieldName: 'file',
         //上传图片后端地址
-        server: process.env.BASE_API + '/api/upload/uploadImage',
+        server: process.env.BASE_API + '/api/upload/uploadImage?token='+ustore.getToken,
         // 自定义插入图片
         customInsert(res: any, insertFn: InsertFnType) {
             // res 即服务端的返回结果

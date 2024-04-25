@@ -1,6 +1,7 @@
+import type { UploadFile,UploadUserFile } from 'element-plus'
 import { ref } from 'vue'
-import { ElMessage, UploadFile } from 'element-plus'
-import { uploadImageApi } from '@/api/course'
+import { ElMessage } from 'element-plus'
+import { uploadImageApi } from '@/api/course/index.ts'
 export default function useUpload() {
     //图片上传组件ref属性
     const uploadRef = ref()
@@ -12,7 +13,7 @@ export default function useUpload() {
     //上传的文件
     const fileList = ref<UploadFile[]>([])
     //上传图片的地址
-    const imgurl = ref('');
+    const imgUrl = ref('');
     //删除图片
     const handleRemove = (file: UploadFile) => {
         console.log(file)
@@ -35,7 +36,7 @@ export default function useUpload() {
             return;
         }
         if (!isMore3M) {
-            ElMessage.warning("只能上传图片类型!");
+            ElMessage.warning("只能上传图片类型且不能超过3M!");
             uploadRef.value?.clearFiles()
             return;
         }
@@ -44,7 +45,7 @@ export default function useUpload() {
         let res = await uploadImageApi(formData);
         if (res && res.code == 200 && res.data) {
             console.log(res.data)
-            imgurl.value = res.data;
+            imgUrl.value = res.data;
             ElMessage.success("图片上传成功!");
         }
     }
@@ -57,6 +58,6 @@ export default function useUpload() {
         fileList,
         uploadFile,
         uploadRef,
-        imgurl
+        imgUrl
     }
 }

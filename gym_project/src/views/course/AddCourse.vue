@@ -36,17 +36,18 @@
           <el-col :span="12" :offset="0">
             <el-form-item prop="teacherName" label="教练">
               <el-select
-                  style="width: 100%"
-                  v-model="addModel.teacherName"
-                  class="m-2"
-                  placeholder="请选择教练"
-                  size="default"
+                style="width: 100%"
+                v-model="addModel.teacherName"
+                class="m-2"
+                placeholder="请选择教练"
+                size="default"
+                @change="selectTeach"
               >
                 <el-option
-                    v-for="item in teacherData.list"
-                    :key="item.label"
-                    :label="item.label"
-                    :value="item.label"
+                  v-for="item in teacherData.list"
+                  :key="item.label"
+                  :label="item.label"
+                  :value="{value:item.value,label:item.label}"
                 />
               </el-select>
             </el-form-item>
@@ -54,34 +55,34 @@
         </el-row>
         <el-form-item prop="image" label="课程图片">
           <el-upload
-              ref="uploadRef"
-              action="#"
-              :on-change="uploadFile"
-              list-type="picture-card"
-              :auto-upload="false"
-              :file-list="fileList"
-              :limit="1"
+            ref="uploadRef"
+            action="#"
+            :on-change="uploadFile"
+            list-type="picture-card"
+            :auto-upload="false"
+            :file-list="fileList"
+            :limit="1"
           >
             <el-icon><Plus /></el-icon>
 
             <template #file="{ file }">
               <div>
                 <img
-                    class="el-upload-list__item-thumbnail"
-                    :src="file.url"
-                    alt=""
+                  class="el-upload-list__item-thumbnail"
+                  :src="file.url"
+                  alt=""
                 />
                 <span class="el-upload-list__item-actions">
                   <span
-                      class="el-upload-list__item-preview"
-                      @click="handlePictureCardPreview(file)"
+                    class="el-upload-list__item-preview"
+                    @click="handlePictureCardPreview(file)"
                   >
                     <el-icon><zoom-in /></el-icon>
                   </span>
                   <span
-                      v-if="!disabled"
-                      class="el-upload-list__item-delete"
-                      @click="handleRemove(file)"
+                    v-if="!disabled"
+                    class="el-upload-list__item-delete"
+                    @click="handleRemove(file)"
                   >
                     <el-icon><Delete /></el-icon>
                   </span>
@@ -97,17 +98,17 @@
         <el-form-item prop="courseDetails" label="课程详情">
           <div style="border: 1px solid #ccc">
             <Toolbar
-                style="border-bottom: 1px solid #ccc"
-                :editor="editorRef"
-                :defaultConfig="toolbarConfig"
-                :mode="mode"
+              style="border-bottom: 1px solid #ccc"
+              :editor="editorRef"
+              :defaultConfig="toolbarConfig"
+              :mode="mode"
             />
             <Editor
-                style="height: 300px; overflow-y: hidden"
-                v-model="valueHtml"
-                :defaultConfig="editorConfig"
-                :mode="mode"
-                @onCreated="handleCreated"
+              style="height: 300px; overflow-y: hidden"
+              v-model="valueHtml"
+              :defaultConfig="editorConfig"
+              :mode="mode"
+              @onCreated="handleCreated"
             />
           </div>
         </el-form-item>
@@ -176,9 +177,11 @@ const show = async (type: string, row?: CourseType) => {
     upload.clearFiles();
   }
   addModel.image = "";
-  const editor = editorRef.value;
-  if (editor) {
-    editor.clear();
+  if (type == EditType.ADD) {
+    const editor = editorRef.value;
+    if (editor) {
+      editor.clear();
+    }
   }
   addModel.courseDetails = "";
   //编辑
@@ -190,14 +193,20 @@ const show = async (type: string, row?: CourseType) => {
       valueHtml.value = addModel.courseDetails;
       //封面图回显
       if (row?.image) {
-        let obj = {
-          name:'',
-          url:'',
+        //图片回显
+        let img = {
+          name: "",
+          url: "",
         };
-        obj.url = row.image;
-        fileList.value.push(obj);
+        imgUrl.value = addModel.image;
+        img.url = addModel.image;
+        fileList.value.push(img);
       }
     });
+  }
+  if (row && row.courseDetails) {
+    //文本编辑器的回显
+    valueHtml.value = row.courseDetails;
   }
   onShow();
   //表单清空
@@ -215,6 +224,7 @@ const addModel = reactive<CourseType>({
   courseName: "",
   image: "",
   teacherName: "",
+  teacherId: "",
   courseHour: 0,
   courseDetails: "",
   coursePrice: 0,
@@ -283,16 +293,16 @@ const emits = defineEmits(["reFresh"]);
 //表单提交
 const commit = () => {
   //封面图地址
-  addModel.image = process.env.BASE_API + imgUrl.value;
+  addModel.image = imgUrl.value;
   //课程详情
   addModel.courseDetails = valueHtml.value;
   addFormRef.value?.validate(async (valid) => {
     if (valid) {
       let res = null;
-      if(addModel.type == EditType.ADD){
+      if (addModel.type == EditType.ADD) {
         res = await addApi(addModel);
-      }else{
-        res = await editApi(addModel)
+      } else {
+        res = await editApi(addModel);
       }
       if (res && res.code == 200) {
         ElMessage.success(res.msg);
@@ -302,6 +312,12 @@ const commit = () => {
     }
   });
 };
+//选择教练的change
+const selectTeach = (val:any)=>{
+  console.log(val)
+  addModel.teacherId = val.value;
+  addModel.teacherName = val.label;
+}
 </script>
 
 <style scoped></style>

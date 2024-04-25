@@ -2,7 +2,8 @@
 export type LostParm = {
     currentPage:number,
     pageSize:number,
-    lostName:string
+    lostName:string,
+    total:number
 }
 //失物数据类型
 export type LostType = {

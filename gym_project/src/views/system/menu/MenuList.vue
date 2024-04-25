@@ -1,8 +1,9 @@
 <template>
   <el-main style="padding-top: 10px">
     <!--新增 -->
-    <div style="display: flex; align-items: center;">
+    <div style="display: flex; align-items: center">
       <el-button
+          v-permission="['sys:menu:add']"
           style="margin-bottom: 10px"
           type="primary"
           :icon="Plus"
@@ -34,12 +35,12 @@
         </template>
       </el-table-column>
       <el-table-column prop="icon" label="图标">
-<!--        <template #default="scope">
+        <template #default="scope">
           <el-icon>
-            &lt;!&ndash; 动态组件的方式显示图标 &ndash;&gt;
+            <!-- 动态组件的方式显示图标 -->
             <component :is="scope.row.icon"></component>
           </el-icon>
-        </template>-->
+        </template>
       </el-table-column>
       <el-table-column prop="name" label="路由名称"></el-table-column>
       <el-table-column prop="path" label="路由地址"></el-table-column>
@@ -47,10 +48,16 @@
       <el-table-column prop="code" label="权限字段"></el-table-column>
       <el-table-column label="操作" width="220" align="center">
         <template #default="scope">
-          <el-button type="success" :icon="Edit" size="default" @click="editBtn(scope.row)"
+          <el-button
+              v-permission="['sys:menu:edit']"
+              type="success"
+              :icon="Edit"
+              size="default"
+              @click="editBtn(scope.row)"
           >编辑</el-button
           >
           <el-button
+              v-permission="['sys:menu:delete']"
               type="danger"
               :icon="Delete"
               size="default"
@@ -72,7 +79,7 @@ import { Plus, Edit, Delete, Search, Close } from "@element-plus/icons-vue";
 import useMenu from "@/composables/menu/useMenu";
 import useMenuTable from "@/composables/menu/useMenuTable";
 //表格数据
-const { tableList, tableHeight, refresh,getList } = useMenuTable();
+const { tableList, tableHeight, refresh, getList } = useMenuTable();
 //新增、编辑
 const { addBtn, editBtn, deleteBtn, addRef } = useMenu(getList);
 </script>

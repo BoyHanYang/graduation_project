@@ -112,15 +112,15 @@
 
 <script setup lang="ts">
 import "@wangeditor/editor/dist/css/style.css"; // 引入 css
-import { Editor, Toolbar } from "@wangeditor/editor-for-vue";
-import { GoodsType } from "@/api/goods/GoodsModel";
+import {Editor,Toolbar} from "@wangeditor/editor-for-vue";
+import { GoodsType } from "@/api/goods/GoodsModels.ts";
 import SysDialog from "@/components/SysDialog.vue";
 import useDialog from "@/hooks/useDialog";
 import { ElMessage, FormInstance } from "element-plus";
 import { nextTick, reactive, ref } from "vue";
 import useUpload from "@/composables/course/useUpload";
 import useEditor from "@/composables/course/useEditor";
-import { addApi, editApi } from "@/api/goods/index";
+import { addApi, editApi } from "@/api/goods/index.ts";
 import { EditType, Title } from "@/type/BaseEnum";
 import useInstance from "@/hooks/useInstance";
 const { global } = useInstance();

@@ -19,11 +19,12 @@
   </el-dialog>
 </template>
 <script setup lang="ts">
-interface DialogProps{
-  title:string,
-  visible:boolean,
-  width:number,
-  height:number
+//定义弹框参数类型
+interface DialogProps {
+  title: string;
+  visible: boolean;
+  width: number;
+  height: number;
 }
 const props = withDefaults(defineProps<DialogProps>(), {
   title: '标题',
@@ -31,14 +32,15 @@ const props = withDefaults(defineProps<DialogProps>(), {
   width:630,
   height:280
 });
-const emit = defineEmits(["onClose", "onConfirm"]);
-//定义弹框的关闭
+//注册事件
+const emit = defineEmits(['onClose','onConfirm'])
+//弹框关闭
 const onClose = () => {
-  emit("onClose");
+    emit('onClose')
 };
 //定义弹框的确定
 const onConfirm = () => {
-  emit("onConfirm");
+    emit('onConfirm')
 };
 
 </script>

@@ -1,5 +1,5 @@
 import { getTeacherApi } from "@/api/course/index.ts";
-import { reactive, ref } from "vue";
+import { reactive} from "vue";
 import { SelectRole } from "@/api/user/UserModel";
 export default function useSelectTeacher() {
     //定义教练列表数据

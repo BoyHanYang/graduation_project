@@ -8,9 +8,12 @@
       <el-form-item>
         <el-button :icon="Search" @click="searchBtn">搜索</el-button>
         <el-button :icon="Close" type="danger" plain @click="resetBtn">重置</el-button>
-        <el-button :icon="Plus" type="primary" @click="addBtn"
-        >新增</el-button
-        >
+        <el-button
+            v-permission="['sys:goodsList:add']"
+            :icon="Plus"
+            type="primary"
+            @click="addBtn"
+        >新增</el-button>
       </el-form-item>
     </el-form>
     <!-- 表格 -->
@@ -31,6 +34,7 @@
       <el-table-column label="操作" align="center" width="220">
         <template #default="scope">
           <el-button
+              v-permission="['sys:goodsList:edit']"
               type="primary"
               :icon="Edit"
               size="default"
@@ -38,6 +42,7 @@
           >编辑</el-button
           >
           <el-button
+              v-permission="['sys:goodsList:delete']"
               type="danger"
               :icon="Delete"
               size="default"
@@ -70,9 +75,19 @@ import useTable from "@/composables/goods/useTable";
 import useGoods from "@/composables/goods/useGoods";
 
 //表格
-const { tableHeight,listParm, searchBtn, resetBtn,getList,tableData,sizeChange,currentChange,reFresh } = useTable();
+const {
+  tableHeight,
+  listParm,
+  searchBtn,
+  resetBtn,
+  getList,
+  tableData,
+  sizeChange,
+  currentChange,
+  reFresh,
+} = useTable();
 //新增、编辑
-const { addBtn, editBtn, deleteBtn,addRef } = useGoods();
+const { addBtn, editBtn, deleteBtn, addRef } = useGoods(getList);
 </script>
 
 <style scoped></style>
