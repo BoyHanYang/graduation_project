@@ -1,22 +1,22 @@
 <template>
   <SysDialog
-      :title="dialog.title"
-      :height="dialog.height"
-      :width="dialog.width"
-      :visible="dialog.visible"
-      @onClose="onClose"
-      @onConfirm="commit"
+    :title="dialog.title"
+    :height="dialog.height"
+    :width="dialog.width"
+    :visible="dialog.visible"
+    @onClose="onClose"
+    @onConfirm="commit"
   >
     <template v-slot:content>
       <el-form
-          :model="addModel"
-          ref="addFormRef"
-          :rules="rules"
-          label-width="80px"
-          size="default"
+        :model="addModel"
+        ref="addFormRef"
+        :rules="rules"
+        label-width="80px"
+        size="default"
       >
         <el-form-item prop="money" label="充值金额">
-          <el-input type="number" v-model="addModel.money"></el-input>
+          <el-input v-model="addModel.money"></el-input>
         </el-form-item>
       </el-form>
     </template>
@@ -30,7 +30,7 @@ import useDialog from "@/hooks/useDialog";
 import { ElMessage, FormInstance } from "element-plus";
 import { reactive, ref } from "vue";
 import { rechargeApi } from "@/api/member/index";
-import {userStore} from "@/store/user";
+import { userStore } from "@/store/user";
 const store = userStore()
 const addFormRef = ref<FormInstance>();
 //弹框属性

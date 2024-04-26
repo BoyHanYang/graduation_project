@@ -17,8 +17,8 @@
       <el-table-column prop="image" width="90" label="商品图片" align="center">
         <template #default="scope">
           <el-image
-            style="width: 60px; height: 60px; border-radius: 50%"
-            :src="scope.row.image"
+              style="width: 60px; height: 60px; border-radius: 50%"
+              :src="scope.row.image"
           ></el-image>
         </template>
       </el-table-column>
@@ -30,13 +30,13 @@
     </el-table>
     <!-- 分页 -->
     <el-pagination
-      @size-change="orderSizeChange"
-      @current-change="orderCurrentChange"
-      :current-page.sync="listParm.currentPage"
-      :page-sizes="[20, 40, 80, 100]"
-      :page-size="listParm.pageSize"
-      layout="total, sizes, prev, pager, next, jumper"
-      :total="listParm.total" background>
+        @size-change="orderSizeChange"
+        @current-change="orderCurrentChange"
+        :current-page.sync="listParm.currentPage"
+        :page-sizes="[20, 40, 80, 100]"
+        :page-size="listParm.pageSize"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="listParm.total" background>
     </el-pagination>
 
     <!-- 下单 -->

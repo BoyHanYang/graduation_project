@@ -8,14 +8,14 @@
       <el-table-column label="操作人" prop="createUser"></el-table-column>
     </el-table>
     <el-pagination
-        @size-change="sizeChange"
-        @current-change="currentChange"
-        :current-page.sync="listParm.currentPage"
-        :page-sizes="[10, 20, 40, 80, 100]"
-        :page-size="listParm.pageSize"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="listParm.total"
-        background
+      @size-change="sizeChange"
+      @current-change="currentChange"
+      :current-page.sync="listParm.currentPage"
+      :page-sizes="[10, 20, 40, 80, 100]"
+      :page-size="listParm.pageSize"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="listParm.total"
+      background
     >
     </el-pagination>
   </el-main>

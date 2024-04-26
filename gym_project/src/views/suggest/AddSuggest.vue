@@ -1,19 +1,19 @@
 <template>
   <SysDialog
-      :title="dialog.title"
-      :height="dialog.height"
-      :width="dialog.width"
-      :visible="dialog.visible"
-      @onClose="onClose"
-      @onConfirm="commit"
+    :title="dialog.title"
+    :height="dialog.height"
+    :width="dialog.width"
+    :visible="dialog.visible"
+    @onClose="onClose"
+    @onConfirm="commit"
   >
     <template v-slot:content>
       <el-form
-          :model="addModel"
-          ref="addFormRef"
-          :rules="rules"
-          label-width="80px"
-          size="default"
+        :model="addModel"
+        ref="addFormRef"
+        :rules="rules"
+        label-width="80px"
+        size="default"
       >
         <el-form-item prop="title" label="标题">
           <el-input v-model="addModel.title"></el-input>
@@ -45,8 +45,8 @@ const show = (type: string, row?: SuggestType) => {
   console.log(row)
   dialog.height = 160;
   type == EditType.ADD
-      ? (dialog.title = Title.ADD)
-      : (dialog.title = Title.EDIT);
+    ? (dialog.title = Title.ADD)
+    : (dialog.title = Title.EDIT);
   //编辑数据回显
   if (type == EditType.EDIT) {
     nextTick(()=>{

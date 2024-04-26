@@ -1,19 +1,19 @@
 <template>
   <SysDialog
-      :title="dialog.title"
-      :width="dialog.width"
-      :height="dialog.height"
-      :visible="dialog.visible"
-      @onClose="onClose"
-      @onConfirm="commit"
+    :title="dialog.title"
+    :width="dialog.width"
+    :height="dialog.height"
+    :visible="dialog.visible"
+    @onClose="onClose"
+    @onConfirm="commit"
   >
     <template v-slot:content>
       <el-form
-          :model="addModel"
-          ref="addFormRef"
-          :rules="rules"
-          label-width="80px"
-          size="default"
+        :model="addModel"
+        ref="addFormRef"
+        :rules="rules"
+        label-width="80px"
+        size="default"
       >
         <el-row>
           <el-col :span="12" :offset="0">
@@ -48,34 +48,34 @@
         </el-row>
         <el-form-item prop="image" label="商品图片">
           <el-upload
-              ref="uploadRef"
-              action="#"
-              :on-change="uploadFile"
-              list-type="picture-card"
-              :auto-upload="false"
-              :file-list="fileList"
-              :limit="1"
+            ref="uploadRef"
+            action="#"
+            :on-change="uploadFile"
+            list-type="picture-card"
+            :auto-upload="false"
+            :file-list="fileList"
+            :limit="1"
           >
             <el-icon><Plus /></el-icon>
 
             <template #file="{ file }">
               <div>
                 <img
-                    class="el-upload-list__item-thumbnail"
-                    :src="file.url"
-                    alt=""
+                  class="el-upload-list__item-thumbnail"
+                  :src="file.url"
+                  alt=""
                 />
                 <span class="el-upload-list__item-actions">
                   <span
-                      class="el-upload-list__item-preview"
-                      @click="handlePictureCardPreview(file)"
+                    class="el-upload-list__item-preview"
+                    @click="handlePictureCardPreview(file)"
                   >
                     <el-icon><zoom-in /></el-icon>
                   </span>
                   <span
-                      v-if="!disabled"
-                      class="el-upload-list__item-delete"
-                      @click="handleRemove(file)"
+                    v-if="!disabled"
+                    class="el-upload-list__item-delete"
+                    @click="handleRemove(file)"
                   >
                     <el-icon><Delete /></el-icon>
                   </span>
@@ -91,17 +91,17 @@
         <el-form-item prop="details" label="商品详情">
           <div style="border: 1px solid #ccc">
             <Toolbar
-                style="border-bottom: 1px solid #ccc"
-                :editor="editorRef"
-                :defaultConfig="toolbarConfig"
-                :mode="mode"
+              style="border-bottom: 1px solid #ccc"
+              :editor="editorRef"
+              :defaultConfig="toolbarConfig"
+              :mode="mode"
             />
             <Editor
-                style="height: 300px; overflow-y: hidden"
-                v-model="valueHtml"
-                :defaultConfig="editorConfig"
-                :mode="mode"
-                @onCreated="handleCreated"
+              style="height: 300px; overflow-y: hidden"
+              v-model="valueHtml"
+              :defaultConfig="editorConfig"
+              :mode="mode"
+              @onCreated="handleCreated"
             />
           </div>
         </el-form-item>
@@ -112,8 +112,8 @@
 
 <script setup lang="ts">
 import "@wangeditor/editor/dist/css/style.css"; // 引入 css
-import {Editor,Toolbar} from "@wangeditor/editor-for-vue";
 import { GoodsType } from "@/api/goods/GoodsModels.ts";
+import {Editor,Toolbar} from "@wangeditor/editor-for-vue";
 import SysDialog from "@/components/SysDialog.vue";
 import useDialog from "@/hooks/useDialog";
 import { ElMessage, FormInstance } from "element-plus";
@@ -155,8 +155,8 @@ const show = (type: string, row?: GoodsType) => {
   fileList.value = [];
   //设置弹框属性
   type == EditType.ADD
-      ? (dialog.title = Title.ADD)
-      : (dialog.title = Title.EDIT);
+    ? (dialog.title = Title.ADD)
+    : (dialog.title = Title.EDIT);
   dialog.width = 900;
   dialog.height = 500;
   //清空图片和文本编辑器

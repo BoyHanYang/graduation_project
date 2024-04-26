@@ -1,19 +1,19 @@
 <template>
   <SysDialog
-      :title="dialog.title"
-      :height="dialog.height"
-      :width="dialog.width"
-      :visible="dialog.visible"
-      @onConfirm="commit"
-      @onClose="onClose"
+    :title="dialog.title"
+    :height="dialog.height"
+    :width="dialog.width"
+    :visible="dialog.visible"
+    @onConfirm="commit"
+    @onClose="onClose"
   >
     <template v-slot:content>
       <el-form
-          :model="addModel"
-          ref="addFormRef"
-          :rules="rules"
-          label-width="80px"
-          size="default"
+        :model="addModel"
+        ref="addFormRef"
+        :rules="rules"
+        label-width="80px"
+        size="default"
       >
         <el-row>
           <el-col :span="12" :offset="0">
@@ -24,13 +24,13 @@
           <el-col :span="12" :offset="0">
             <el-form-item prop="foundTime" label="捡到时间">
               <el-date-picker
-                  style="width: 100%"
-                  v-model="addModel.foundTime"
-                  type="date"
-                  placeholder="请选择捡到时间"
-                  size="default"
-                  value-format="YYYY-MM-DD"
-                  format="YYYY-MM-DD"
+                style="width: 100%"
+                v-model="addModel.foundTime"
+                type="date"
+                placeholder="请选择捡到时间"
+                size="default"
+                value-format="YYYY-MM-DD"
+                format="YYYY-MM-DD"
               />
             </el-form-item>
           </el-col>
@@ -84,8 +84,8 @@ const { dialog, onClose, onConfirm, onShow } = useDialog();
 const show = (type: string, row?: LostType) => {
   //设置弹框属性
   type == EditType.ADD
-      ? (dialog.title = Title.ADD)
-      : (dialog.title = Title.EDIT);
+    ? (dialog.title = Title.ADD)
+    : (dialog.title = Title.EDIT);
   dialog.height = 180;
   //如果是编辑，设置回显的数据
   if (type == EditType.EDIT) {

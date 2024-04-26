@@ -1,19 +1,19 @@
 <template>
   <SysDialog
-      :title="dialog.title"
-      :height="dialog.height"
-      :width="dialog.width"
-      :visible="dialog.visible"
-      @onConfirm="commit"
-      @onClose="onClose"
+    :title="dialog.title"
+    :height="dialog.height"
+    :width="dialog.width"
+    :visible="dialog.visible"
+    @onConfirm="commit"
+    @onClose="onClose"
   >
     <template v-slot:content>
       <el-form
-          :model="addModel"
-          ref="addFormRef"
-          :rules="rules"
-          label-width="80px"
-          size="default"
+        :model="addModel"
+        ref="addFormRef"
+        :rules="rules"
+        label-width="80px"
+        size="default"
       >
         <el-form-item prop="name" label="器材名称">
           <el-input v-model="addModel.name"></el-input>
@@ -47,8 +47,8 @@ const { dialog, onClose, onConfirm, onShow } = useDialog();
 const show = (type: string, row?: MaterialType) => {
   //设置弹框属性
   type == EditType.ADD
-      ? (dialog.title = Title.ADD)
-      : (dialog.title = Title.EDIT);
+    ? (dialog.title = Title.ADD)
+    : (dialog.title = Title.EDIT);
   //如果是编辑，设置数据回显
   if (type == EditType.EDIT) {
     //把当前编辑的数据复制到表单对象

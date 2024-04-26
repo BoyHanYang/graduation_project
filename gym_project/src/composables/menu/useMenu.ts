@@ -1,14 +1,13 @@
 import { MenuType } from "@/api/menu/MenuModel"
 import { EditType } from "@/type/BaseEnum"
 import { ref } from "vue"
-import useInstance from "@/hooks/useInstance.ts";
-import {deleteApi} from "@/api/menu";
-import {ElMessage} from "element-plus";
-import {FuncList} from "@/type/BaseType.ts";
-
+import useInstance from "@/hooks/useInstance";
+import { deleteApi } from "@/api/menu";
+import { ElMessage } from "element-plus";
+import { FuncList } from "@/type/BaseType";
 export default function useMenu(getList:FuncList) {
-    const {global} = useInstance();
-    const addRef = ref<{show:(type:string,row?:MenuType)=>void}>()
+    const { global } = useInstance();
+    const addRef = ref<{ show: (type: string, row?: MenuType) => void }>()
     //新增
     const addBtn = () => {
         addRef.value?.show(EditType.ADD)

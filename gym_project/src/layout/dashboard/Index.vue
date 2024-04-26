@@ -2,11 +2,11 @@
   <el-main :style="{ height: mianHeight + 'px' }">
     <!-- 数据统计 -->
     <el-row
-        :gutter="20"
-        type="flex"
-        class="row-bg"
-        justify="center"
-        style="margin-bottom: 80px"
+      :gutter="20"
+      type="flex"
+      class="row-bg"
+      justify="center"
+      style="margin-bottom: 80px"
     >
       <el-col :span="6">
         <div class="show-header" style="background: rgb(45, 183, 245)">
@@ -62,7 +62,7 @@
     <el-card class="box-card" style="margin-top: 30px">
       <div slot="header" class="clearfix">
         <span style="color: #000000; font-weight: 600; margin-bottom: 10px"
-        >反馈列表</span
+          >反馈列表</span
         >
         <el-divider></el-divider>
       </div>
@@ -72,8 +72,8 @@
           item.content
         }}</span>
         <span style="margin-left: 30px; font-size: 14px">{{
-            item.dateTime
-          }}</span>
+          item.dateTime
+        }}</span>
         <el-divider></el-divider>
       </div>
     </el-card>

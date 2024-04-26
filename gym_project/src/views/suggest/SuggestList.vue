@@ -4,8 +4,8 @@
     <el-form :model="listParm" :inline="true" size="default">
       <el-form-item>
         <el-input
-            v-model="listParm.title"
-            placeholder="请输入反馈标题"
+          v-model="listParm.title"
+          placeholder="请输入反馈标题"
         ></el-input>
       </el-form-item>
       <el-form-item>
@@ -27,15 +27,15 @@
     </el-table>
     <!-- 分页 -->
     <el-pagination
-        @size-change="sizeChange"
-        @current-change="currentChange"
-        :current-page.sync="listParm.currentPage"
-        :page-sizes="[10,20, 40, 80, 100]"
-        :page-size="listParm.pageSize"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="listParm.total" background>
+      @size-change="sizeChange"
+      @current-change="currentChange"
+      :current-page.sync="listParm.currentPage"
+      :page-sizes="[10,20, 40, 80, 100]"
+      :page-size="listParm.pageSize"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="listParm.total" background>
     </el-pagination>
-
+    
     <!-- 新增编辑 -->
     <AddSuggest ref="addRef" @reFresh="reFresh"></AddSuggest>
   </el-main>

@@ -1,6 +1,7 @@
 import http from "@/http";
-import {MenuType} from "@/api/menu/MenuModel.ts";
-export const getParentApi =()=>{
+import { MenuType } from "./MenuModel";
+//查询上级菜单数据
+export const getParentApi = ()=>{
     return http.get("/api/menu/parent")
 }
 //新增

@@ -1,4 +1,4 @@
-import { GoodsParm } from "@/api/goods/GoodsModel";
+import { GoodsParm } from "@/api/goods/GoodsModels.ts";
 import { nextTick, onMounted, reactive, ref } from "vue";
 import { listApi } from "@/api/goods";
 export default function useTable(){

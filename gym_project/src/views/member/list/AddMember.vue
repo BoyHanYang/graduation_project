@@ -1,19 +1,19 @@
 <template>
   <SysDialog
-      :title="dialog.title"
-      :width="dialog.width"
-      :height="dialog.height"
-      :visible="dialog.visible"
-      @onClose="onClose"
-      @onConfirm="commit"
+    :title="dialog.title"
+    :width="dialog.width"
+    :height="dialog.height"
+    :visible="dialog.visible"
+    @onClose="onClose"
+    @onConfirm="commit"
   >
     <template v-slot:content>
       <el-form
-          :model="addModel"
-          ref="addRormRef"
-          :rules="rules"
-          label-width="80px"
-          size="default"
+        :model="addModel"
+        ref="addRormRef"
+        :rules="rules"
+        label-width="80px"
+        size="default"
       >
         <el-row>
           <el-col :span="12" :offset="0">
@@ -46,24 +46,26 @@
           <el-col :span="12" :offset="0">
             <el-form-item prop="birthday" label="生日">
               <el-date-picker
-                  v-model="addModel.birthday"
-                  type="date"
-                  placeholder="请选择生日"
-                  size="default"
-                  value-format="YYYY-MM-DD"
-                  format="YYYY-MM-DD"
+                style="width:100%"
+                v-model="addModel.birthday"
+                type="date"
+                placeholder="请选择生日"
+                size="default"
+                value-format="YYYY-MM-DD"
+                format="YYYY-MM-DD"
               />
             </el-form-item>
           </el-col>
           <el-col :span="12" :offset="0">
             <el-form-item prop="joinTime" label="加入时间">
               <el-date-picker
-                  v-model="addModel.joinTime"
-                  type="date"
-                  placeholder="请选择加入时间"
-                  size="default"
-                  format="YYYY-MM-DD"
-                  value-format="YYYY-MM-DD"
+                style="width:100%"
+                v-model="addModel.joinTime"
+                type="date"
+                placeholder="请选择加入时间"
+                size="default"
+                format="YYYY-MM-DD"
+                value-format="YYYY-MM-DD"
               />
             </el-form-item>
           </el-col>
@@ -96,10 +98,10 @@
                 size="default"
               >
                 <el-option
-                    v-for="item in roleData.list"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value"
+                  v-for="item in roleData.list"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
                 />
               </el-select>
             </el-form-item>
@@ -155,8 +157,8 @@ const show = async(type: string, row?: MemberType) => {
   dialog.width = 720;
   dialog.height = 350;
   type == EditType.ADD
-      ? (dialog.title = Title.ADD)
-      : (dialog.title = Title.EDIT);
+    ? (dialog.title = Title.ADD)
+    : (dialog.title = Title.EDIT);
   if (EditType.EDIT == type) {
     nextTick(() => {
       global.$objCoppy(row, addModel);

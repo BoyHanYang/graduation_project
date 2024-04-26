@@ -1,5 +1,5 @@
 import { nextTick, onMounted, reactive, ref } from "vue";
-import { MyCourseListParm } from '@/api/course/CourseModel.ts'
+import { MyCourseListParm } from '@/api/course/CourseModel'
 import { getMyCourseListApi } from "@/api/course";
 import { userStore } from "@/store/user";
 export default function useMyCourseTable(){

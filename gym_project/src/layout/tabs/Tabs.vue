@@ -1,19 +1,18 @@
 <template>
   <el-tabs
-      v-model="activeTab"
-      type="card"
-      class="demo-tabs"
-      closable
-      @tab-remove="removeTab"
-      @tab-click="clickBtn"
+    v-model="activeTab"
+    type="card"
+    class="demo-tabs"
+    closable
+    @tab-remove="removeTab"
+    @tab-click="clickBtn"
   >
     <el-tab-pane
-        v-for="item in tabList"
-        :key="item.path"
-        :label="item.title"
-        :name="item.path"
+      v-for="item in tabsList"
+      :key="item.path"
+      :label="item.title"
+      :name="item.path"
     >
-      {{ item.content }}
     </el-tab-pane>
   </el-tabs>
 </template>
@@ -90,28 +89,27 @@ const clickBtn = (tab: TabsPaneContext) => {
   //路由跳转
   router.push({ path: props.name as string });
 };
-/*
-// 解决数据刷新丢失的问题
-const beforeRefresh = () => {
-  window.addEventListener("beforeunload", () => {
-    sessionStorage.setItem('tabsView', JSON.stringify(tabList.value));
-  });
-  let tabSession = sessionStorage.getItem('tabsView')
-  if (tabSession) {
-    let oldTabs = JSON.parse(tabSession)
-    if (oldTabs.length > 0) {
-      store.tabList = oldTabs
-    }
-  }
-};
-*/
 
+//解决刷新数据丢失的问题
+// const beforeRefresh = () => {
+//   window.addEventListener("beforeunload", () => {
+//     sessionStorage.setItem("tabsView", JSON.stringify(tabsList.value));
+//   });
+//   let tabSession = sessionStorage.getItem("tabsView");
+//   if (tabSession) {
+//     let oldTabs = JSON.parse(tabSession);
+//     if (oldTabs.length > 0) {
+//       store.tabList = oldTabs;
+//     }
+//   }
+// };
 onMounted(() => {
   // beforeRefresh();
   setActiveTab();
   addTab();
 });
 </script>
+
 
 <style scoped lang="scss">
 :deep(.el-tabs__header) {

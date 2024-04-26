@@ -1,7 +1,7 @@
 <template>
   <el-main>
     <!--搜索栏 -->
-    <el-form :model="listParm" :inline="true" size="default">
+    <el-form v-if="store.getUserTyp != '1'" :model="listParm" :inline="true" size="default">
       <el-form-item>
         <el-input v-model="listParm.name" placeholder="请输入姓名"></el-input>
       </el-form-item>
@@ -10,8 +10,8 @@
       </el-form-item>
       <el-form-item>
         <el-input
-            v-model="listParm.username"
-            placeholder="请输入会员卡号"
+          v-model="listParm.username"
+          placeholder="请输入会员卡号"
         ></el-input>
       </el-form-item>
       <el-form-item>
@@ -30,15 +30,15 @@
     </el-form>
     <!-- 表格 -->
     <el-table :height="tableHeight" :data="tableList.list" border stripe>
-      <el-table-column prop="username" width="150" label="会员卡号"></el-table-column>
+      <el-table-column prop="username" label="会员卡号"></el-table-column>
       <el-table-column prop="name" label="姓名"></el-table-column>
       <el-table-column prop="cardType" label="会员类型"></el-table-column>
       <el-table-column prop="price" label="会员价格"></el-table-column>
       <el-table-column prop="money" label="充值金额"></el-table-column>
       <el-table-column
-          prop="endTime"
-          width="150"
-          label="到期时间"
+        prop="endTime"
+        width="150"
+        label="到期时间"
       ></el-table-column>
       <el-table-column prop="sex" label="性别">
         <template #default="scope">
@@ -114,7 +114,6 @@
               </template>
             </el-dropdown>
           </el-button>
-
         </template>
       </el-table-column>
     </el-table>
@@ -133,9 +132,9 @@
 
     <!-- 新增、编辑 -->
     <AddMember ref="addRef" @refresh="refresh"></AddMember>
-    <!-- 办卡弹框 -->
+    <!-- 办卡 -->
     <JoinApply ref="joinRef" @refresh="refresh"></JoinApply>
-    <!-- 充值弹框 -->
+    <!-- 充值 -->
     <Recharge ref="rechargeRef" @refresh="refresh"></Recharge>
   </el-main>
 </template>

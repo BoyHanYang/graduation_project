@@ -1,19 +1,19 @@
 <template>
   <SysDialog
-      :title="dialog.title"
-      :width="dialog.width"
-      :height="dialog.height"
-      :visible="dialog.visible"
-      @onClose="onClose"
-      @onConfirm="commit"
+    :title="dialog.title"
+    :width="dialog.width"
+    :height="dialog.height"
+    :visible="dialog.visible"
+    @onClose="onClose"
+    @onConfirm="commit"
   >
     <template v-slot:content>
       <el-form
-          :model="addModel"
-          ref="addFormRef"
-          :rules="rules"
-          label-width="80px"
-          size="default"
+        :model="addModel"
+        ref="addFormRef"
+        :rules="rules"
+        label-width="80px"
+        size="default"
       >
         <el-row>
           <el-col :span="24" :offset="0">
@@ -64,7 +64,7 @@ import SysDialog from "@/components/SysDialog.vue";
 import useDialog from "@/hooks/useDialog";
 import { CardType } from "@/api/member_card/MemberModel";
 import { nextTick, reactive, ref } from "vue";
-import { addApi,editApi } from "@/api/member_card/index.ts";
+import { addApi,editApi } from "@/api/member_card/index";
 import { ElMessage, FormInstance } from "element-plus";
 import { EditType, Title } from "@/type/BaseEnum";
 import useInstance from "@/hooks/useInstance";
@@ -77,8 +77,8 @@ const { dialog, onClose, onConfirm, onShow } = useDialog();
 const show = (type: string, row?: CardType) => {
   dialog.height = 200;
   type == EditType.ADD
-      ? (dialog.title = Title.ADD)
-      : (dialog.title = Title.EDIT);
+    ? (dialog.title = Title.ADD)
+    : (dialog.title = Title.EDIT);
   if (type == EditType.EDIT) {
     //把要编辑的数据复制到表单对象
     nextTick(() => {

@@ -8,10 +8,10 @@
       <el-form-item>
         <el-button :icon="Search" @click="searchBtn">搜索</el-button>
         <el-button :icon="Close" type="danger" plain @click="resetBtn"
-        >重置</el-button
+          >重置</el-button
         >
-        <el-button :icon="Plus" type="primary" @click="addBtn"
-        >新增</el-button
+        <el-button v-permission="['sys:memberRoot:add']" :icon="Plus" type="primary" @click="addBtn"
+          >新增</el-button
         >
       </el-form-item>
     </el-form>
@@ -22,13 +22,13 @@
         <template #default="scope">
           <el-tag v-if="scope.row.cardType == '1'" size="default">天卡</el-tag>
           <el-tag v-if="scope.row.cardType == '2'" type="success" size="default"
-          >周卡</el-tag
+            >周卡</el-tag
           >
           <el-tag v-if="scope.row.cardType == '3'" type="danger" size="default"
-          >月卡</el-tag
+            >月卡</el-tag
           >
           <el-tag v-if="scope.row.cardType == '4'" type="danger" size="default"
-          >年卡</el-tag
+            >年卡</el-tag
           >
         </template>
       </el-table-column>
@@ -36,28 +36,28 @@
       <el-table-column prop="price" label="价格(元)"></el-table-column>
       <el-table-column prop="status" label="状态">
         <template #default="scope">
-          <el-tag v-if="scope.row.status == '1'" type="success" size="default">启用</el-tag>
-          <el-tag v-if="scope.row.status == '0'" type="danger" size="default">停用</el-tag>
+            <el-tag v-if="scope.row.status == '1'" type="success" size="default">启用</el-tag>
+            <el-tag v-if="scope.row.status == '0'" type="danger" size="default">停用</el-tag>
         </template>
       </el-table-column>
       <el-table-column  label="操作" align="center" width="220">
         <template #default="scope">
-          <el-button type="primary" :icon="Edit" size="default" @click="editBtn(scope.row)">编辑</el-button>
-          <el-button type="danger" :icon="Delete" size="default" @click="deleteBtn(scope.row)">删除</el-button>
+          <el-button v-permission="['sys:memberRoot:edit']" type="primary" :icon="Edit" size="default" @click="editBtn(scope.row)">编辑</el-button>
+          <el-button v-permission="['sys:memberRoot:delete']" type="danger" :icon="Delete" size="default" @click="deleteBtn(scope.row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
     <!-- 分页 -->
     <el-pagination
-        @size-change="sizeChange"
-        @current-change="currentChange"
-        :current-page.sync="listParm.currentPage"
-        :page-sizes="[10,20, 40, 80, 100]"
-        :page-size="listParm.pageSize"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="listParm.total" background>
+      @size-change="sizeChange"
+      @current-change="currentChange"
+      :current-page.sync="listParm.currentPage"
+      :page-sizes="[10,20, 40, 80, 100]"
+      :page-size="listParm.pageSize"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="listParm.total" background>
     </el-pagination>
-
+    
     <!-- 新增、编辑 -->
     <AddCard ref="addRef" @refresh="refresh"></AddCard>
   </el-main>
@@ -66,8 +66,8 @@
 <script setup lang="ts">
 import AddCard from "./AddCard.vue";
 import { Plus, Edit, Delete, Search, Close } from "@element-plus/icons-vue";
-import useMemberTable from "@/composables/member_card/useMemberTable.ts";
-import useMember from "@/composables/member_card/useMember.ts";
+import useMemberTable from "@/composables/member_card/useMemberTable";
+import useMember from "@/composables/member_card/useMember";
 //表格操作
 const { listParm, getList, resetBtn, searchBtn,tableList,sizeChange,currentChange,tableHeight,refresh } = useMemberTable();
 //新增、编辑

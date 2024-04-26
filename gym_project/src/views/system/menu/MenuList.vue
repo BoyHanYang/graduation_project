@@ -3,34 +3,34 @@
     <!--新增 -->
     <div style="display: flex; align-items: center">
       <el-button
-          v-permission="['sys:menu:add']"
-          style="margin-bottom: 10px"
-          type="primary"
-          :icon="Plus"
-          size="default"
-          @click="addBtn"
-      >新增</el-button
+        v-permission="['sys:menu:add']"
+        style="margin-bottom: 10px"
+        type="primary"
+        :icon="Plus"
+        size="default"
+        @click="addBtn"
+        >新增</el-button
       >
     </div>
     <!-- 表格数据 -->
     <el-table
-        :height="tableHeight"
-        :data="tableList.list"
-        row-key="menuId"
-        :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
-        border
-        default-expand-all
-        stripe
+      :height="tableHeight"
+      :data="tableList.list"
+      row-key="menuId"
+      :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
+      border
+      default-expand-all
+      stripe
     >
       <el-table-column prop="title" label="菜单名称"></el-table-column>
       <el-table-column prop="type" label="类型">
         <template #default="scope">
           <el-tag v-if="scope.row.type == '0'" size="default">目录</el-tag>
           <el-tag v-if="scope.row.type == '1'" type="success" size="default"
-          >菜单</el-tag
+            >菜单</el-tag
           >
           <el-tag v-if="scope.row.type == '2'" type="danger" size="default"
-          >按钮</el-tag
+            >按钮</el-tag
           >
         </template>
       </el-table-column>
@@ -49,20 +49,20 @@
       <el-table-column label="操作" width="220" align="center">
         <template #default="scope">
           <el-button
-              v-permission="['sys:menu:edit']"
-              type="success"
-              :icon="Edit"
-              size="default"
-              @click="editBtn(scope.row)"
-          >编辑</el-button
+          v-permission="['sys:menu:edit']"
+            type="success"
+            :icon="Edit"
+            size="default"
+            @click="editBtn(scope.row)"
+            >编辑</el-button
           >
           <el-button
-              v-permission="['sys:menu:delete']"
-              type="danger"
-              :icon="Delete"
-              size="default"
-              @click="deleteBtn(scope.row)"
-          >删除</el-button
+          v-permission="['sys:menu:delete']"
+            type="danger"
+            :icon="Delete"
+            size="default"
+            @click="deleteBtn(scope.row)"
+            >删除</el-button
           >
         </template>
       </el-table-column>

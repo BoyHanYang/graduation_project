@@ -2,9 +2,9 @@ import { CardType } from "@/api/member_card/MemberModel"
 import { EditType } from "@/type/BaseEnum"
 import { ref } from "vue"
 import useInstance from "@/hooks/useInstance";
-import { deleteApi } from "@/api/member_card/index.ts";
+import { deleteApi } from "@/api/member_card/index";
 import { ElMessage } from "element-plus";
-import { FuncList } from "@/type/BaseType.ts";
+import { FuncList } from "@/type/BaseType";
 export default function useMember(getList:FuncList){
     const { global } = useInstance();
     //弹框ref属性

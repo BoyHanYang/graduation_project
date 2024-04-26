@@ -1,13 +1,14 @@
 <template>
   <el-dialog
-      :title="title"
-      :model-value="visible"
-      :before-close="onClose"
-      append-to-body
-      :width="width + 'px'"
-      :close-on-click-modal="false"
+    :model-value="visible"
+    :title="title"
+    :width="width + 'px'"
+    :before-close="onClose"
+    append-to-body
+    :close-on-click-modal="false"
   >
     <div class="container" :style="{ height: height + 'px' }">
+      <!-- 内容展示：插槽方式显示 -->
       <slot name="content"></slot>
     </div>
     <template #footer>
@@ -18,6 +19,7 @@
     </template>
   </el-dialog>
 </template>
+
 <script setup lang="ts">
 //定义弹框参数类型
 interface DialogProps {
@@ -26,11 +28,13 @@ interface DialogProps {
   width: number;
   height: number;
 }
+//接收父组件传递数据
+//withDefaults:设置参数默认值
 const props = withDefaults(defineProps<DialogProps>(), {
-  title: '标题',
-  visible:false,
-  width:630,
-  height:280
+  title: "标题",
+  visible: false,
+  height: 250,
+  width: 630,
 });
 //注册事件
 const emit = defineEmits(['onClose','onConfirm'])
@@ -38,11 +42,10 @@ const emit = defineEmits(['onClose','onConfirm'])
 const onClose = () => {
     emit('onClose')
 };
-//定义弹框的确定
+//弹框确定
 const onConfirm = () => {
     emit('onConfirm')
 };
-
 </script>
 <style lang="scss" scope>
 .container {

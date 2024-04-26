@@ -55,15 +55,16 @@ export default function useChildDrawer() {
     const selectGoods = reactive<AddCar>({
         list: []
     })
-    //加入购物车按钮
-    const addCarBtn = (row: GoodsType) => {
-        row.num = 1;
+     //加入购物车按钮
+     const addCarBtn = (row: GoodsType) => {
         //判断商品是否已经加入购物车
         const flag = selectGoods.list.some(item => item.goodsId === row.goodsId)
         if (flag) {
             ElMessage.warning('该商品已经添加到购物车!');
             return;
         }
+        //设置默认数量是1
+        row.num = 1;
         selectGoods.list.push(row)
         ElMessage.success('加入成功!');
     }

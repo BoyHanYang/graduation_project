@@ -1,19 +1,19 @@
 <template>
   <SysDialog
-      :title="dialog.title"
-      :height="dialog.height"
-      :width="dialog.width"
-      :visible="dialog.visible"
-      @onClose="onClose"
-      @onConfirm="commit"
+    :title="dialog.title"
+    :height="dialog.height"
+    :width="dialog.width"
+    :visible="dialog.visible"
+    @onClose="onClose"
+    @onConfirm="commit"
   >
     <template v-slot:content>
       <el-form
-          :model="addModel"
-          ref="addFormRef"
-          :rules="rules"
-          label-width="80px"
-          size="default"
+        :model="addModel"
+        ref="addFormRef"
+        :rules="rules"
+        label-width="80px"
+        size="default"
       >
         <el-row>
           <el-col :span="12" :offset="0">
@@ -61,16 +61,16 @@
           <el-col :span="12" :offset="0">
             <el-form-item prop="roleId" label="角色">
               <el-select
-                  v-model="addModel.roleId"
-                  class="m-2"
-                  placeholder="请选择角色"
-                  size="default"
+                v-model="addModel.roleId"
+                class="m-2"
+                placeholder="请选择角色"
+                size="default"
               >
                 <el-option
-                    v-for="item in roleData.list"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value"
+                  v-for="item in roleData.list"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
                 />
               </el-select>
             </el-form-item>
@@ -128,8 +128,8 @@ const show = async (type: string, row?: AddUserModel) => {
   await listRole();
   await getRole(row!?.userId);
   type == EditType.ADD
-      ? dialog.title = Title.ADD
-      : dialog.title = Title.EDIT;
+    ? (dialog.title = Title.ADD)
+    : (dialog.title = Title.EDIT);
   if (type == EditType.EDIT) {
     //回显数据
     nextTick(() => {

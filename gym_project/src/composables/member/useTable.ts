@@ -1,8 +1,7 @@
 import { MemberParm } from "@/api/member/MemberModel";
 import { nextTick, onMounted, reactive, ref } from "vue";
 import { getListApi } from "@/api/member";
-import {userStore} from "@/store/user";
-
+import { userStore } from "@/store/user";
 export default function useTable() {
     const store = userStore()
     //表格高度
@@ -11,7 +10,6 @@ export default function useTable() {
     const tableList = reactive({
         list:[]
     })
-    //参数列表
     //参数列表
     const listParm = reactive<MemberParm>({
         name: '',

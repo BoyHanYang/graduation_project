@@ -1,12 +1,12 @@
 <template>
   <menu-logo :isCollapsed="isCollapse"></menu-logo>
   <el-menu
-      :collapse="isCollapse"
-      :default-active="activeIndex"
-      class="el-menu-vertical-demo"
-      unique-opened
-      background-color="#304156"
-      router
+    :collapse="isCollapse"
+    :default-active="activeIndex"
+    class="el-menu-vertical-demo"
+    unique-opened
+    background-color="#304156"
+    router
   >
     <menu-item :menuList="menuList"></menu-item>
   </el-menu>

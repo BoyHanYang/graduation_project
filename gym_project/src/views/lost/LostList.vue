@@ -8,7 +8,7 @@
       <el-form-item>
         <el-button :icon="Search" @click="searchBtn">搜索</el-button>
         <el-button type="danger" plain :icon="Close" @click="resetBtn"
-        >重置</el-button
+          >重置</el-button
         >
         <el-button v-permission="['sys:lostList:add']" :icon="Plus" type="primary" @click="addBtn">新增</el-button>
       </el-form-item>
@@ -23,8 +23,8 @@
       <el-table-column prop="lostPerson" label="认领人"></el-table-column>
       <el-table-column prop="status" label="认领状态">
         <template #default="scope">
-          <el-tag v-if="scope.row.status == '1'" type="success" size="default">已认领</el-tag>
-          <el-tag v-if="scope.row.status == '0'" type="danger" size="default">未认领</el-tag>
+            <el-tag v-if="scope.row.status == '1'" type="success" size="default">已认领</el-tag>
+            <el-tag v-if="scope.row.status == '0'" type="danger" size="default">未认领</el-tag>
         </template>
       </el-table-column>
       <el-table-column v-if="global.$checkPermission(['sys:lostList:edit','sys:lostList:delete','sys:lostList:get'])" label="操作" align="center" width="290">
@@ -37,15 +37,15 @@
     </el-table>
     <!-- 分页 -->
     <el-pagination
-        @size-change="sizeChange"
-        @current-change="currentChange"
-        :current-page.sync="listParm.currentPage"
-        :page-sizes="[10,20, 40, 80, 100]"
-        :page-size="listParm.pageSize"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="listParm.total" background>
+      @size-change="sizeChange"
+      @current-change="currentChange"
+      :current-page.sync="listParm.currentPage"
+      :page-sizes="[10,20, 40, 80, 100]"
+      :page-size="listParm.pageSize"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="listParm.total" background>
     </el-pagination>
-
+    
     <!-- 新增编辑 -->
     <AddLost ref="addRef" @reFresh="reFresh"></AddLost>
     <!-- 认领弹框 -->

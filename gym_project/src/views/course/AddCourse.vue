@@ -1,19 +1,19 @@
 <template>
   <SysDialog
-      :title="dialog.title"
-      :height="dialog.height"
-      :width="dialog.width"
-      :visible="dialog.visible"
-      @onClose="onClose"
-      @onConfirm="commit"
+    :title="dialog.title"
+    :height="dialog.height"
+    :width="dialog.width"
+    :visible="dialog.visible"
+    @onClose="onClose"
+    @onConfirm="commit"
   >
     <template v-slot:content>
       <el-form
-          :model="addModel"
-          ref="addFormRef"
-          :rules="rules"
-          label-width="80px"
-          size="default"
+        :model="addModel"
+        ref="addFormRef"
+        :rules="rules"
+        label-width="80px"
+        size="default"
       >
         <el-row>
           <el-col :span="12" :offset="0">
@@ -129,9 +129,8 @@ import useUpload from "@/composables/course/useUpload";
 import useEditor from "@/composables/course/useEditor";
 import useSelectTeacher from "@/composables/course/useSelectTeacher";
 import { EditType, Title } from "@/type/BaseEnum";
-import { addApi,editApi } from "@/api/course/index";
+import { addApi, editApi } from "@/api/course/index";
 import useInstance from "@/hooks/useInstance";
-import type { UploadFile } from "element-plus";
 const { global } = useInstance();
 //表单的ref属性
 const addFormRef = ref<FormInstance>();
@@ -162,13 +161,14 @@ const {
 } = useEditor();
 //显示弹框
 const show = async (type: string, row?: CourseType) => {
-  fileList.value = []
+  //清空图片数据
+  fileList.value = [];
   //获取教练数据列表
   await listTeacher();
   //弹框属性
   type == EditType.ADD
-      ? (dialog.title = Title.ADD)
-      : (dialog.title = Title.EDIT);
+    ? (dialog.title = Title.ADD)
+    : (dialog.title = Title.EDIT);
   dialog.width = 900;
   dialog.height = 500;
   //清空图片和文本编辑器
@@ -184,14 +184,14 @@ const show = async (type: string, row?: CourseType) => {
     }
   }
   addModel.courseDetails = "";
-  //编辑
+  //编辑数据回显
   if (type == EditType.EDIT) {
     nextTick(() => {
-      //设置编辑的数据到表单绑定的数据对象
+      //把要编辑的数据复制到表单绑定的对象
       global.$objCoppy(row, addModel);
-      //文本编辑器数据回显
+      //文本编辑器的回显
       valueHtml.value = addModel.courseDetails;
-      //封面图回显
+      //图片回显
       if (row?.image) {
         //图片回显
         let img = {

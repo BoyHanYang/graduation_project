@@ -12,20 +12,20 @@
   </el-dropdown>
   <!-- 修改密码弹框 -->
   <SysDialog
-      :title="dialog.title"
-      :width="dialog.width"
-      :height="dialog.height"
-      :visible="dialog.visible"
-      @onClose="onClose"
-      @onConfirm="commit"
+    :title="dialog.title"
+    :width="dialog.width"
+    :height="dialog.height"
+    :visible="dialog.visible"
+    @onClose="onClose"
+    @onConfirm="commit"
   >
     <template v-slot:content>
       <el-form
-          :model="parm"
-          ref="upForm"
-          :rules="rules"
-          label-width="80px"
-          size="default"
+        :model="parm"
+        ref="upForm"
+        :rules="rules"
+        label-width="80px"
+        size="default"
       >
         <el-form-item prop="oldPassword" label="原密码">
           <el-input v-model="parm.oldPassword"></el-input>
@@ -47,6 +47,7 @@ import { userStore } from "@/store/user";
 import { ElMessage, FormInstance } from "element-plus";
 import { reactive, ref } from "vue";
 import { updatePasswordApi } from "@/api/home";
+import { loginOutApi } from "@/api/home";
 const { dialog, onClose, onConfirm, onShow } = useDialog();
 const { global } = useInstance();
 const upForm = ref<FormInstance>();

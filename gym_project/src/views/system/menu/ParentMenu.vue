@@ -1,31 +1,31 @@
 <template>
   <SysDialog
-      :title="dialog.title"
-      :height="dialog.height"
-      :width="dialog.width"
-      :visible="dialog.visible"
-      @onClose="onClose"
-      @onConfirm="confirm"
+    :title="dialog.title"
+    :height="dialog.height"
+    :width="dialog.width"
+    :visible="dialog.visible"
+    @onClose="onClose"
+    @onConfirm="confirm"
   >
     <template v-slot:content>
       <el-tree
-          ref="parentTree"
-          :data="treeData.list"
-          node-key="menuId"
-          :props="defaultProps"
-          empty-text="暂无数据"
-          default-expand-all
-          :show-checkbox="false"
-          :expand-on-click-node="false"
-          :highlight-current="true"
-          @node-click="handleNodeClick"
+        ref="parentTree"
+        :data="treeData.list"
+        node-key="menuId"
+        :props="defaultProps"
+        empty-text="暂无数据"
+        default-expand-all
+        :show-checkbox="false"
+        :expand-on-click-node="false"
+        :highlight-current="true"
+        @node-click="handleNodeClick"
       >
-        <template #default="{ node, data }">
+      <template #default="{ node, data }">
           <div class="custom-tree-container">
             <!-- 长度为0说明没有下级 -->
             <span v-if="data.children.length == 0">
               <DocumentRemove
-                  style="
+                style="
                   width: 1.3em;
                   height: 1.3em;
                   margin-right: 5px;
@@ -36,13 +36,13 @@
             <!-- 点击展开和关闭 -->
             <span v-else @click.stop="openBtn(data)">
               <component
-                  style="
+                style="
                   width: 1.1em;
                   height: 1.1em;
                   margin-right: 5px;
                   color: #8c8c8c;
                 "
-                  :is="data.open ? Plus : Minus"
+                :is="data.open ? Plus : Minus"
               />
             </span>
             <span>{{ node.label }}</span>

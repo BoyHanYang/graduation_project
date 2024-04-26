@@ -1,3 +1,12 @@
+//定义角色数据类型
+export type RoleType = {
+    value: string,
+    label: string
+}
+
+export type SelectRole = {
+    list: RoleType[]
+}
 //列表查询参数类型
 export type ListParm = {
     phone: string,
@@ -20,12 +29,4 @@ export type AddUserModel = {
     status: string,
     salary: string,
     nickName: string
-}
-//定义角色类型
-export type RoleType = {
-    value: string,
-    label: string
-}
-export type SelectRole = {
-    list: RoleType[]
 }

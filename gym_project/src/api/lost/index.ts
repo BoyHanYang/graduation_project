@@ -1,5 +1,5 @@
 import http from "@/http";
-import { LostType ,LostParm} from "./LostModel";
+import { LostParm, LostType } from "./LostModel";
 //新增
 export const addApi = (parm:LostType)=>{
     return http.post('/api/lost',parm)

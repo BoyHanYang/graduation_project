@@ -1,4 +1,4 @@
-//登录参数类型
+//登录的参数类型
 export type LoginParm = {
     username:string,
     password:string,

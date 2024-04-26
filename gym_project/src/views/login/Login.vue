@@ -1,37 +1,37 @@
 <template>
   <div class="logincontainer">
     <el-form
-        :model="loginModel"
-        class="loginform"
-        ref="loginRef"
-        :rules="rules"
-        size="default"
+      :model="loginModel"
+      class="loginform"
+      ref="loginRef"
+      :rules="rules"
+      size="default"
     >
       <el-form-item>
         <div class="logintitle">系统登录</div>
       </el-form-item>
       <el-form-item prop="username">
         <el-input
-            size="large"
-            v-model="loginModel.username"
-            placeholder="请输入账户"
+          size="large"
+          v-model="loginModel.username"
+          placeholder="请输入账户"
         ></el-input>
       </el-form-item>
       <el-form-item prop="password">
         <el-input
-            type="password"
-            size="large"
-            v-model="loginModel.password"
-            placeholder="请输入密码"
+          type="password"
+          size="large"
+          v-model="loginModel.password"
+          placeholder="请输入密码"
         ></el-input>
       </el-form-item>
       <el-form-item prop="code">
         <el-row :gutter="20">
           <el-col :span="16" :offset="0">
             <el-input
-                size="large"
-                v-model="loginModel.code"
-                placeholder="请输入验证码"
+              size="large"
+              v-model="loginModel.code"
+              placeholder="请输入验证码"
             ></el-input>
           </el-col>
           <el-col :span="8" :offset="0">
@@ -48,25 +48,25 @@
       <el-form-item>
         <el-row style="width: 100%">
           <el-col
-              :span="12"
-              :offset="0"
-              style="padding-right: 10px; padding-left: 0px"
+            :span="12"
+            :offset="0"
+            style="padding-right: 10px; padding-left: 0px"
           >
             <el-button
-                size="large"
-                style="width: 100%"
-                type="primary"
-                @click="onSubmit"
-            >登录</el-button
+              size="large"
+              style="width: 100%"
+              type="primary"
+              @click="onSubmit"
+              >登录</el-button
             >
           </el-col>
           <el-col
-              :span="12"
-              :offset="0"
-              style="padding-right: 0px; padding-left: 10px"
+            :span="12"
+            :offset="0"
+            style="padding-right: 0px; padding-left: 10px"
           >
             <el-button size="large" style="width: 100%" type="danger" plain
-            >重置</el-button
+              >重置</el-button
             >
           </el-col>
         </el-row>

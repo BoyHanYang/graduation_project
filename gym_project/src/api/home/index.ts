@@ -1,5 +1,5 @@
 import http from "@/http";
-import {ResetPasswordParm} from "@/api/home/HomeModel.ts";
+import { ResetPasswordParm } from "./HomeModel";
 //总数统计
 export const getTotalApi = ()=>{
     return http.get("/api/home/getTotal")

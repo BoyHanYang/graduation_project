@@ -1,4 +1,4 @@
-import {GoodsParm,GoodsType} from "@/api/goods/GoodsModels.ts";
+import { GoodsParm, GoodsType } from "./GoodsModels.ts"
 import http from "@/http"
 //新增
 export const addApi = (parm:GoodsType)=>{

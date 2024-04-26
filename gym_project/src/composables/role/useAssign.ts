@@ -1,6 +1,6 @@
-import { getMenuTreeApi } from "@/api/role";
-import { AssignParm } from "@/api/role/RoleModel";
-import { reactive } from "vue";
+import { getMenuTreeApi } from "@/api/role"
+import { AssignParm } from "@/api/role/RoleModel"
+import { reactive } from "vue"
 export default function useAssign() {
     //定义树的属性
     const defaultProps = {
@@ -12,7 +12,7 @@ export default function useAssign() {
         list: [],
         assignTreeChecked: [] //原来分配的权限id的集合
     })
-    //获取权限树数据
+    //获取树的数据
     const getMenuTree = async (parm: AssignParm) => {
         assignTreeData.list = [];
         assignTreeData.assignTreeChecked = []
@@ -46,9 +46,9 @@ export default function useAssign() {
             }
         })
     }
-    return{
+    return {
         defaultProps,
-        assignTreeData,
-        getMenuTree
+        getMenuTree,
+        assignTreeData
     }
 }

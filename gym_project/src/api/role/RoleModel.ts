@@ -1,6 +1,6 @@
-// 角色数据类型
-export type AddRoleModel={
-    type:string,
+//定义角色的数据类型
+export type AddRoleModel = {
+    type:string, // 新增：0  编辑：1
     roleId:string,
     roleName:string,
     remark:string

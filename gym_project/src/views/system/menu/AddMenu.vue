@@ -1,19 +1,19 @@
 <template>
   <SysDialog
-      :title="dialog.title"
-      :height="dialog.height"
-      :width="dialog.width"
-      :visible="dialog.visible"
-      @onClose="onClose"
-      @onConfirm="commit"
+    :title="dialog.title"
+    :height="dialog.height"
+    :width="dialog.width"
+    :visible="dialog.visible"
+    @onClose="onClose"
+    @onConfirm="commit"
   >
     <template v-slot:content>
       <el-form
-          :model="addModel"
-          ref="addFormRef"
-          :rules="rules"
-          label-width="80px"
-          size="default"
+        :model="addModel"
+        ref="addFormRef"
+        :rules="rules"
+        label-width="80px"
+        size="default"
       >
         <el-form-item prop="type" label="菜单类型">
           <el-radio-group v-model="addModel.type">
@@ -27,9 +27,9 @@
             <el-form-item label="上级菜单" prop="parentName">
               <el-input type="hidden" v-model="addModel.parentId"></el-input>
               <el-input
-                  @click="selectOpen"
-                  readonly
-                  v-model="addModel.parentName"
+                @click="selectOpen"
+                readonly
+                v-model="addModel.parentName"
               ></el-input>
             </el-form-item>
           </el-col>
@@ -101,8 +101,8 @@ const { dialog, onClose, onConfirm, onShow } = useDialog();
 const show = (type: string, row?: MenuType) => {
   dialog.width = 680;
   type == EditType.ADD
-      ? (dialog.title = Title.ADD)
-      : (dialog.title = Title.EDIT);
+    ? (dialog.title = Title.ADD)
+    : (dialog.title = Title.EDIT);
   if (type == EditType.EDIT) {
     //把要编辑的数据设置到表单绑定的对象里面
     nextTick(() => {

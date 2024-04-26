@@ -1,19 +1,19 @@
 <template>
   <sys-dialog
-      :title="dialog.title"
-      :width="dialog.width"
-      :height="dialog.height"
-      :visible="dialog.visible"
-      @onClose="onClose"
-      @onConfirm="commit"
+    :title="dialog.title"
+    :width="dialog.width"
+    :height="dialog.height"
+    :visible="dialog.visible"
+    @onClose="onClose"
+    @onConfirm="commit"
   >
     <template v-slot:content>
       <el-form
-          :model="addModel"
-          ref="addFormRef"
-          :rules="rules"
-          label-width="80px"
-          size="default"
+        :model="addModel"
+        ref="addFormRef"
+        :rules="rules"
+        label-width="80px"
+        size="default"
       >
         <!-- el-row代表一行，24等分，平均分为 12分 -->
         <el-row>
@@ -34,34 +34,34 @@
 </template>
 
 <script setup lang="ts">
+import { AddRoleModel } from "@/api/role/RoleModel";
 import SysDialog from "@/components/SysDialog.vue";
-import useDialog from "@/hooks/useDialog.ts";
-import {nextTick, reactive, ref} from "vue";
-import {ElMessage, FormInstance} from "element-plus";
-import {AddRoleModel} from "@/api/role/RoleModel.ts";
-import {addApi,editApi} from "@/api/role/index.ts"
-import {EditType,Title} from "@/type/BaseEnum.ts";
-import useInstance from "@/hooks/useInstance.ts";
+import useDialog from "@/hooks/useDialog";
+import { nextTick, reactive, ref } from "vue";
+import { ElMessage, FormInstance } from "element-plus";
+import { addApi, editApi } from "@/api/role/index";
+import { EditType, Title } from "@/type/BaseEnum";
+import useInstance from "@/hooks/useInstance";
 const { global } = useInstance();
-// 表单的ref属性
+//表单的ref属性
 const addFormRef = ref<FormInstance>();
+//定义表单绑定的属性
 const addModel = reactive<AddRoleModel>({
-  type:"",
-  roleId:"",
-  roleName:"",
-  remark:"",
+  type: "",
+  roleId: "",
+  roleName: "",
+  remark: "",
 });
 //弹框属性
 const { dialog, onClose, onConfirm } = useDialog();
-
 //定义show给父组件调用
 const show = (type: string, row?: AddRoleModel) => {
   dialog.height = 150;
   dialog.width = 630;
   //设置标题
   type == EditType.ADD
-      ? (dialog.title = Title.ADD)
-      : (dialog.title = Title.EDIT);
+    ? (dialog.title = Title.ADD)
+    : (dialog.title = Title.EDIT);
   //如果是编辑，需要回显数据
   if (type == EditType.EDIT) {
     nextTick(() => {
@@ -78,7 +78,7 @@ defineExpose({
   show,
 });
 
-// 表单验证规则
+//表单验证规则
 const rules = reactive({
   roleName: [
     {
@@ -113,6 +113,4 @@ const commit = () => {
 };
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

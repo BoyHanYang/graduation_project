@@ -1,25 +1,25 @@
 <template>
   <SysDialog
-      :title="dialog.title"
-      :height="dialog.height"
-      :width="dialog.width"
-      :visible="dialog.visible"
-      @onClose="onClose"
-      @onConfirm="commit"
+    :title="dialog.title"
+    :height="dialog.height"
+    :width="dialog.width"
+    :visible="dialog.visible"
+    @onClose="onClose"
+    @onConfirm="commit"
   >
     <template v-slot:content>
       <el-form
-          :model="lostPerson"
-          ref="lostRef"
-          :rules="rules"
-          label-width="80px"
-          :inline="false"
-          size="default"
+        :model="lostPerson"
+        ref="lostRef"
+        :rules="rules"
+        label-width="80px"
+        :inline="false"
+        size="default"
       >
         <el-form-item prop="lostPerson" label="认领人">
           <el-input
-              v-model="lostPerson.lostPerson"
-              placeholder="请输入认领人"
+            v-model="lostPerson.lostPerson"
+            placeholder="请输入认领人"
           />
         </el-form-item>
       </el-form>
@@ -75,12 +75,12 @@ const emiets = defineEmits(['reFresh'])
 const commit = () => {
   lostRef.value?.validate(async(valid) => {
     if(valid){
-      let res = await editApi(lostPerson)
-      if(res && res.code == 200){
-        ElMessage.success('认领成功')
-        emiets('reFresh')
-        onClose()
-      }
+        let res = await editApi(lostPerson)
+        if(res && res.code == 200){
+            ElMessage.success('认领成功')
+            emiets('reFresh')
+            onClose()
+        }
     }
   });
 };

@@ -1,12 +1,11 @@
 import { onMounted, ref } from "vue";
 import { getImageApi } from "@/api/login";
 export default function useImage(){
-    //定义图片src
+    //存放验证码
     const imgSrc = ref()
-    //获取图片验证码
+    //获取验证码
     const getImage = async()=>{
         let res = await getImageApi()
-        console.log(res)
         if(res && res.code == 200){
             imgSrc.value = res.data;
         }

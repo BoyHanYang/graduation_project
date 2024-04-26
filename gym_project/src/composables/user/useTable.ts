@@ -1,6 +1,6 @@
+import { ListParm } from "@/api/user/UserModel";
 import { nextTick, onMounted, reactive, ref } from "vue";
 import { getListApi } from "@/api/user";
-import {ListParm} from "@/api/user/UserModel.ts"
 export default function useTable() {
     //表格高度
     const tableHeight = ref(0)

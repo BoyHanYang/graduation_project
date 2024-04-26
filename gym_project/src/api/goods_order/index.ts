@@ -1,5 +1,5 @@
 import http from "@/http";
-import { OrderListParm } from '@/api/order/OrderModel.ts'
+import { OrderListParm } from '@/api/order/OrderModel'
 //下单
 export const downApi = (parm:any)=>{
     return http.post("/api/order/down",parm)

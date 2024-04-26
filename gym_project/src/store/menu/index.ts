@@ -48,14 +48,14 @@ export const menuStore = defineStore('menuStore', {
             })
         }
     },
-    /*persist: {
-        enabled: true, //开启持久化操作,默认全部字段存储，存储在sessionSotrage里面
-        strategies: [
-            { storage: localStorage, paths: ['menuList'] },
-        ],
-    }*/
+    // persist: {
+    //     enabled: true, //开启持久化操作,默认全部字段存储，存储在sessionSotrage里面
+    //     strategies: [
+    //         { storage: localStorage, paths: ['menuList'] },
+    //     ],
+    // }
 })
-// 动态生成路由
+//动态生成路由
 export function generateRoutes(routes: RouteRecordRaw[], router: any) {
     //定义接收生成的菜单
     const res: Array<RouteRecordRaw> = [];
