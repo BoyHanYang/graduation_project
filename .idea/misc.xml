@@ -5,7 +5,14 @@
     <option name="originalFiles">
       <list>
         <option value="$PROJECT_DIR$/gym-base-parent/pom.xml" />
+        <option value="$PROJECT_DIR$/gym-base-parent/gym-base-web/pom.xml" />
+        <option value="$PROJECT_DIR$/gym-base-parent/gym-base-common/pom.xml" />
       </list>
+    </option>
+    <option name="ignoredFiles">
+      <set>
+        <option value="$PROJECT_DIR$/gym-base-parent/test/pom.xml" />
+      </set>
     </option>
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_17_PREVIEW" project-jdk-name="17" project-jdk-type="JavaSDK">

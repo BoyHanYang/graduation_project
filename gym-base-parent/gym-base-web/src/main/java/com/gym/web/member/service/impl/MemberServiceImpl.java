@@ -1,7 +1,6 @@
 package com.gym.web.member.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.gym.web.member.entity.JoinParm;
 import com.gym.web.member.entity.Member;
@@ -18,6 +17,7 @@ import com.gym.web.member_role.entity.MemberRole;
 import com.gym.web.member_role.service.MemberRoleService;
 import com.gym.web.sys_user.entity.SysUser;
 import com.gym.web.sys_user.service.SysUserService;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

@@ -2,13 +2,13 @@ package com.gym.web.lost.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.gym.utils.ResultUtils;
 import com.gym.utils.ResultVo;
 import com.gym.web.lost.entity.Lost;
 import com.gym.web.lost.entity.LostParm;
 import com.gym.web.lost.service.LostService;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -35,8 +35,8 @@ public class LostController {
     }
 
     //编辑
-    @PutMapping
     @PreAuthorize("hasAuthority('sys:lostList:edit')")
+    @PutMapping
     public ResultVo edit(@RequestBody Lost lost){
         if(lostService.updateById(lost)){
             return ResultUtils.success("编辑成功!");
@@ -45,8 +45,8 @@ public class LostController {
     }
 
     //删除
-    @DeleteMapping("/{lostId}")
     @PreAuthorize("hasAuthority('sys:lostList:delete')")
+    @DeleteMapping("/{lostId}")
     public ResultVo delete(@PathVariable("lostId") Long lostId){
         if(lostService.removeById(lostId)){
             return ResultUtils.success("删除成功!");

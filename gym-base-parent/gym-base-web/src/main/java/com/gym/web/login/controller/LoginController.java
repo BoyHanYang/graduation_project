@@ -1,7 +1,5 @@
 package com.gym.web.login.controller;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.google.code.kaptcha.impl.DefaultKaptcha;
 import com.gym.jwt.JwtUtils;
 import com.gym.utils.ResultUtils;
@@ -19,6 +17,7 @@ import com.gym.web.sys_menu.service.SysMenuService;
 import com.gym.web.sys_menu.service.impl.SysMenuServiceImpl;
 import com.gym.web.sys_user.entity.SysUser;
 import com.gym.web.sys_user.service.SysUserService;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

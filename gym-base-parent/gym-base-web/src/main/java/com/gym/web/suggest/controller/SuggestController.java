@@ -2,13 +2,13 @@ package com.gym.web.suggest.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.gym.utils.ResultUtils;
 import com.gym.utils.ResultVo;
 import com.gym.web.suggest.entity.Suggest;
 import com.gym.web.suggest.entity.SuggestParm;
 import com.gym.web.suggest.service.SuggestService;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;

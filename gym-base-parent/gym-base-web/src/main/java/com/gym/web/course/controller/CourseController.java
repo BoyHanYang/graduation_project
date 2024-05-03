@@ -45,6 +45,7 @@ public class CourseController {
     @Autowired
     private MemberCourseService memberCourseService;
     // 新增
+    @PreAuthorize("hasAuthority('sys:courseList:add')")
     @PostMapping
     public ResultVo add(@RequestBody Course course){
         if (courseService.save(course)){
@@ -53,6 +54,7 @@ public class CourseController {
         return ResultUtils.error("新增失败");
     }
     // 编辑
+    @PreAuthorize("hasAuthority('sys:courseList:edit')")
     @PutMapping
     public ResultVo edit(@RequestBody Course course){
         if (courseService.updateById(course)){
@@ -61,6 +63,7 @@ public class CourseController {
         return ResultUtils.error("编辑失败");
     }
     // 删除
+    @PreAuthorize("hasAuthority('sys:courseList:delete')")
     @DeleteMapping("/{coureId}")
     public ResultVo delete(@PathVariable Long coureId){
         if (courseService.removeById(coureId)){
@@ -107,6 +110,7 @@ public class CourseController {
     }
     //我的课程列表
     @GetMapping("/getMyCourseList")
+    @PreAuthorize("hasAuthority('sys:mycourse:export')")
     public ResultVo getMyCourseList(PageParm pageParm){
         if(pageParm.getUserType().equals("1")){ //会员
             IPage<MemberCourse> page  = new Page<>(pageParm.getCurrentPage(),pageParm.getPageSize());
