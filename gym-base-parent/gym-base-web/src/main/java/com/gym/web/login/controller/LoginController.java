@@ -149,15 +149,15 @@ public class LoginController {
         }*/
     @PostMapping("/login")
     public ResultVo login(HttpServletRequest request, @RequestBody LoginParm parm) {
-        if (org.apache.commons.lang.StringUtils.isEmpty(parm.getUsername()) || org.apache.commons.lang.StringUtils.isEmpty(parm.getPassword())
-                || org.apache.commons.lang.StringUtils.isEmpty(parm.getUserType()) || org.apache.commons.lang.StringUtils.isEmpty(parm.getCode())) {
+        if (StringUtils.isEmpty(parm.getUsername()) || StringUtils.isEmpty(parm.getPassword())
+                || StringUtils.isEmpty(parm.getUserType()) || StringUtils.isEmpty(parm.getCode())){
             return ResultUtils.error("用户名、密码、验证码或用户类型不能为空!");
         }
         //获取sessoin
         HttpSession session = request.getSession();
         //获取验证码
         String code = (String) session.getAttribute("code");
-        if (org.apache.commons.lang.StringUtils.isEmpty(code)) {
+        if (StringUtils.isEmpty(code)) {
             return ResultUtils.error("验证码过期,请刷新验证码!");
         }
         //验证验证码
@@ -211,7 +211,7 @@ public class LoginController {
     public ResultVo getInfo(InfoParm parm) {
         UserInfo userInfo = new UserInfo();
         if (parm.getUserType().equals("1")) {// 会员
-            List<SysMenu> menuList = sysMenuService.getMenuByMemberId(parm.getUserId());
+            List<SysMenu> menuList = sysMenuService.getMenuByMemberId(Math.toIntExact(parm.getUserId()));
             List<String> collect = Optional.ofNullable(menuList).orElse(new ArrayList<>())
                     .stream()
                     .map(item -> item.getCode()).filter(item -> item != null)
@@ -223,7 +223,7 @@ public class LoginController {
             //设置返回信息
             userInfo.setName(member.getName());
             userInfo.setUserId(member.getMemberId());
-            userInfo.setPermissions(strings);
+            userInfo.setPermissons(strings);
             return ResultUtils.success("查询成功", userInfo);
         } else if (parm.getUserType().equals("2")) { //员工
             //查询用户信息
@@ -246,7 +246,7 @@ public class LoginController {
             //设置返回信息
             userInfo.setName(user.getNickName());
             userInfo.setUserId(user.getUserId());
-            userInfo.setPermissions(strings);
+            userInfo.setPermissons(strings);
             return ResultUtils.success("查询成功", userInfo);
         } else {
             return ResultUtils.error("用户类型错误");
@@ -259,7 +259,7 @@ public class LoginController {
     @GetMapping("/getMenuList")
     public ResultVo getMenuList(InfoParm parm) {
         if (parm.getUserType().equals("1")) {
-            List<SysMenu> menus = sysMenuService.getMenuByMemberId(parm.getUserId());
+            List<SysMenu> menus = sysMenuService.getMenuByMemberId(Math.toIntExact(parm.getUserId()));
             //获取菜单和目录
             List<SysMenu> collect = Optional.ofNullable(menus).orElse(new ArrayList<>())
                     .stream()
@@ -269,10 +269,10 @@ public class LoginController {
         } else if (parm.getUserType().equals("2")) { //员工
             SysUser user = sysUserService.getById(parm.getUserId());
             List<SysMenu> menuList = null;
-            if (org.apache.commons.lang3.StringUtils.isNotEmpty(user.getIsAdmin()) && user.getIsAdmin().equals("1")) {
+            if (StringUtils.isNotEmpty(user.getIsAdmin()) && user.getIsAdmin().equals("1")) {
                 menuList = sysMenuService.list();
             } else {
-                menuList = sysMenuService.getMenuByUserId(parm.getUserId());
+                menuList = sysMenuService.getMenuByUserId(Math.toIntExact(parm.getUserId()));
             }
             //获取菜单和目录
             List<SysMenu> collect = Optional.ofNullable(menuList).orElse(new ArrayList<>())
