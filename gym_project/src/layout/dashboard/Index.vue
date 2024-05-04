@@ -167,14 +167,14 @@ const charts3 = async() => {
       trigger: "item",
     },
     legend: {
-      top: "5%",
+      top: "0%",
       left: "center",
     },
     series: [
       {
         name: "Access From",
         type: "pie",
-        radius: ["40%", "70%"],
+        radius: ["30%", "60%"],
         avoidLabelOverlap: false,
         label: {
           show: false,
