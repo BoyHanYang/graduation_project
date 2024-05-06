@@ -147,7 +147,7 @@ const onSubmit = () => {
 .logincontainer {
   background-color: #fff;
   height: 100%;
-  background-image: url("../../assets/bg.png");
+  background-image: url("../../assets/gym.jpg");
   background-size: 100% 100%;
   display: flex;
   justify-content: center;
