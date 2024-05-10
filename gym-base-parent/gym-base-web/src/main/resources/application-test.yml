@@ -19,8 +19,8 @@ mybatis-plus:
       update-strategy: not_empty
 
 web:
-  uploadpath: F:/img/  #图片上传的路径
-  load-path: file:F://img/ #图片访问、加载的路径
+  uploadpath: D:/images/
+  load-path: file:D://images/
 
 #jwt配置
 jwt:

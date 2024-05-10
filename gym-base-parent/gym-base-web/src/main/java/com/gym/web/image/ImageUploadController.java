@@ -15,35 +15,36 @@ import java.util.UUID;
  * @Date 2024/4/8 17:09
  */
 @RestController
-@RequestMapping("/api/upload/")
+@RequestMapping("/api/upload")
 public class ImageUploadController {
-    // 图片上传的路径
+    //获取图片上传的路径
     @Value("${web.uploadpath}")
-    private String webUploadPath;
+    private String webUploadpath;
 
     @RequestMapping("/uploadImage")
-    @ResponseBody
     public ResultVo uploadImage(@RequestParam("file") MultipartFile file) {
-        String url = null;
-        String fileName = file.getOriginalFilename();
-        // 扩展名
-        String fillExtenionName = fileName.substring(fileName.indexOf("."));
-        // 生成新的名称
-        String newName = UUID.randomUUID().toString() + fillExtenionName;
-        String filePath = webUploadPath + newName;
-        File fileDir = new File(filePath);
-        if (!fileDir.exists()){
-            // 设置权限
+        //上传成功返回的图片路径
+        String Url = null;
+        //获取文件名
+        String filename = file.getOriginalFilename();
+        //获取扩展名 aa.png
+        String fileExtenionName = filename.substring(filename.indexOf("."));
+        //生成新的文件名称
+        String newName = UUID.randomUUID().toString() + fileExtenionName;
+        String path = webUploadpath;
+        File fileDir = new File(path);
+        if (!fileDir.exists()) {
+            //设置文件权限
             fileDir.setWritable(true);
             fileDir.mkdirs();
         }
-        File targetFile = new File(filePath, newName);
+        File targetFile = new File(path, newName);
         try {
             file.transferTo(targetFile);
-            url = "/"+targetFile.getName();
+            Url = "/" + targetFile.getName();
         } catch (Exception e) {
             return null;
         }
-        return ResultUtils.success("成功","/image"+url);
+        return ResultUtils.success("上传成功", "/images" + Url);
     }
 }
