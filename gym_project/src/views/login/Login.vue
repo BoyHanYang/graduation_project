@@ -89,8 +89,8 @@ const loginRef = ref<FormInstance>();
 const { imgSrc, getImage } = useImage();
 //登录表单对象
 const loginModel = reactive({
-  username: "root",
-  password: "123456",
+  username: "",
+  password: "",
   code: "",
   userType: "",
 });
