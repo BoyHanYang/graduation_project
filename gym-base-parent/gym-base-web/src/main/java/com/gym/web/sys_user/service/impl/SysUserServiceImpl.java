@@ -29,16 +29,30 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser>
     @Override
     @Transactional
     public void addUser(SysUser sysUser) {
-        // 先保存用户，在保存用户对应的角色
-        int insert = this.baseMapper.updateById(sysUser);
-        if (insert > 0) {
-            // 先删除原来的角色
-            QueryWrapper<SysUserRole> queryWrapper = new QueryWrapper<>();
-            queryWrapper.lambda().eq(SysUserRole::getUserId, sysUser.getUserId());
-            sysUserRoleService.remove(queryWrapper);
-            // 再保存用户的角色
+        //先保存用户，然后保存用户对应的角色
+        int insert = this.baseMapper.insert(sysUser);
+        if(insert >0){
+            //保存用户的角色
             SysUserRole sysUserRole = new SysUserRole();
-            sysUserRole.setRoleId(sysUserRole.getRoleId());
+            sysUserRole.setRoleId(sysUser.getRoleId());
+            sysUserRole.setUserId(sysUser.getUserId());
+            sysUserRoleService.save(sysUserRole);
+        }
+    }
+
+    @Override
+    @Transactional
+    public void editUser(SysUser sysUser) {
+        //先编辑用户，然后原来的角色删除
+        int insert = this.baseMapper.updateById(sysUser);
+        if(insert >0){
+            //先删除原来的角色
+            QueryWrapper<SysUserRole> query = new QueryWrapper<>();
+            query.lambda().eq(SysUserRole::getUserId,sysUser.getUserId());
+            sysUserRoleService.remove(query);
+            //再保存用户的角色
+            SysUserRole sysUserRole = new SysUserRole();
+            sysUserRole.setRoleId(sysUser.getRoleId());
             sysUserRole.setUserId(sysUser.getUserId());
             sysUserRoleService.save(sysUserRole);
         }
@@ -48,42 +62,27 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser>
     @Transactional
     public void deleteUser(Integer userId) {
         int i = this.baseMapper.deleteById(userId);
-        if (i > 0) {
-            // 删除用户的角色
-            QueryWrapper<SysUserRole> queryWrapper = new QueryWrapper<>();
-            queryWrapper.lambda().eq(SysUserRole::getUserId, userId);
-            sysUserRoleService.remove(queryWrapper);
-        }
-    }
-
-
-    @Override
-    @Transactional
-    public void editUser(SysUser sysUser) {
-        // 先编辑用户，在原来的角色删除
-        int insert = this.baseMapper.insert(sysUser);
-        if (insert > 0) {
-            // 保存用户的角色
-            SysUserRole sysUserRole = new SysUserRole();
-            sysUserRole.setRoleId(sysUserRole.getRoleId());
-            sysUserRole.setUserId(sysUser.getUserId());
-            sysUserRoleService.save(sysUserRole);
+        if(i >0){
+            //删除用户原来的角色
+            QueryWrapper<SysUserRole> query = new QueryWrapper<>();
+            query.lambda().eq(SysUserRole::getUserId,userId);
+            sysUserRoleService.remove(query);
         }
     }
 
     @Override
     public IPage<SysUser> getList(PageParm parm) {
-        // 构造分页对象
-        IPage<SysUser> page = new Page<>(parm.getCurrentPage(), parm.getPageSize());
-        // 构造查询对象
-        QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
-        if (StringUtils.isNotEmpty(parm.getPhone())){
-            queryWrapper.lambda().like(SysUser::getPhone,parm.getPhone());
+        //构造分页对象
+        IPage<SysUser> page = new Page<>(parm.getCurrentPage(),parm.getPageSize());
+        //构造查询条件
+        QueryWrapper<SysUser> query = new QueryWrapper<>();
+        if(StringUtils.isNotEmpty(parm.getPhone())){
+            query.lambda().like(SysUser::getPhone,parm.getPhone());
         }
-        if (StringUtils.isNotEmpty(parm.getNickName())){
-            queryWrapper.lambda().like(SysUser::getNickName,parm.getNickName());
+        if(StringUtils.isNotEmpty(parm.getNickName())){
+            query.lambda().like(SysUser::getNickName,parm.getNickName());
         }
-        return this.baseMapper.selectPage(page,queryWrapper);
+        return this.baseMapper.selectPage(page,query);
     }
 
     @Override

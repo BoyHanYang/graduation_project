@@ -11,14 +11,19 @@ import com.baomidou.mybatisplus.extension.service.IService;
 * @createDate 2024-03-27 17:33:44
 */
 public interface SysUserService extends IService<SysUser> {
-    // 新增
+    //新增
     void addUser(SysUser sysUser);
-    // 删除
-    void deleteUser(Integer userId);
-    // 修改
+
+    //编辑
     void editUser(SysUser sysUser);
-    // 列表
+
+    //删除出
+    void deleteUser(Integer userId);
+
+    //列表
     IPage<SysUser> getList(PageParm parm);
+
     //根据用户名查用户
     SysUser loadUser(String username);
+
 }
